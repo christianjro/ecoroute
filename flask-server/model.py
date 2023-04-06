@@ -55,7 +55,7 @@ class Trip(db.Model):
         return f"<Trip trip_id={self.trip_id} name={self.name} mode={self.mode} date_created={self.date_created} starting_point={self.starting_point} ending_point={self.ending_point} ghg_emissions={self.ghg_emissions}>"
 
 
-def connect_to_db(app, db_name):
+def connect_to_db(app, db_name="final_project"):
     """Connect the database to our Flask app."""
     app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql:///{db_name}"
     app.config["SQLALCHEMY_ECHO"] = True
@@ -76,4 +76,4 @@ def create_tables():
 if __name__ == "__main__":
     from server import app
 
-    connect_to_db(app, "final_project")
+    connect_to_db(app)

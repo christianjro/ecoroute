@@ -20,7 +20,7 @@ def homepage():
 #     """Return a list of users."""
 
 #     users = crud.get_all_users()
-
+#  dunder method on as dict
 #     data = [r.as_dict() for r in users]
 
 #     return jsonify(data)
