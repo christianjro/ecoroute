@@ -1,19 +1,51 @@
 import React, { useState, useEffect } from 'react';
+import {Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Account from './pages/Account';
+
+
 function App() {
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
   
+  // useEffect(() => {
+  //   fetch('/message')
+  //     .then(res => res.json())
+  //     .then(data => setData(data));
+  // }, []);
+
   useEffect(() => {
-    fetch('/message')
+    fetch("/users")
       .then(res => res.json())
-      .then(data => setData(data));
+      .then(data => setData(data.users));
   }, []);
+
+  const users = data.map((user) => {
+    return (
+      <div key={user.id}>
+        <h3>{user.name}</h3>
+        <p>{user.email}</p>
+      </div>
+    )
+  })
 
   return (
     <div className="App">
+      <Link to="/">Home</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/signup">Signup</Link>
+      <Link to="/account">Account</Link>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account />} />
+      </Routes>
+
       <h1>Final Project</h1>
-      <h2>{data.message}</h2>
+      <h2>{users}</h2>
     </div>
   );
 }

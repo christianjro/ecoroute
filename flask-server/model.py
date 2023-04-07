@@ -15,6 +15,15 @@ class User(db.Model):
     vehicle = db.relationship("Vehicle", uselist=False, back_populates="user")
     trips = db.relationship("Trip", back_populates="user")
 
+    def to_dict(self):
+        return {
+            "id": self.user_id,
+            "name": self.name,
+            "email": self.email,
+            "password": self.password,
+            "has_personal_vehicle": self.has_personal_vehicle,
+        }
+    
     def __repr__(self):
         return f"<User user_id={self.user_id} name={self.name} email={self.email} has_personal_vehicle={self.has_personal_vehicle}>"
 

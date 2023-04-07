@@ -15,15 +15,16 @@ def homepage():
     data = {"message": "Hello"}
     return jsonify(data)
 
-# @app.route("/users")
-# def list_users():
-#     """Return a list of users."""
 
-#     users = crud.get_all_users()
-#  dunder method on as dict
-#     data = [r.as_dict() for r in users]
+@app.route("/users")
+def list_users():
+    """Return a list of users."""
 
-#     return jsonify(data)
+    users = crud.get_all_users()
+
+    data = {"users": [d.to_dict() for d in users]}
+
+    return jsonify(data)
 
 
 if __name__ == "__main__":
