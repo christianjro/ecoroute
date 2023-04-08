@@ -26,6 +26,39 @@ def list_users():
 
     return jsonify(data)
 
+@app.route("/signup", methods=["POST"])
+def signup():
+    """Create a new user."""
+    data = request.get_json()
+    name = data["name"]
+    email = data["email"]
+    password = data["password"]
+
+    new_user = crud.create_user(name, email, password, False)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return {"message": "User created successfully"}
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Log in a user."""
+    data = request.get_json()
+    email = data["email"]
+    password = data["password"]
+
+    user = crud.get_user_by_email(email)
+
+    if user: 
+        if user.password == password:
+            session["user_id"] = user.user_id
+            return {"message": "User logged in successfully."}
+        else:
+            return {"message": "Incorrect password."}
+
+
 
 if __name__ == "__main__":
     connect_to_db(app, "final_project")

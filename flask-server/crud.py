@@ -12,6 +12,11 @@ def get_all_users():
 
     return User.query.all()
 
+def get_user_by_email(email):
+    """Return a user by email."""
+
+    return User.query.filter(User.email == email).first()
+
 # Vehicles
 def create_vehicle(name, efficiency, make, model, year, user_id):
     """Create and return a new vehicle."""
