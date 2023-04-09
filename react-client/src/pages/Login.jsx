@@ -1,6 +1,7 @@
 import React, { useState }from 'react'
 
 export default function Login() {
+  const [loggedIn, setLoggedIn] = useState(false)
   const [formData, setFormData] = useState({
     email: "", 
     password: ""
@@ -23,8 +24,24 @@ export default function Login() {
       headers: {"Content-Type" : "application/json"},
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then(response => {
+        if (response.status === 200) {
+          setLoggedIn(true)
+        }
+      })
+  }
+
+  function handleClick() {
+    fetch("/logout", {
+      method: "POST", 
+      credentials: "include"
+    })
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response)
+          setLoggedIn(false)
+        }
+      })
   }
 
   return (
@@ -38,6 +55,7 @@ export default function Login() {
         <input type="password" name="password" value={formData.password} onChange={handleChange}/>
         <button type="submit">Login</button>
       </form>
+      {loggedIn && <button onClick={handleClick}>Log out</button>}
     </div>
   )
 }

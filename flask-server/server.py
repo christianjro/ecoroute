@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, jsonify
+from flask import Flask, render_template, request, flash, session, redirect, jsonify, make_response
 from flask_cors import CORS
 from model import connect_to_db, db
 import crud
@@ -56,8 +56,18 @@ def login():
             session["user_id"] = user.user_id
             return {"message": "User logged in successfully."}
         else:
-            return {"message": "Incorrect password."}
+            return {"message": "Incorrect password."}, 401
 
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    """Log out a user."""
+    del session["user_id"]
+
+    response = make_response(jsonify({"message": "User logged out successfully."}), 200)
+    response.set_cookie('user_id', '', expires=0)
+
+    return response
 
 
 if __name__ == "__main__":
