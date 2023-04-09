@@ -1,7 +1,9 @@
-import React, { useState }from 'react'
+import React, { useState, useContext }from 'react';
+import { AuthContext } from '../AuthContext';
 
 export default function Login() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+
   const [formData, setFormData] = useState({
     email: "", 
     password: ""
@@ -26,7 +28,7 @@ export default function Login() {
     })
       .then(response => {
         if (response.status === 200) {
-          setLoggedIn(true)
+          setIsAuthenticated(true)
         }
       })
   }
@@ -39,7 +41,7 @@ export default function Login() {
       .then(response => {
         if (response.status === 200) {
           console.log(response)
-          setLoggedIn(false)
+          setIsAuthenticated(false)
         }
       })
   }
@@ -55,7 +57,7 @@ export default function Login() {
         <input type="password" name="password" value={formData.password} onChange={handleChange}/>
         <button type="submit">Login</button>
       </form>
-      {loggedIn && <button onClick={handleClick}>Log out</button>}
+      {isAuthenticated && <button onClick={handleClick}>Log out</button>}
     </div>
   )
 }
