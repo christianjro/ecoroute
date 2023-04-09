@@ -33,19 +33,6 @@ export default function Login() {
       })
   }
 
-  function handleClick() {
-    fetch("/logout", {
-      method: "POST", 
-      credentials: "include"
-    })
-      .then(response => {
-        if (response.status === 200) {
-          console.log(response)
-          setIsAuthenticated(false)
-        }
-      })
-  }
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -57,7 +44,6 @@ export default function Login() {
         <input type="password" name="password" value={formData.password} onChange={handleChange}/>
         <button type="submit">Login</button>
       </form>
-      {isAuthenticated && <button onClick={handleClick}>Log out</button>}
     </div>
   )
 }

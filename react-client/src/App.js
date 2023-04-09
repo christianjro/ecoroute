@@ -35,13 +35,28 @@ function App() {
     )
   })
 
+  function handleLogout() {
+  fetch("/logout", {
+    method: "POST", 
+    credentials: "include"
+  })
+    .then(response => {
+      if (response.status === 200) {
+        console.log(response)
+        setIsAuthenticated(false)
+      }
+    })
+  }
+
   return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}> 
       <div className="App">
         <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
-        <Link to="/account">Account</Link>
+        {!isAuthenticated ? <Link to="/login">Login</Link> : null}
+        {!isAuthenticated && <Link to="/signup">Signup</Link>}
+        {isAuthenticated && <Link to="/account">Account</Link>}
+        {isAuthenticated && <button onClick={handleLogout}>Log out</button>}
+        
 
         <Routes>
           <Route path="/" element={<Home />} />
