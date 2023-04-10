@@ -26,6 +26,7 @@ def list_users():
 
     return jsonify(data)
 
+
 @app.route("/signup", methods=["POST"])
 def signup():
     """Create a new user."""
@@ -69,6 +70,14 @@ def logout():
 
     return response
 
+@app.route("/trips")
+def list_trips():
+    """Return a list of trips."""
+    trips = crud.get_trips_by_user_id(session["user_id"])
+
+    data = {"trips": [d.to_dict() for d in trips]}
+
+    return data
 
 if __name__ == "__main__":
     connect_to_db(app, "final_project")

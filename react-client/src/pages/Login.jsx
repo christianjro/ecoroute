@@ -1,7 +1,9 @@
 import React, { useState, useContext }from 'react';
 import { AuthContext } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
 
   const [formData, setFormData] = useState({
@@ -29,6 +31,7 @@ export default function Login() {
       .then(response => {
         if (response.status === 200) {
           setIsAuthenticated(true)
+          navigate("/dashboard")
         }
       })
   }

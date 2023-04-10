@@ -60,6 +60,17 @@ class Trip(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     user = db.relationship("User", back_populates="trips")
 
+    def to_dict(self):
+        return {
+            "id": self.trip_id,
+            "name": self.name,
+            "mode": self.mode,
+            "date_created": self.date_created,
+            "starting_point": self.starting_point,
+            "ending_point": self.ending_point,
+            "ghg_emissions": self.ghg_emissions,
+        }
+    
     def __repr__(self):
         return f"<Trip trip_id={self.trip_id} name={self.name} mode={self.mode} date_created={self.date_created} starting_point={self.starting_point} ending_point={self.ending_point} ghg_emissions={self.ghg_emissions}>"
 

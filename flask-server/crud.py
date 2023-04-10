@@ -17,6 +17,8 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+
+
 # Vehicles
 def create_vehicle(name, efficiency, make, model, year, user_id):
     """Create and return a new vehicle."""
@@ -31,6 +33,11 @@ def create_trip(name, mode, date_created, starting_point, ending_point, ghg_emis
 
     trip = Trip(name=name, mode=mode, date_created=date_created, starting_point=starting_point, ending_point=ending_point, ghg_emissions=ghg_emissions, user_id=user_id)
     return trip
+
+def get_trips_by_user_id(user_id):
+    """Return all trips by user id."""
+
+    return Trip.query.filter(Trip.user_id == user_id).all()
 
 
 if __name__ == "__main__":
