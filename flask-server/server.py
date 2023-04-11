@@ -79,6 +79,27 @@ def list_trips():
 
     return data
 
+@app.route("/new_trip", methods=["POST"])
+def create_trip():
+    """Create a new trip."""
+    data = request.get_json()
+    name = data["name"]
+    mode = data["mode"]
+    date_created = data["date_created"]
+    starting_point = data["starting_point"]
+    ending_point = data["ending_point"]
+    ghg_emissions = data["ghg_emissions"]
+
+    user_id = session["user_id"]
+
+    new_trip = crud.create_trip(name, mode, date_created, starting_point, ending_point, ghg_emissions, user_id)
+
+    db.session.add(new_trip)
+    db.session.commit()
+
+    # return {"message": "Trip created successfully"}
+    return jsonify(new_trip.to_dict())
+
 if __name__ == "__main__":
     connect_to_db(app, "final_project")
 

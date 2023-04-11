@@ -1,4 +1,5 @@
 from model import db, User, Vehicle, Trip, connect_to_db
+from datetime import datetime
 
 # Users
 def create_user(name, email, password, has_personal_vehicle):
@@ -30,7 +31,7 @@ def create_vehicle(name, efficiency, make, model, year, user_id):
 # Trips
 def create_trip(name, mode, date_created, starting_point, ending_point, ghg_emissions, user_id):
     """Create and return a new trip."""
-
+    date_created = datetime.now()
     trip = Trip(name=name, mode=mode, date_created=date_created, starting_point=starting_point, ending_point=ending_point, ghg_emissions=ghg_emissions, user_id=user_id)
     return trip
 
