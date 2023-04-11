@@ -100,6 +100,15 @@ def create_trip():
     # return {"message": "Trip created successfully"}
     return jsonify(new_trip.to_dict())
 
+@app.route("/user_info")
+def get_user_info():
+    """Return user's info."""
+
+    user = crud.get_user_by_id(session["user_id"])
+
+    return user.to_dict()
+
+
 if __name__ == "__main__":
     connect_to_db(app, "final_project")
 
