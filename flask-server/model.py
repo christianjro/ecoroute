@@ -15,14 +15,24 @@ class User(db.Model):
     vehicle = db.relationship("Vehicle", uselist=False, back_populates="user")
     trips = db.relationship("Trip", back_populates="user")
 
-    def to_dict(self):
-        return {
-            "id": self.user_id,
-            "name": self.name,
-            "email": self.email,
-            "password": self.password,
-            "has_personal_vehicle": self.has_personal_vehicle,
-        }
+    def to_dict(self, has_personal_vehicle):
+        if has_personal_vehicle:
+            return {
+                "id": self.user_id,
+                "name": self.name,
+                "email": self.email,
+                "password": self.password,
+                "has_personal_vehicle": self.has_personal_vehicle,
+                "vehicle": self.vehicle.to_dict()
+            }
+        else:
+            return {
+                "id": self.user_id,
+                "name": self.name,
+                "email": self.email,
+                "password": self.password,
+                "has_personal_vehicle": self.has_personal_vehicle,
+            }
     
     def __repr__(self):
         return f"<User user_id={self.user_id} name={self.name} email={self.email} has_personal_vehicle={self.has_personal_vehicle}>"
@@ -41,6 +51,16 @@ class Vehicle(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), unique = True, nullable=True)
     user = db.relationship("User", uselist=False, back_populates="vehicle")
+
+    def to_dict(self):
+        return {
+            "id": self.vehicle_id,
+            "name": self.name,
+            "efficiency": self.efficiency,
+            "make": self.make,
+            "model": self.model,
+            "year": self.year
+        }
 
     def __repr__(self):
         return f"<Vehicle vehicle_id={self.vehicle_id} name={self.name} efficiency={self.efficiency} make={self.make}>"

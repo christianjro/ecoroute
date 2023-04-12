@@ -106,8 +106,49 @@ def get_user_info():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return user.to_dict()
+    return user.to_dict(user.has_personal_vehicle)
 
+@app.route("/new_vehicle", methods=["POST"])
+def create_new_vehicle():
+    """Create a new vehicle."""
+
+    data = request.get_json()
+    name = data["name"]
+    efficiency = data["efficiency"]
+    make = data["make"]
+    model = data["model"]
+    year = data["year"]
+
+    user_id = session["user_id"]
+    new_vehicle = crud.create_vehicle(name, efficiency, make, model, year, user_id)
+
+    db.session.add(new_vehicle)
+
+    user = crud.get_user_by_id(user_id)
+    if not user.has_personal_vehicle: 
+        user.has_personal_vehicle = True
+
+    db.session.commit()
+
+    return {"message": "vehicle added"}
+
+@app.route("/update_vehicle", methods=["POST"])
+def update_vehicle():
+    """Update a user's vehicle."""
+
+    data = request.get_json()
+    name = data["name"]
+    efficiency = data["efficiency"]
+    make = data["make"]
+    model = data["model"]
+    year = data["year"]
+
+    user_id = session["user_id"]
+
+    crud.update_vehicle(name, efficiency, make, model, year, user_id)
+    db.session.commit()
+
+    return {"message": "vehicle updated"}
 
 if __name__ == "__main__":
     connect_to_db(app, "final_project")
