@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './App.css';
+import Cookie from 'js-cookie';
 
-import { AuthContext } from './AuthContext';
+import AuthContext from './AuthContext';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -12,7 +13,10 @@ import Dashboard from './pages/Dashboard';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // these are the values that manage the user's authentication state
+  const [token, setToken] = useState(Cookie.get("token") || null)
+  const [isLoggedIn, setIsLoggedIn] = useState(token !== null)
+
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   
@@ -37,6 +41,13 @@ function App() {
   //   )
   // })
 
+  const authContextValue = {
+    token,
+    isLoggedIn, 
+    setToken,
+    setIsLoggedIn
+  }
+
   function handleLogout() {
   fetch("/logout", {
     method: "POST", 
@@ -45,21 +56,23 @@ function App() {
     .then(response => {
       if (response.status === 200) {
         console.log(response)
-        setIsAuthenticated(false)
+        setToken(null)
+        setIsLoggedIn(false)
+        Cookie.remove('token')
         navigate("/")
       }
     })
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}> 
+    <AuthContext.Provider value={authContextValue}> 
       <div className="App">
         <Link to="/">Home</Link>
-        {!isAuthenticated ? <Link to="/login">Login</Link> : null}
-        {!isAuthenticated && <Link to="/signup">Signup</Link>}
-        {isAuthenticated && <Link to="/account">Account</Link>}
-        {isAuthenticated && <button onClick={handleLogout}>Log out</button>}
-        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+        {!isLoggedIn ? <Link to="/login">Login</Link> : null}
+        {!isLoggedIn && <Link to="/signup">Signup</Link>}
+        {isLoggedIn && <Link to="/account">Account</Link>}
+        {isLoggedIn && <button onClick={handleLogout}>Log out</button>}
+        {isLoggedIn && <Link to="/dashboard">Dashboard</Link>}
         
 
         <Routes>

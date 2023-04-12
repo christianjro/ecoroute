@@ -55,7 +55,7 @@ def login():
     if user: 
         if user.password == password:
             session["user_id"] = user.user_id
-            return {"message": "User logged in successfully."}
+            return {"token": session["user_id"]}
         else:
             return {"message": "Incorrect password."}, 401
 

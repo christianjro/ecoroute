@@ -1,10 +1,11 @@
 import React, { useState, useContext }from 'react';
-import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../AuthContext';
+import Cookie from 'js-cookie';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+  const auth = useContext(AuthContext)
 
   const [formData, setFormData] = useState({
     email: "", 
@@ -28,11 +29,12 @@ export default function Login() {
       headers: {"Content-Type" : "application/json"},
       body: JSON.stringify(formData)
     })
-      .then(response => {
-        if (response.status === 200) {
-          setIsAuthenticated(true)
-          navigate("/dashboard")
-        }
+      .then(response => response.json())
+      .then(data => {
+        Cookie.set('token', data.token)
+        auth.setToken(data.token)
+        auth.setIsLoggedIn(true)
+        navigate("/dashboard")
       })
   }
 

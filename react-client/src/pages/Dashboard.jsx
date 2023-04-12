@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../AuthContext';
 
 export default function Dashboard() {
     const newTripFormTemplate = {
@@ -10,13 +9,12 @@ export default function Dashboard() {
         ending_point: "",
         ghg_emissions: ""
     }
-
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
     const [ trips, setTrips ] = useState([])
     const [ isNewTripForm, setIsNewTripForm ] = useState(false)
     const [ newTrip, setNewTrip ] = useState({...newTripFormTemplate})
 
     useEffect(() => {
+        console.log("hello")
         fetch("/trips")
           .then(res => res.json())
           .then(data => {
