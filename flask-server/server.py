@@ -123,11 +123,6 @@ def create_new_vehicle():
     new_vehicle = crud.create_vehicle(name, efficiency, make, model, year, user_id)
 
     db.session.add(new_vehicle)
-
-    user = crud.get_user_by_id(user_id)
-    if not user.has_personal_vehicle: 
-        user.has_personal_vehicle = True
-
     db.session.commit()
 
     return {"message": "vehicle added"}

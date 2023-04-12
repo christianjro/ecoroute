@@ -28,7 +28,11 @@ def get_user_by_id(id):
 # Vehicles
 def create_vehicle(name, efficiency, make, model, year, user_id):
     """Create and return a new vehicle."""
-    
+
+    user = get_user_by_id(user_id)
+    if not user.has_personal_vehicle: 
+        user.has_personal_vehicle = True
+
     vehicle = Vehicle(name=name, efficiency=efficiency, make=make, model=model, year=year, user_id=user_id)
     return vehicle
 
@@ -46,6 +50,7 @@ def update_vehicle(name, efficiency, make, model, year, user_id):
 # Trips
 def create_trip(name, mode, date_created, starting_point, ending_point, ghg_emissions, user_id):
     """Create and return a new trip."""
+    
     date_created = datetime.now()
     trip = Trip(name=name, mode=mode, date_created=date_created, starting_point=starting_point, ending_point=ending_point, ghg_emissions=ghg_emissions, user_id=user_id)
     return trip
