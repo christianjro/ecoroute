@@ -98,7 +98,9 @@ export default function Account() {
             id: option,
             avg_mpg: result.yourMpgVehicle.avgMpg,
             max_mpg: result.yourMpgVehicle.maxMpg,
-            min_mpg: result.yourMpgVehicle.minMpg
+            min_mpg: result.yourMpgVehicle.minMpg,
+            efficiency : (0.00889 * 1/result.yourMpgVehicle.avgMpg * 1/0.993)
+            // to do: separate this logic to a function
           }
         })
         setFinishButton(true)
@@ -123,7 +125,7 @@ export default function Account() {
       body: JSON.stringify(newVehicle)
     })
       .then(response => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           setShouldRefetchUser(prev => !prev)
           setIsAddVehicleForm(prev => !prev)
         }
@@ -137,7 +139,7 @@ export default function Account() {
       body: JSON.stringify(newVehicle)
     })
       .then(response => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           setNewVehicle({...newVehicleFormTemplate})
           setShouldRefetchUser(prev => !prev)
           setIsUpdateVehicleForm(prev => !prev)

@@ -29,6 +29,7 @@ def get_user_by_id(id):
 def create_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id):
     """Create and return a new vehicle."""
 
+    # comment this block out when seeding the DB:
     user = get_user_by_id(user_id)
     if not user.has_personal_vehicle: 
         user.has_personal_vehicle = True

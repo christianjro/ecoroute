@@ -47,10 +47,10 @@ class Vehicle(db.Model):
     make = db.Column(db.String, nullable=False)
     model = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    avg_mpg = db.Column(db.Integer, nullable=False)
+    avg_mpg = db.Column(db.Float, nullable=False)
     max_mpg = db.Column(db.Integer, nullable=False)
     min_mpg = db.Column(db.Integer, nullable=False)
-    efficiency = db.Column(db.Integer, nullable=False)
+    efficiency = db.Column(db.Numeric(precision=10, scale=10), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), unique = True, nullable=True)
     user = db.relationship("User", uselist=False, back_populates="vehicle")
