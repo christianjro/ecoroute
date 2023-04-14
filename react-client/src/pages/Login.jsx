@@ -29,13 +29,20 @@ export default function Login() {
       headers: {"Content-Type" : "application/json"},
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw new Error("Wrong email or password.")
+        }
+      })
       .then(data => {
         Cookie.set('token', data.token)
         auth.setToken(data.token)
         auth.setIsLoggedIn(true)
         navigate("/dashboard")
       })
+      .catch(error => console.log(error))
   }
 
   return (

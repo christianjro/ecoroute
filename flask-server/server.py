@@ -6,6 +6,7 @@ from jinja2 import StrictUndefined
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app, supports_credentials=True)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
