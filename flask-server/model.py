@@ -43,11 +43,14 @@ class Vehicle(db.Model):
     __tablename__ = "vehicles"
 
     vehicle_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    efficiency = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String, nullable=True)
     make = db.Column(db.String, nullable=False)
     model = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
+    avg_mpg = db.Column(db.Integer, nullable=False)
+    max_mpg = db.Column(db.Integer, nullable=False)
+    min_mpg = db.Column(db.Integer, nullable=False)
+    efficiency = db.Column(db.Integer, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), unique = True, nullable=True)
     user = db.relationship("User", uselist=False, back_populates="vehicle")
@@ -56,10 +59,13 @@ class Vehicle(db.Model):
         return {
             "id": self.vehicle_id,
             "name": self.name,
-            "efficiency": self.efficiency,
             "make": self.make,
             "model": self.model,
-            "year": self.year
+            "year": self.year,
+            "avg_mpg": self.avg_mpg,
+            "max_mpg": self.max_mpg,
+            "min_mpg": self.min_mpg,
+            "efficiency": self.efficiency,
         }
 
     def __repr__(self):

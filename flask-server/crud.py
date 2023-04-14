@@ -26,25 +26,28 @@ def get_user_by_id(id):
 
 
 # Vehicles
-def create_vehicle(name, efficiency, make, model, year, user_id):
+def create_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id):
     """Create and return a new vehicle."""
 
     user = get_user_by_id(user_id)
     if not user.has_personal_vehicle: 
         user.has_personal_vehicle = True
 
-    vehicle = Vehicle(name=name, efficiency=efficiency, make=make, model=model, year=year, user_id=user_id)
+    vehicle = Vehicle(name=name, make=make, model=model, year=year, avg_mpg=avg_mpg, max_mpg=max_mpg, min_mpg=min_mpg, efficiency=efficiency, user_id=user_id)
     return vehicle
 
-def update_vehicle(name, efficiency, make, model, year, user_id):
+def update_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id):
 
     user = get_user_by_id(user_id)
     vehicle = user.vehicle
     vehicle.name = name
-    vehicle.efficiency = efficiency
     vehicle.make = make
     vehicle.model = model
     vehicle.year = year
+    vehicle.avg_mpg = avg_mpg
+    vehicle.max_mpg = max_mpg
+    vehicle.min_mpg = min_mpg
+    vehicle.efficiency = efficiency
     
 
 # Trips

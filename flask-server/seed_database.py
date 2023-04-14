@@ -21,7 +21,7 @@ user2 = crud.create_user("user2", "email2@email.com",  "password2", False)
 #     model.db.session.commit()
 
 # Create vehicles
-vehicle1 = crud.create_vehicle("vehicle1", 1, "make1", "model1", 2001, user1.user_id)
+vehicle1 = crud.create_vehicle("vehicle1", "make1", "model1", 2001, 30, 35, 29, 1, user1.user_id)
 # with server.app.app_context():
 #     model.db.session.add_all([vehicle1])
 #     model.db.session.commit()
@@ -34,6 +34,7 @@ trip2 = crud.create_trip("trip2", "mode2", datetime.now(), "starting_point2", "e
 #     model.db.session.commit()
 
 user1.trips.extend([trip1, trip2])
+
 with server.app.app_context():
     model.db.session.add_all([user1, user2])
     model.db.session.commit()

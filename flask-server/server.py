@@ -114,13 +114,16 @@ def create_new_vehicle():
 
     data = request.get_json()
     name = data["name"]
-    efficiency = data["efficiency"]
     make = data["make"]
     model = data["model"]
     year = data["year"]
+    avg_mpg = data["avg_mpg"]
+    max_mpg = data["max_mpg"]
+    min_mpg = data["min_mpg"]
+    efficiency = data["efficiency"]
 
     user_id = session["user_id"]
-    new_vehicle = crud.create_vehicle(name, efficiency, make, model, year, user_id)
+    new_vehicle = crud.create_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id)
 
     db.session.add(new_vehicle)
     db.session.commit()
@@ -133,14 +136,17 @@ def update_vehicle():
 
     data = request.get_json()
     name = data["name"]
-    efficiency = data["efficiency"]
     make = data["make"]
     model = data["model"]
     year = data["year"]
+    avg_mpg = data["avg_mpg"]
+    max_mpg = data["max_mpg"]
+    min_mpg = data["min_mpg"]
+    efficiency = data["efficiency"]
 
     user_id = session["user_id"]
 
-    crud.update_vehicle(name, efficiency, make, model, year, user_id)
+    crud.update_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id)
     db.session.commit()
 
     return {"message": "vehicle updated"}
