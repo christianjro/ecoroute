@@ -10,6 +10,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Account from './pages/Account';
 import Dashboard from './pages/Dashboard';
+// remove
+import MapSearch from './components/MapSearch';
 
 
 function App() {
@@ -81,6 +83,7 @@ function App() {
           <Route path="/signup" element={<Signup /> } />
           <Route path="/account" element={<Account />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/mapSearch" element={<MapSearch />} />
         </Routes>
 
         {/* <h1>Final Project</h1>
