@@ -79,8 +79,10 @@ class Trip(db.Model):
     name = db.Column(db.String, nullable=False)
     mode = db.Column(db.String, nullable=False)
     date_created = db.Column(db.DateTime, nullable=False)
-    starting_point = db.Column(db.String, nullable=False)
-    ending_point = db.Column(db.String, nullable=False)
+    origin = db.Column(db.String, nullable=False)
+    destination = db.Column(db.String, nullable=False)
+    distance = db.Column(db.Float, nullable=False)
+    duration = db.Column(db.String, nullable=True)
     ghg_emissions = db.Column(db.Integer, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
@@ -92,13 +94,15 @@ class Trip(db.Model):
             "name": self.name,
             "mode": self.mode,
             "date_created": self.date_created,
-            "starting_point": self.starting_point,
-            "ending_point": self.ending_point,
+            "origin": self.origin,
+            "destination": self.destination,
+            "distance": self.distance,
+            "duration": self.duration,
             "ghg_emissions": self.ghg_emissions,
         }
     
     def __repr__(self):
-        return f"<Trip trip_id={self.trip_id} name={self.name} mode={self.mode} date_created={self.date_created} starting_point={self.starting_point} ending_point={self.ending_point} ghg_emissions={self.ghg_emissions}>"
+        return f"<Trip trip_id={self.trip_id} name={self.name} mode={self.mode} date_created={self.date_created} starting_point={self.origin} ending_point={self.destination} ghg_emissions={self.ghg_emissions}>"
 
 
 def connect_to_db(app, db_name="final_project"):

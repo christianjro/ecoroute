@@ -12,7 +12,7 @@ const center = {
 };
 
 
-function Map() {
+function Map(props) {
   const [map, setMap] = useState(null)
   const [response, setResponse] = useState(null)
   const [travelMode, setTravelMode] = useState("DRIVING")
@@ -122,6 +122,27 @@ function Map() {
   console.log("Trip Duration:")
   console.log(duration)
 
+  const collectedData = useMemo(() => {
+    return {
+      mode: travelMode,
+      origin: origin,
+      destination: destination,
+      distance: distance,
+      duration: duration,
+    }
+  }, [travelMode, origin, destination, distance, duration])
+  console.log('Collected Data:')
+  console.log(collectedData)
+  function handleNextQuestion() {
+    console.log("child trip data")
+    // console.log(response)
+    console.log(collectedData)
+    props.dataTransfer(collectedData)
+  }
+
+  function handleExitQuestion() {
+    props.cancelAddTrip()
+  }
 
   return isLoaded ? (
       <div>
@@ -194,6 +215,7 @@ function Map() {
             Walking
           </label>
 
+          <br />
           <button className='btn btn-primary' type='button' onClick={onClick}>
           Build Route
           </button>
@@ -216,8 +238,12 @@ function Map() {
           {response !== null && (
             <DirectionsRenderer options={directionsRendererOptions} />
           )}
-
         </GoogleMap>
+        
+        <br/>
+        <button onClick={handleExitQuestion}>Back</button>
+        <br/>
+        {response !== null && <button onClick={handleNextQuestion}>Next</button>}
       </div>
   ) : <></>
 }

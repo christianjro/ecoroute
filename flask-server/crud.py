@@ -52,11 +52,11 @@ def update_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficienc
     
 
 # Trips
-def create_trip(name, mode, date_created, starting_point, ending_point, ghg_emissions, user_id):
+def create_trip(name, mode, date_created, origin, destination, distance, duration, ghg_emissions, user_id):
     """Create and return a new trip."""
     
     date_created = datetime.now()
-    trip = Trip(name=name, mode=mode, date_created=date_created, starting_point=starting_point, ending_point=ending_point, ghg_emissions=ghg_emissions, user_id=user_id)
+    trip = Trip(name=name, mode=mode, date_created=date_created, origin=origin, destination=destination, distance=distance, duration=duration, ghg_emissions=ghg_emissions, user_id=user_id)
     return trip
 
 def get_trips_by_user_id(user_id):

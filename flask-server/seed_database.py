@@ -27,8 +27,8 @@ vehicle1 = crud.create_vehicle("vehicle1", "make1", "model1", 2001, 30, 35, 29, 
 #     model.db.session.commit()
 
 # Create trips
-trip1 = crud.create_trip("trip1", "mode1", datetime.now(), "starting_point1", "ending_point1", 11, user1.user_id)
-trip2 = crud.create_trip("trip2", "mode2", datetime.now(), "starting_point2", "ending_point2", 11, user1.user_id)
+trip1 = crud.create_trip("trip1", "mode1", datetime.now(), "starting_point1", "ending_point1", 10, "10min" , 11, user1.user_id)
+trip2 = crud.create_trip("trip2", "mode2", datetime.now(), "starting_point2", "ending_point2", 40, "50min", 11, user1.user_id)
 # with server.app.app_context():
 #     model.db.session.add_all([trip1, trip2])
 #     model.db.session.commit()

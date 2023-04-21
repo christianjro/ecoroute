@@ -87,13 +87,15 @@ def create_trip():
     name = data["name"]
     mode = data["mode"]
     date_created = data["date_created"]
-    starting_point = data["starting_point"]
-    ending_point = data["ending_point"]
+    origin = data["origin"]
+    destination = data["destination"]
+    distance = data["distance"]
+    duration = data["duration"]
     ghg_emissions = data["ghg_emissions"]
 
     user_id = session["user_id"]
 
-    new_trip = crud.create_trip(name, mode, date_created, starting_point, ending_point, ghg_emissions, user_id)
+    new_trip = crud.create_trip(name, mode, date_created, origin, destination, distance, duration, ghg_emissions, user_id)
 
     db.session.add(new_trip)
     db.session.commit()
