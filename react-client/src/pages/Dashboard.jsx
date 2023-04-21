@@ -18,9 +18,11 @@ export default function Dashboard() {
     const usersTrips = trips.map((trip) => {
         return (
           <div key={trip.id}> 
-            <h3> {trip.name} </h3>
-            <p> {trip.mode} </p>
-            <p> {trip.starting_point}</p>
+            <h3>Trip Name: {trip.name} </h3>
+            <p>Mode; {trip.mode} </p>
+            <p>Origin: {trip.origin}</p>
+            <p>Destination: {trip.destination}</p>
+            <p>GHG Emissions: {trip.ghg_emissions}</p>
           </div>
         )
     })

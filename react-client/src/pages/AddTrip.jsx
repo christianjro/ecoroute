@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MapSearch from '../components/MapSearch';
 
 
-export default function AddTrip() {
+export default function AddTrip(props) {
   const navigate = useNavigate()
   const newTripFormTemplate = {
     name: "", 
@@ -46,27 +46,47 @@ export default function AddTrip() {
     })
   }
 
-  function calculateGhgEmissions() {
-    if (newTrip.mode === "DRIVING"){
-      // get user's vehicle car efficiency
-      // multiply it with number of miles
-      // update state to include efficiency
-    } else if (newTrip.mode === "WALKING" || newTrip.mode === "BICYCLING") {
-      setNewTrip(prev => ({
-        ...prev, 
-        ghg_emissions: 0
-      }))
-    } else if (newTrip.mode === "TRANSIT") {
-      // todo
+  useEffect(() => {
+    function calculateGhgEmissions() {
+      if (newTrip.mode === "DRIVING"){
+        return props.userInfo.vehicle.efficiency * newTrip.distance
+      } 
+      else if (newTrip.mode === "WALKING" || newTrip.mode === "BICYCLING") {
+        return 0
+      } 
+      else if (newTrip.mode === "TRANSIT") {
+        return props.userInfo.vehicle.efficiency * 0.5 * newTrip.distance
+      }
     }
-    
-  }
+    const ghg_emissions = calculateGhgEmissions()
+    setNewTrip(prev => ({
+      ...prev,
+      ghg_emissions: ghg_emissions
+    }))
+  }, [newTrip.mode, newTrip.distance]) 
 
+  function handleTripSubmit(event) {
+    event.preventDefault()
+    // make fetch call to the api using newTrip state
+    fetch("/new_trip", {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify(newTrip)
+    })
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw new Error("Could not add trip.")
+        }
+      })
+      .catch(error => console.log(error))
+    navigate("/dashboard")
+  }
 
   function cancelAddTrip() {
     navigate("/dashboard")
   }
-
 
   useEffect(() =>{
     console.log("this is my new Trip")
@@ -77,26 +97,24 @@ export default function AddTrip() {
     <div>
         <h1>AddTrip</h1>
         {
-          currentQuestion == 1 
+          currentQuestion === 1 
           &&
           <MapSearch dataTransfer={handleMapData} cancelAddTrip={cancelAddTrip} />
         }
        
         {
-          currentQuestion == 2
+          currentQuestion === 2
           &&
           <div>
             <h2>Question 2:</h2>
             <button onClick={() => setCurrentQuestion(1)}>Go Back</button>
-            <form>
+            <form onSubmit={handleTripSubmit}>
               <label htmlFor="tripName">Trip Name:</label>
               <input id="tripName" name="name" type="text" value={newTrip.name} onChange={handleNameChange}/>
               <input type="submit" />
             </form>
           </div>
         }
-
-
     </div>
   )
 }

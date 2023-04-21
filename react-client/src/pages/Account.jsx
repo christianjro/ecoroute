@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import {XMLParser} from 'fast-xml-parser';
 
-export default function Account() {
+export default function Account(props) {
   const newVehicleFormTemplate = {
     api_id: "",
     name: "Car",
@@ -13,22 +13,21 @@ export default function Account() {
     min_mpg: "",
     efficiency: 3
   }
-  const [userInfo, setUserInfo] = useState({})
   const [isAddVehicleForm, setIsAddVehicleForm] = useState(false)
   const [isUpdateVehicleForm, setIsUpdateVehicleForm] = useState(false)
 
-  const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
+  // const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
 
   const [newVehicle, setNewVehicle] = useState({...newVehicleFormTemplate})
   const [searchVehicleModelOptions, setSearchVehicleModelOptions] = useState([])
   const [searchVehicleSpecOptions, setSearchVehicleSpecOptions] = useState([])
   const [finishButton, setFinishButton] = useState(false)
 
-  useEffect(() => {
-    fetch("/user_info")
-      .then(res => res.json())
-      .then(data => setUserInfo(data))
-  }, [shouldRefetchUser])
+  // useEffect(() => {
+  //   fetch("/user_info")
+  //     .then(res => res.json())
+  //     .then(data => setUserInfo(data))
+  // }, [shouldRefetchUser])
 
 
   function handleChangeSearch(event) {
@@ -109,7 +108,7 @@ export default function Account() {
 
 
   function submitVehicleToDB() {
-    if (userInfo.has_personal_vehicle) {
+    if (props.userInfo.has_personal_vehicle) {
       updateVehicle()
       console.log("hi")
     } else {
@@ -126,7 +125,8 @@ export default function Account() {
     })
       .then(response => {
         if (response.status === 200) {
-          setShouldRefetchUser(prev => !prev)
+          // setShouldRefetchUser(prev => !prev)
+          props.handleUserInfoUpdate()
           setIsAddVehicleForm(prev => !prev)
         }
       })
@@ -141,7 +141,7 @@ export default function Account() {
       .then(response => {
         if (response.status === 200) {
           setNewVehicle({...newVehicleFormTemplate})
-          setShouldRefetchUser(prev => !prev)
+          props.handleUserInfoUpdate()
           setIsUpdateVehicleForm(prev => !prev)
         }
       })
@@ -151,20 +151,20 @@ export default function Account() {
     <div>
       <h1>Account</h1>
 
-      <h2>Name: {userInfo.name}</h2> 
-      <h2>Email: {userInfo.email}</h2> 
-      <h2>Personal Vehicle: {userInfo.has_personal_vehicle ? "yes" : "no"}</h2> 
-      <h2>Password: {userInfo.password}</h2> 
+      <h2>Name: {props.userInfo.name}</h2> 
+      <h2>Email: {props.userInfo.email}</h2> 
+      <h2>Personal Vehicle: {props.userInfo.has_personal_vehicle ? "yes" : "no"}</h2> 
+      <h2>Password: {props.userInfo.password}</h2> 
       {
-        userInfo.has_personal_vehicle &&
+        props.userInfo.has_personal_vehicle &&
         <div>
-          <h2>Vehicle Name: {userInfo.vehicle.name}</h2>
-          <h2>Vehicle Efficiency: {userInfo.vehicle.efficiency}</h2>
+          <h2>Vehicle Name: {props.userInfo.vehicle.name}</h2>
+          <h2>Vehicle Efficiency: {props.userInfo.vehicle.efficiency}</h2>
         </div>
       }
 
       {
-        userInfo.has_personal_vehicle ?
+        props.userInfo.has_personal_vehicle ?
         <button onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
         :
         <button onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>

@@ -10,7 +10,6 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Account from './pages/Account';
 import Dashboard from './pages/Dashboard';
-// remove
 import AddTrip from './pages/AddTrip';
 
 
@@ -18,8 +17,9 @@ function App() {
   // these are the values that manage the user's authentication state
   const [token, setToken] = useState(Cookie.get("token") || null)
   const [isLoggedIn, setIsLoggedIn] = useState(token !== null)
+  const [userInfo, setUserInfo] = useState({})
+  const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
 
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
   
   // useEffect(() => {
@@ -50,20 +50,32 @@ function App() {
     setIsLoggedIn
   }
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetch("/user_info")
+        .then(res => res.json())
+        .then(data => setUserInfo(data))
+    }
+  },[isLoggedIn, shouldRefetchUser])
+
+  function handleUserInfoUpdate() {
+    setShouldRefetchUser(prev => !prev)
+  }
+
   function handleLogout() {
-  fetch("/logout", {
-    method: "POST", 
-    credentials: "include"
-  })
-    .then(response => {
-      if (response.status === 200) {
-        console.log(response)
-        setToken(null)
-        setIsLoggedIn(false)
-        Cookie.remove('token')
-        navigate("/")
-      }
+    fetch("/logout", {
+      method: "POST", 
+      credentials: "include"
     })
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response)
+          setToken(null)
+          setIsLoggedIn(false)
+          Cookie.remove('token')
+          navigate("/")
+        }
+      })
   }
 
   return (
@@ -81,9 +93,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup /> } />
-          <Route path="/account" element={<Account />} />
+          <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/addTrip" element={<AddTrip />} />
+          <Route path="/addTrip" element={<AddTrip userInfo={userInfo}/>} />
         </Routes>
 
         {/* <h1>Final Project</h1>

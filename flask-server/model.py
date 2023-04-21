@@ -83,7 +83,7 @@ class Trip(db.Model):
     destination = db.Column(db.String, nullable=False)
     distance = db.Column(db.Float, nullable=False)
     duration = db.Column(db.String, nullable=True)
-    ghg_emissions = db.Column(db.Integer, nullable=False)
+    ghg_emissions = db.Column(db.Float, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     user = db.relationship("User", back_populates="trips")
