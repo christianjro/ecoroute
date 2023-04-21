@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard() {
+export default function Dashboard({trips}) {
     const navigate = useNavigate();
-    const [ trips, setTrips ] = useState([])
+    // const [ trips, setTrips ] = useState([])
 
 
-    useEffect(() => {
-        fetch("/trips")
-          .then(res => res.json())
-          .then(data => {
-            setTrips(data.trips)
-            console.log(trips)
-        })
-    }, [])
+    // useEffect(() => {
+    //     fetch("/trips")
+    //       .then(res => res.json())
+    //       .then(data => {
+    //         setTrips(data.trips)
+    //         console.log(trips)
+    //     })
+    // }, [])
 
     const usersTrips = trips.map((trip) => {
         return (

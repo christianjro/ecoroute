@@ -65,6 +65,7 @@ export default function AddTrip(props) {
     }))
   }, [newTrip.mode, newTrip.distance]) 
 
+  
   function handleTripSubmit(event) {
     event.preventDefault()
     // make fetch call to the api using newTrip state
@@ -80,6 +81,7 @@ export default function AddTrip(props) {
           throw new Error("Could not add trip.")
         }
       })
+      .then(data => props.handleTripsUpdate(data))
       .catch(error => console.log(error))
     navigate("/dashboard")
   }

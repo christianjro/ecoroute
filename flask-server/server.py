@@ -100,8 +100,8 @@ def create_trip():
     db.session.add(new_trip)
     db.session.commit()
 
-    return {"message": "Trip created successfully"}
-    # return jsonify(new_trip.to_dict())
+    # return {"message": "Trip created successfully"}
+    return jsonify(new_trip.to_dict())
 
 @app.route("/user_info")
 def get_user_info():

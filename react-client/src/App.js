@@ -18,7 +18,9 @@ function App() {
   const [token, setToken] = useState(Cookie.get("token") || null)
   const [isLoggedIn, setIsLoggedIn] = useState(token !== null)
   const [userInfo, setUserInfo] = useState({})
+  const [trips, setTrips] = useState([])
   const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
+  const [shouldRefetchTrips, setShouldRefetchTrips] = useState(false)
 
   const navigate = useNavigate();
   
@@ -58,8 +60,24 @@ function App() {
     }
   },[isLoggedIn, shouldRefetchUser])
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetch("/trips")
+          .then(res => res.json())
+          .then(data => {
+            setTrips(data.trips)
+            console.log(trips)
+        })
+    }
+  }, [isLoggedIn, shouldRefetchTrips])
+
   function handleUserInfoUpdate() {
     setShouldRefetchUser(prev => !prev)
+  }
+
+  function handleTripsUpdate(newTrip) {
+    // setShouldRefetchTrips(prev => !prev)
+    setTrips(prev => [...prev, newTrip])
   }
 
   function handleLogout() {
@@ -94,8 +112,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup /> } />
           <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/addTrip" element={<AddTrip userInfo={userInfo}/>} />
+          <Route path="/dashboard" element={<Dashboard trips={trips} />} />
+          <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
         </Routes>
 
         {/* <h1>Final Project</h1>
