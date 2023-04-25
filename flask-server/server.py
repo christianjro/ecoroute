@@ -109,6 +109,7 @@ def get_user_info():
 
     user = crud.get_user_by_id(session["user_id"])
 
+    # return user.to_dict()
     return user.to_dict(user.has_personal_vehicle)
 
 @app.route("/new_vehicle", methods=["POST"])
@@ -154,7 +155,80 @@ def update_vehicle():
 
     return {"message": "vehicle updated"}
 
+
+
+@app.route("/friend_requests")
+def list_friend_requests(): 
+    """Return a list of user's friend requests."""
+
+    user_id = session["user_id"]
+
+    sent_friend_requests = crud.get_sent_friend_requests_by_user_id(user_id)
+    received_friend_requests = crud.get_received_friend_requests_by_user_id(user_id)
+
+    data = {
+        "sent": [d.to_dict() for d in sent_friend_requests], 
+        "received": [d.to_dict() for d in received_friend_requests]
+    }
+
+    return data
+
+
+@app.route("/new_friend_request", methods=["POST"])
+def send_friend_request():
+    """Send a friend request."""
+
+    # user = crud.get_user_by_id(session["user_id"])
+
+    # the user needs to give us their email for the friend they want to add
+
+    data = request.get_json()
+    recipient_email = data["recipient_email"]
+    print("*************************************************************************************************************")
+    print(recipient_email)
+    recipient = crud.get_user_by_email(recipient_email)
+    recipient_id = recipient.user_id
+
+    sender_id = session["user_id"]
+    new_friend_request = crud.create_friend_request(sender_id, recipient_id)
+
+    db.session.add(new_friend_request)
+    db.session.commit()
+
+    return {"message": "friend request sent successfully."}
+
+
+@app.route("/respond_to_friend_request", methods=["POST"])
+def respond_to_friend_request():
+    """Respond to a friend request."""
+
+    data = request.get_json()
+    decision = data["decision"]
+    request_id = data["request_id"]
+    sender_id = data["sender_id"]
+    user_id = session["user_id"]
+
+    crud.update_friend_request(decision, request_id)
+
+    if decision == "accept": 
+        friendship = crud.create_friendship(True, user_id, sender_id)
+        db.session.add(friendship)
+
+    db.session.commit()
+
+    return {"message": "friend request handled."}
+
+@app.route("/friends")
+def list_friends():
+    """Return a list of user's friends."""
+    user_id = session["user_id"]
+
+    friends = crud.get_user_friendships_by_user_id(user_id)
+
+    return friends
+
+
 if __name__ == "__main__":
-    connect_to_db(app, "final_project")
+    connect_to_db(app, "final_project") 
 
     app.run(host="0.0.0.0", debug=True)

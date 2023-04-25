@@ -14,7 +14,7 @@ with server.app.app_context():
 
 
 # Create users
-user1 = crud.create_user("user1", "email1@email.com", "password1", True)
+user1 = crud.create_user("user1", "email1@email.com", "password1", False)
 user2 = crud.create_user("user2", "email2@email.com",  "password2", False)
 # with server.app.app_context():
 #     model.db.session.add_all([user1, user2])

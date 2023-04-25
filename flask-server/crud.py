@@ -1,4 +1,4 @@
-from model import db, User, Vehicle, Trip, connect_to_db
+from model import db, User, Vehicle, Trip, Friendship, FriendRequest, connect_to_db
 from datetime import datetime
 
 # Users
@@ -63,6 +63,63 @@ def get_trips_by_user_id(user_id):
     """Return all trips by user id."""
 
     return Trip.query.filter(Trip.user_id == user_id).all()
+
+
+#Friend Requests
+def create_friend_request(sender_id, recipient_id):
+    """Create a friend request."""
+    friend_request = FriendRequest(sender_id=sender_id, recipient_id=recipient_id)
+
+    return friend_request
+
+def get_received_friend_requests_by_user_id(user_id):
+    """Return all friend requests received by user."""
+    return FriendRequest.query.filter(FriendRequest.recipient_id == user_id).all()
+
+def get_sent_friend_requests_by_user_id(user_id): 
+    """Return all friend requests sent by user."""
+    return FriendRequest.query.filter(FriendRequest.sender_id == user_id).all()
+
+def get_friend_request_by_friend_request_id(friend_request_id):
+    """Return a request that matches friend_request_id."""
+    return FriendRequest.query.filter(FriendRequest.friend_request_id == friend_request_id).first()
+
+def update_friend_request(decision, request_id):
+    """Update friend request with decision."""
+
+    friend_request = get_friend_request_by_friend_request_id(request_id)
+    
+    if decision == "decline": 
+        friend_request.status = "declined"
+    elif decision == "accept":
+        friend_request.status = "accepted"
+
+
+#Friendship
+def create_friendship(can_view_data, user_id, friend_id):
+    """Create a friendship between two users."""
+
+    friendship = Friendship(can_view_data=can_view_data, user_id=user_id, friend_id=friend_id)
+    return friendship
+
+def get_user_friendships_by_user_id(user_id):
+    """Return all of user's friends with user_id."""
+
+    # need to join query so friendships are two way (if user initiated friendship or not.)
+    part_one = Friendship.query.filter(Friendship.user_id == user_id).all()
+    part_two = Friendship.query.filter(Friendship.friend_id == user_id).all()
+
+    part_one = [d.to_dict(initiator=True) for d in part_one]
+    part_two = [d.to_dict(initiator=False) for d in part_two]
+
+    combo = part_one + part_two
+    
+    data = {
+        "friends": combo
+    }
+
+    return data
+
 
 
 if __name__ == "__main__":

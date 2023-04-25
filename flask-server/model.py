@@ -14,8 +14,13 @@ class User(db.Model):
 
     vehicle = db.relationship("Vehicle", uselist=False, back_populates="user")
     trips = db.relationship("Trip", back_populates="user")
+    friends = db.relationship("Friendship", back_populates="user", foreign_keys="Friendship.user_id")
+    # friends = db.relationship("Friendship", onclause="users.user_id==friendships.user_id")
+    friend_requests_sent = db.relationship("FriendRequest", back_populates="sender", foreign_keys="FriendRequest.sender_id")
+    friend_requests_received = db.relationship("FriendRequest", back_populates = "recipient", foreign_keys="FriendRequest.recipient_id")
 
     def to_dict(self, has_personal_vehicle):
+    # def to_dict(self):
         if has_personal_vehicle:
             return {
                 "id": self.user_id,
@@ -104,6 +109,62 @@ class Trip(db.Model):
     def __repr__(self):
         return f"<Trip trip_id={self.trip_id} name={self.name} mode={self.mode} date_created={self.date_created} starting_point={self.origin} ending_point={self.destination} ghg_emissions={self.ghg_emissions}>"
 
+
+class Friendship(db.Model):
+    "A user's friendship."
+    __tablename__ = "friendships"
+    friendship_id = db.Column(db.Integer, primary_key=True)
+
+    can_view_data = db.Column(db.Boolean, nullable=False, default=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    friend_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+    user = db.relationship("User", foreign_keys=[user_id])
+    friend = db.relationship("User", foreign_keys=[friend_id])
+
+    def to_dict(self, initiator):
+        if initiator: 
+            return {
+                "id": self.friendship_id,
+                "can_view_data": self.can_view_data,
+                "user_id": self.user_id,
+                "friend_id": self.friend_id,
+                "friend_name": self.friend.name
+            }
+        else: 
+            return {
+                "id": self.friendship_id,
+                "can_view_data": self.can_view_data,
+                "user_id": self.friend_id,
+                "friend_id": self.user_id,
+                "friend_name": self.user.name
+            }
+            
+
+class FriendRequest(db.Model):
+    "A user's friend request."
+    __tablename__ = "friend_requests"
+    friend_request_id = db.Column(db.Integer, primary_key=True)
+
+    sender_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    recipient_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+
+    status = db.Column(db.String, default="pending")
+
+    sender = db.relationship("User", foreign_keys=[sender_id])
+    recipient = db.relationship("User", foreign_keys=[recipient_id])
+
+    def to_dict(self):
+        return {
+            "id": self.friend_request_id,
+            "status": self.status,
+            "sender_id": self.sender_id,
+            "recipient_id": self.recipient_id,
+            "sender": self.sender.name,
+            "recipient": self.recipient.name,
+        }  
+   
 
 def connect_to_db(app, db_name="final_project"):
     """Connect the database to our Flask app."""

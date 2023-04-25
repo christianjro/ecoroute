@@ -11,6 +11,9 @@ import Signup from './pages/Signup';
 import Account from './pages/Account';
 import Dashboard from './pages/Dashboard';
 import AddTrip from './pages/AddTrip';
+import AddFriend from './pages/AddFriend';
+import FriendRequests from './pages/FriendRequests';
+import ViewFriends from './pages/ViewFriends';
 
 
 function App() {
@@ -57,6 +60,7 @@ function App() {
       fetch("/user_info")
         .then(res => res.json())
         .then(data => setUserInfo(data))
+        // .then(data => console.log(data))
     }
   },[isLoggedIn, shouldRefetchUser])
 
@@ -105,6 +109,9 @@ function App() {
         {isLoggedIn && <Link to="/account">Account</Link>}
         {isLoggedIn && <button onClick={handleLogout}>Log out</button>}
         {isLoggedIn && <Link to="/dashboard">Dashboard</Link>}
+        {isLoggedIn && <Link to="/addFriend">Add Friend</Link>}
+        {isLoggedIn && <Link to="/friendRequests">Friend Requests</Link>}
+        {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
         
 
         <Routes>
@@ -114,10 +121,11 @@ function App() {
           <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
           <Route path="/dashboard" element={<Dashboard trips={trips} />} />
           <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
+          <Route path="/addFriend" element={<AddFriend />} />
+          <Route path="/friendRequests" element={<FriendRequests />} />
+          <Route path="/viewFriends" element={<ViewFriends />} />
         </Routes>
 
-        {/* <h1>Final Project</h1>
-        <h2>{users}</h2> */}
       </div>
     </AuthContext.Provider>
   );
