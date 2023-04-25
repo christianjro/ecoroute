@@ -228,6 +228,16 @@ def list_friends():
     return friends
 
 
+@app.route("/feed")
+def list_feed():
+    """Return list of user's friends' trip data."""
+
+    user_id = session["user_id"]
+    feed = crud.get_user_friendship_data_by_user_id(user_id)
+
+    return feed 
+
+
 if __name__ == "__main__":
     connect_to_db(app, "final_project") 
 

@@ -123,7 +123,7 @@ class Friendship(db.Model):
     user = db.relationship("User", foreign_keys=[user_id])
     friend = db.relationship("User", foreign_keys=[friend_id])
 
-    def to_dict(self, initiator):
+    def to_dict(self, initiator=True):
         if initiator: 
             return {
                 "id": self.friendship_id,

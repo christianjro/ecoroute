@@ -113,14 +113,30 @@ def get_user_friendships_by_user_id(user_id):
     part_two = [d.to_dict(initiator=False) for d in part_two]
 
     combo = part_one + part_two
-    
+
     data = {
         "friends": combo
     }
 
     return data
 
+def get_user_friendship_data_by_user_id(user_id):
+    """Return user's friends' data with user_id."""
 
+    user_friends = get_user_friendships_by_user_id(user_id)
+
+    trip_data = {}
+    # trip_data = []
+
+    for item in user_friends["friends"]:
+        friend_id = item["friend_id"]
+        friend_name = item["friend_name"]
+        friend_trips = get_trips_by_user_id(friend_id)
+        trip_data[friend_name] = [d.to_dict() for d in friend_trips]
+        # combo = {friend_id: [d.to_dict() for d in friend_trips]}
+        # trip_data.append(combo)
+
+    return trip_data
 
 if __name__ == "__main__":
     from server import app

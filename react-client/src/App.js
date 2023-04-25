@@ -14,6 +14,7 @@ import AddTrip from './pages/AddTrip';
 import AddFriend from './pages/AddFriend';
 import FriendRequests from './pages/FriendRequests';
 import ViewFriends from './pages/ViewFriends';
+import Feed from './pages/Feed';
 
 
 function App() {
@@ -112,6 +113,7 @@ function App() {
         {isLoggedIn && <Link to="/addFriend">Add Friend</Link>}
         {isLoggedIn && <Link to="/friendRequests">Friend Requests</Link>}
         {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
+        {isLoggedIn && <Link to="/feed">Feed</Link>}
         
 
         <Routes>
@@ -124,6 +126,7 @@ function App() {
           <Route path="/addFriend" element={<AddFriend />} />
           <Route path="/friendRequests" element={<FriendRequests />} />
           <Route path="/viewFriends" element={<ViewFriends />} />
+          <Route path="/feed" element={<Feed />} />
         </Routes>
 
       </div>

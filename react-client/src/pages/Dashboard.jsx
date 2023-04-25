@@ -3,17 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard({trips}) {
     const navigate = useNavigate();
-    // const [ trips, setTrips ] = useState([])
-
-
-    // useEffect(() => {
-    //     fetch("/trips")
-    //       .then(res => res.json())
-    //       .then(data => {
-    //         setTrips(data.trips)
-    //         console.log(trips)
-    //     })
-    // }, [])
 
     const usersTrips = trips.map((trip) => {
         return (
@@ -30,12 +19,20 @@ export default function Dashboard({trips}) {
     return (
         <div>
             <h1>Dashboard</h1>
+            <button onClick={() => navigate("/addTrip")}>Add Trip</button>
+
             <div>
-                <h2>User's trips</h2>
+                <h2>Your Trips</h2>
                 {usersTrips}
             </div>
             
-            <button onClick={() => navigate("/addTrip")}>Add Trip</button>
+            <div>
+                <h2>Week's Emissions</h2>
+            </div>
+
+            <div>
+                <h2>Leaderboard</h2>
+            </div>
         </div>
     )
 }
