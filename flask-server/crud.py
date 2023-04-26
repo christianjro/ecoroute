@@ -64,6 +64,11 @@ def get_trips_by_user_id(user_id):
 
     return Trip.query.filter(Trip.user_id == user_id).all()
 
+def delete_trip_by_trip_id(trip_id):
+    """Delete a user's trip using trip_id"""
+
+    return Trip.query.filter(Trip.trip_id == trip_id).first()
+
 
 #Friend Requests
 def create_friend_request(sender_id, recipient_id):
@@ -141,10 +146,6 @@ def get_user_friendships_data_by_user_id(user_id):
 def delete_user_friendship(user_id, friend_id):
     """Delete a user's friendship using user_id and friend_id."""
 
-    # part_one = {Friendship.user_id == user_id, Friendship.friend_id == friend_id}
-    # part_two = {Friendship.user_id == friend_id, Friendship.friend_id == user_id}
-
-    # friendship = Friendship.query.filter((Friendship.user_id == user_id) & (Friendship.friend_id == friend_id) | (Friendship.user_id == friend_id) & (Friendship.friend_id == user_id)).first()
     friendship1 = Friendship.query.filter((Friendship.user_id == user_id) & (Friendship.friend_id == friend_id)).first()
     friendship2 = Friendship.query.filter((Friendship.user_id == friend_id) & (Friendship.friend_id == user_id)).first()
 

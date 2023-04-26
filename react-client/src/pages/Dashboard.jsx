@@ -25,10 +25,24 @@ ChartJS.register(
   Legend
 );
 
-export default function Dashboard({trips}) {
+export default function Dashboard({trips, handleTripsUpdate}) {
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+
+
+    function handleDeleteTrip(trip_id) {
+      fetch("/delete_trip", {
+        method: "POST", 
+        headers: {"Content-Type": "application/json"}, 
+        body: JSON.stringify({trip_id})
+      })
+        .then(response => {
+          if (response.status === 200) {
+            handleTripsUpdate()
+          }
+        })
+    }
 
     const usersTrips = trips.map((trip) => {
         return (
@@ -38,6 +52,7 @@ export default function Dashboard({trips}) {
             <p>Origin: {trip.origin}</p>
             <p>Destination: {trip.destination}</p>
             <p>GHG Emissions: {trip.ghg_emissions}</p>
+            <button onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
           </div>
         )
     })

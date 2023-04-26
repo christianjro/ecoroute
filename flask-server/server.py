@@ -103,6 +103,19 @@ def create_trip():
     # return {"message": "Trip created successfully"}
     return jsonify(new_trip.to_dict())
 
+@app.route("/delete_trip", methods=["POST"])
+def delete_trip():
+    """Delete a user's trip."""
+    
+    trip_id = request.get_json()["trip_id"]
+    trip = crud.delete_trip_by_trip_id(trip_id)
+    if trip:
+        db.session.delete(trip)
+        db.session.commit()
+        return {"message": "Trip deleted."}
+    else: 
+        return {"message": "Trip does not exist."}
+
 @app.route("/user_info")
 def get_user_info():
     """Return user's info."""

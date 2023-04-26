@@ -80,9 +80,14 @@ function App() {
     setShouldRefetchUser(prev => !prev)
   }
 
-  function handleTripsUpdate(newTrip) {
-    // setShouldRefetchTrips(prev => !prev)
-    setTrips(prev => [...prev, newTrip])
+  function handleTripsUpdate(newTrip=null) {
+    // update trips if adding a newTrip or deleting a new trip
+
+    if (newTrip) {
+      setTrips(prev => [...prev, newTrip])
+    } else {
+      setShouldRefetchTrips(prev => !prev)
+    }
   }
 
   function handleLogout() {
@@ -121,7 +126,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup /> } />
           <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-          <Route path="/dashboard" element={<Dashboard trips={trips} />} />
+          <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} />} />
           <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
           <Route path="/addFriend" element={<AddFriend />} />
           <Route path="/friendRequests" element={<FriendRequests />} />

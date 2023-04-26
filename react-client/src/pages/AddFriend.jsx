@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddFriend() {
+  const navigate = useNavigate()
   const [ recipient, setRecipient ] = useState({recipient_email: ""})
 
   function handleChange(event) {
@@ -27,6 +29,7 @@ export default function AddFriend() {
           throw new Error("Could not send friend request")
         }
       })
+    navigate("/dashboard")
   }
 
   return (
