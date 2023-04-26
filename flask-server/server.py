@@ -227,13 +227,28 @@ def list_friends():
 
     return friends
 
+@app.route("/delete_friendship", methods=["POST"])
+def delete_friend(): 
+    """Delete a user's friendship."""
+    user_id = session["user_id"]
+    friend_id = request.get_json()["friend_id"]
+
+    friendship = crud.delete_user_friendship(user_id, friend_id)
+
+    if friendship: 
+        db.session.delete(friendship)
+        db.session.commit()
+        return {"message": "User unfriended."}
+    else:
+        return {"message": "Friendship does not exist."}
+
 
 @app.route("/feed")
 def list_feed():
     """Return list of user's friends' trip data."""
 
     user_id = session["user_id"]
-    feed = crud.get_user_friendship_data_by_user_id(user_id)
+    feed = crud.get_user_friendships_data_by_user_id(user_id)
 
     return feed 
 

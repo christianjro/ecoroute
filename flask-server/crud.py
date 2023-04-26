@@ -120,7 +120,7 @@ def get_user_friendships_by_user_id(user_id):
 
     return data
 
-def get_user_friendship_data_by_user_id(user_id):
+def get_user_friendships_data_by_user_id(user_id):
     """Return user's friends' data with user_id."""
 
     user_friends = get_user_friendships_by_user_id(user_id)
@@ -137,6 +137,21 @@ def get_user_friendship_data_by_user_id(user_id):
         # trip_data.append(combo)
 
     return trip_data
+
+def delete_user_friendship(user_id, friend_id):
+    """Delete a user's friendship using user_id and friend_id."""
+
+    # part_one = {Friendship.user_id == user_id, Friendship.friend_id == friend_id}
+    # part_two = {Friendship.user_id == friend_id, Friendship.friend_id == user_id}
+
+    # friendship = Friendship.query.filter((Friendship.user_id == user_id) & (Friendship.friend_id == friend_id) | (Friendship.user_id == friend_id) & (Friendship.friend_id == user_id)).first()
+    friendship1 = Friendship.query.filter((Friendship.user_id == user_id) & (Friendship.friend_id == friend_id)).first()
+    friendship2 = Friendship.query.filter((Friendship.user_id == friend_id) & (Friendship.friend_id == user_id)).first()
+
+    friendship = friendship1 or friendship2
+
+    return friendship
+
 
 if __name__ == "__main__":
     from server import app
