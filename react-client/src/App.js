@@ -23,31 +23,11 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(token !== null)
   const [userInfo, setUserInfo] = useState({})
   const [trips, setTrips] = useState([])
+  const [location, setLocation] = useState(null)
   const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
   const [shouldRefetchTrips, setShouldRefetchTrips] = useState(false)
 
   const navigate = useNavigate();
-  
-  // useEffect(() => {
-  //   fetch('/message')
-  //     .then(res => res.json())
-  //     .then(data => setData(data));
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch("/users")
-  //     .then(res => res.json())
-  //     .then(data => setData(data.users));
-  // }, []);
-
-  // const users = data.map((user) => {
-  //   return (
-  //     <div key={user.id}>
-  //       <h3>{user.name}</h3>
-  //       <p>{user.email}</p>
-  //     </div>
-  //   )
-  // })
 
   const authContextValue = {
     token,
@@ -106,6 +86,31 @@ function App() {
       })
   }
 
+  function getLocation() {
+    const positionPromise = new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(resolve, reject)
+      } else {
+        reject(new Error("Geolocation is not supported by this browser."))
+      }
+    })
+
+    return positionPromise
+  }
+
+  useEffect(() => {
+    async function fetchLocation() {
+      try {
+        const position = await getLocation()
+        setLocation(position.coords)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchLocation()
+  }, [])
+  
+
   return (
     <AuthContext.Provider value={authContextValue}> 
       <div className="App">
@@ -126,7 +131,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup /> } />
           <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-          <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} />} />
+          <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} />
           <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
           <Route path="/addFriend" element={<AddFriend />} />
           <Route path="/friendRequests" element={<FriendRequests />} />

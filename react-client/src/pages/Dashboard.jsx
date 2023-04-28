@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApexCharts from 'apexcharts';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -25,11 +26,14 @@ ChartJS.register(
   Legend
 );
 
-export default function Dashboard({trips, handleTripsUpdate}) {
+export default function Dashboard({trips, handleTripsUpdate, location}) {
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)
+    const [airQualityIndex, setAirQualityIndex] = useState(null)
+    const aqiChartRef = useRef(null)
     const navigate = useNavigate()
 
+    const airNowAPIKey = process.env.REACT_APP_AIRNOW_API_KEY
 
     function handleDeleteTrip(trip_id) {
       fetch("/delete_trip", {
@@ -149,10 +153,136 @@ export default function Dashboard({trips, handleTripsUpdate}) {
         }
     }
 
+    useEffect(() => { 
+      console.log("&&&&&")
+      console.log(airQualityIndex)
+      if (airQualityIndex) {
+        const aqiChartOptions = {
+          series: [100, (airQualityIndex.AQI/500 * 100)],
+              chart: {
+              type: 'radialBar',
+              offsetY: -20,
+              sparkline: {
+                enabled: true
+              }
+            },
+            tooltip: {
+                enabled: false,
+              },
+            stroke: {
+              lineCap: 'round',
+            },
+            plotOptions: {
+              radialBar: {
+                startAngle: -90,
+                endAngle: 90,
+                hollow: {
+                  size: "75%",
+                },
+                track: {
+                  background: ["#e7e7e7", "#ffffff"],
+                  strokeWidth: ['100%', '75%'],
+                  margin: 3, 
+                },
+                dataLabels: {
+                  name: {
+                    offsetY: -30,
+                    show: false,
+                    fontSize: '30px',
+                  },
+                  value: {
+                    // offsetY: -2,
+                    text: "AQI",
+                    formatter: function(val) {
+                      return parseInt(val)
+                    },
+                    fontSize: '90px',
+                    show: true,
+                  },
+                  total: {
+                    show: true,
+                    label: "AQI",
+                    formatter: function(w) {
+                      return airQualityIndex.AQI
+                    },
+                  },
+                },
+              },
+            },
+            grid: {
+              padding: {
+                top: -10
+              }
+            },
+            fill: {
+              colors: ['#ff0000', '#000000'],
+              type: ['gradient', "solid"],
+              gradient: {
+                shade: 'light',
+                type: "horizontal",
+                shadeIntensity: 0.9,
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "#00e400",
+                    opacity: 1
+                  },
+                  {
+                    offset: 10,
+                    color: "#ffff00",
+                    opacity: 1
+                  },
+                  {
+                    offset: 40,
+                    color: "#ff0000",
+                    opacity: 1
+                  },
+                  {
+                    offset: 50,
+                    color: "#8f3f97",
+                    opacity: 1
+                  },
+                  {
+                    offset: 100,
+                    color: "#7e0023",
+                    opacity: 1
+                  }
+                ],
+              },
+            },  
+            labels: ['Scale', 'AQI'],
+        }
+
+        const chart = new ApexCharts(aqiChartRef.current, aqiChartOptions)
+        chart.render()
+        return () => chart.destroy()
+      }
+    }, [airQualityIndex])
+
+    useEffect(() => {
+      console.log("this is location")
+      console.log(location)
+      if (location) {
+        const url = `https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=${location.latitude}&longitude=${location.longitude}&distance=30&API_KEY=${airNowAPIKey}`
+        fetch(url)
+          .then(response => response.json())
+          .then(data => setAirQualityIndex(data[0]))
+      }
+    }, [location])
+
+
+
     return (
         <div>
             <h1>Dashboard</h1>
             <button onClick={() => navigate("/addTrip")}>Add Trip</button>
+
+            <div>
+              <div ref={aqiChartRef} id="chart"></div>
+            </div>
 
             <div>
                 <h2>Your Trips</h2>
