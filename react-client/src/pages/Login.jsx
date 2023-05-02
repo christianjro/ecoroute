@@ -25,11 +25,11 @@ export default function Login() {
     // event.preventDefault()
     console.log(formData)
     const form = event.currentTarget
-    if(form.checkValidity() === false){
-      event.preventDefault()
+    if(form.checkValidity() !== true){
+      setValidated('was-validated')
     }
-    setValidated('was-validated')
-
+    event.preventDefault()
+    
     fetch("/login", {
       method: "POST",
       headers: {"Content-Type" : "application/json"},
@@ -60,13 +60,13 @@ export default function Login() {
           <div className="form-floating mb-3">
             <input className="form-control" placeholder="email" id="email" type="email" name="email" value={formData.email} onChange={handleChange} required/> 
             <label htmlFor="email">Email</label>
-            <div class="invalid-feedback">Invalid email</div>
+            <div className="invalid-feedback">Invalid email</div>
           </div>
           
           <div className="form-floating mb-3">
             <input className="form-control" placeholder="password" id="password" type="password" name="password" value={formData.password} onChange={handleChange} required/>
             <label htmlFor="password">Password</label>
-            <div class="invalid-feedback">Must include password</div>
+            <div className="invalid-feedback">Must include password</div>
           </div>
           
           <button className="btn btn-primary" type="submit">Login</button>

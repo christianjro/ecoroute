@@ -117,7 +117,7 @@ function App() {
   return (
     <AuthContext.Provider value={authContextValue}> 
       <div className="App">
-        <div className="d-flex">
+        <div className={`d-flex ${isLoggedIn ? 'flex-row' : 'flex-column'}`}>
 
           {
             isLoggedIn 
@@ -163,7 +163,7 @@ function App() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <button onClick={handleLogout}>
+                    <button onClick={handleLogout} className="nav-link">
                       <span>G </span>
                       <span className="large-screen-enabled">Log out</span>
                     </button>
@@ -172,7 +172,28 @@ function App() {
               </div>
             </nav>
           }
-        
+
+          {
+            !isLoggedIn
+            &&
+            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+              <div className="container-fluid">
+                <h3 className="navbar-brand">Capstone Project</h3>
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link to="/" class="nav-link active" aria-current="page">Home</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/login" class="nav-link">Login</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/signup" class="nav-link">Signup</Link>
+                  </li>
+                </ul>
+              </div>
+              
+            </nav>
+          }
 
 
           {/* {!isLoggedIn && <Link to="/">Home</Link>}
@@ -186,7 +207,7 @@ function App() {
           {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
           {isLoggedIn && <Link to="/feed">Feed</Link>} */}
 
-          <div class="d-flex flex-column container">
+          <div class="container vh-100 overflow-y-auto">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

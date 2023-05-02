@@ -79,7 +79,7 @@ export default function FriendRequests() {
   })
 
   return (
-    <div className="container">
+    <div>
         <h1>FriendRequests</h1>
 
         <h3>Sent</h3>

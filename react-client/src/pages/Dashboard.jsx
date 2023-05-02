@@ -110,7 +110,7 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
                   <button className="btn btn-outline-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
                 </div>
 
-                <div className="row overflow-auto bg-secondary p-3 mb-3">
+                <div className="row overflow-scroll bg-secondary p-3 mb-3">
                   <h3>Your Trips</h3>
                   {usersTrips}
                 </div>
