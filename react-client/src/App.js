@@ -124,48 +124,51 @@ function App() {
             &&
             <nav id="largeSidebar" className="navbar bg-warning align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
               <div className="container-fluid d-flex flex-column p-0">
-                <h3 className="my-5">Capstone Project</h3>
+                <div className="d-flex flex-column align-items-center my-5">
+                  <i class="bi bi-geo-alt-fill" style={{fontSize: "2.5rem"}}></i>
+                  <h3 className="large-screen-enabled mt-1">Capstone</h3>
+                </div>
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                      <Link to="/dashboard" className="nav-link active" aria-current="page">
-                        <span>A </span>
-                        <span className="large-screen-enabled">Dashboard</span>
+                      <Link to="/" className="nav-link">
+                        <i class="bi bi-grid-fill" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Dashboard</span>
                       </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/addFriend" className="nav-link">
-                      <span>B </span>
-                      <span className="large-screen-enabled">Add Friend</span>
+                      <i class="bi bi-person-fill-add" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">Add Friend</span>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/friendRequests" className="nav-link">
-                      <span>C </span>
-                      <span className="large-screen-enabled">Friend Request</span>
+                      <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">Friend Request</span>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/viewFriends" className="nav-link">
-                      <span>D </span>
-                      <span className="large-screen-enabled">View Friends</span>
+                      <i class="bi bi-people-fill" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">View Friends</span>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/feed" className="nav-link">
-                      <span>E </span>
-                      <span className="large-screen-enabled">Feed</span>
+                      <i class="bi bi-share-fill" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">Feed</span>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="account" className="nav-link">
-                      <span>F </span>
-                      <span className="large-screen-enabled">Account</span>
+                      <i class="bi bi-gear-fill" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">Account</span>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <button onClick={handleLogout} className="nav-link">
-                      <span>G </span>
-                      <span className="large-screen-enabled">Log out</span>
+                      <i class="bi bi-box-arrow-left" style={{fontSize: "1.3rem"}}></i>
+                      <span className="large-screen-enabled ms-3">Log out</span>
                     </button>
                   </li>
                 </ul>
@@ -209,11 +212,11 @@ function App() {
 
           <div class="container vh-100 overflow-y-auto">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={isLoggedIn? <Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/> : <Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup /> } />
               <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-              <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} />
+              {/* <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} /> */}
               <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
               <Route path="/addFriend" element={<AddFriend />} />
               <Route path="/friendRequests" element={<FriendRequests />} />
