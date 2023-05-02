@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
+import { Collapse } from 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import './App.css';
 import Cookie from 'js-cookie';
 
@@ -114,31 +117,91 @@ function App() {
   return (
     <AuthContext.Provider value={authContextValue}> 
       <div className="App">
-        <Link to="/">Home</Link>
-        {!isLoggedIn ? <Link to="/login">Login</Link> : null}
-        {!isLoggedIn && <Link to="/signup">Signup</Link>}
-        {isLoggedIn && <Link to="/account">Account</Link>}
-        {isLoggedIn && <button onClick={handleLogout}>Log out</button>}
-        {isLoggedIn && <Link to="/dashboard">Dashboard</Link>}
-        {isLoggedIn && <Link to="/addFriend">Add Friend</Link>}
-        {isLoggedIn && <Link to="/friendRequests">Friend Requests</Link>}
-        {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
-        {isLoggedIn && <Link to="/feed">Feed</Link>}
+        <div className="d-flex">
+
+          {
+            isLoggedIn 
+            &&
+            <nav id="largeSidebar" className="navbar bg-warning align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
+              <div className="container-fluid d-flex flex-column p-0">
+                <h3 className="my-5">Capstone Project</h3>
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                      <Link to="/dashboard" className="nav-link active" aria-current="page">
+                        <span>A </span>
+                        <span className="large-screen-enabled">Dashboard</span>
+                      </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/addFriend" className="nav-link">
+                      <span>B </span>
+                      <span className="large-screen-enabled">Add Friend</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/friendRequests" className="nav-link">
+                      <span>C </span>
+                      <span className="large-screen-enabled">Friend Request</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/viewFriends" className="nav-link">
+                      <span>D </span>
+                      <span className="large-screen-enabled">View Friends</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/feed" className="nav-link">
+                      <span>E </span>
+                      <span className="large-screen-enabled">Feed</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="account" className="nav-link">
+                      <span>F </span>
+                      <span className="large-screen-enabled">Account</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button onClick={handleLogout}>
+                      <span>G </span>
+                      <span className="large-screen-enabled">Log out</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          }
         
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup /> } />
-          <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-          <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} />
-          <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
-          <Route path="/addFriend" element={<AddFriend />} />
-          <Route path="/friendRequests" element={<FriendRequests />} />
-          <Route path="/viewFriends" element={<ViewFriends />} />
-          <Route path="/feed" element={<Feed />} />
-        </Routes>
 
+          {/* {!isLoggedIn && <Link to="/">Home</Link>}
+          {!isLoggedIn ? <Link to="/login">Login</Link> : null}
+          {!isLoggedIn && <Link to="/signup">Signup</Link>}
+          {isLoggedIn && <Link to="/account">Account</Link>}
+          {isLoggedIn && <button onClick={handleLogout}>Log out</button>}
+          {isLoggedIn && <Link to="/dashboard">Dashboard</Link>}
+          {isLoggedIn && <Link to="/addFriend">Add Friend</Link>}
+          {isLoggedIn && <Link to="/friendRequests">Friend Requests</Link>}
+          {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
+          {isLoggedIn && <Link to="/feed">Feed</Link>} */}
+
+          <div class="d-flex flex-column container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup /> } />
+              <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
+              <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} />
+              <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
+              <Route path="/addFriend" element={<AddFriend />} />
+              <Route path="/friendRequests" element={<FriendRequests />} />
+              <Route path="/viewFriends" element={<ViewFriends />} />
+              <Route path="/feed" element={<Feed />} />
+            </Routes>
+          </div>
+
+        </div>
       </div>
     </AuthContext.Provider>
   );

@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -34,5 +34,14 @@
   }
   to {
     transform: rotate(360deg);
+  }
+} */
+
+@media screen and (max-width: 768px) {
+  .large-screen-enabled {
+    display: none;
+  }
+  #largeSidebar {
+    width: 6rem !important;
   }
 }

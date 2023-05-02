@@ -55,30 +55,37 @@ export default function FriendRequests() {
 
   const receivedFriendRequestItems = friendRequests.received.map((item) => {
       return (
-        <div key={item.id}>
-          <h3>From: {item.sender}</h3>
-          <button onClick={() => respondToFriendRequest("accept", item.id, item.sender_id)}>Accept</button>
-          <button onClick={() => respondToFriendRequest("decline", item.id, item.sender_id)}>Decline</button>
+        <div key={item.id} className="card mx-auto mb-3" style={{maxWidth: '40rem'}}>
+          <div className="card-body d-flex justify-content-between align-items-center">
+            <h5 className="card-title mb-0">{item.sender}</h5>
+            <div>
+              <button className="btn btn-success mx-2" onClick={() => respondToFriendRequest("accept", item.id, item.sender_id)}>Accept</button>
+              <button className="btn btn-danger" onClick={() => respondToFriendRequest("decline", item.id, item.sender_id)}>Decline</button>
+            </div>
+          </div>
         </div>
       )
   })
 
   const sentFriendRequestItems = friendRequests.sent.map((item) => {
     return (
-      <div key={item.id}>
-          <h3>To: {item.recipient}</h3>
-          <h3>Status: pending</h3>
+      <div key={item.id} className="card mx-auto mb-3" style={{maxWidth: '40rem'}}>
+        <div className="card-body d-flex justify-content-between align-items-center">
+          <h5 className="card-title mb-0">{item.recipient}</h5>
+          <p className="mb-0">Status: pending</p>
+        </div>
       </div>
     )
   })
 
   return (
-    <div>
+    <div className="container">
         <h1>FriendRequests</h1>
 
-        <h2>Sent</h2>
+        <h3>Sent</h3>
         {friendRequests.sent.length > 0 ? sentFriendRequestItems : <p>No requests</p>}
-        <h2>Received</h2>
+
+        <h3 className="mt-5">Received</h3>
         {friendRequests.received.length > 0 ? receivedFriendRequestItems : <p>No requests</p>}
     </div>
   )

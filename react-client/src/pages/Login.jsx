@@ -6,7 +6,7 @@ import Cookie from 'js-cookie';
 export default function Login() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext)
-
+  const [validated, setValidated] = useState("")
   const [formData, setFormData] = useState({
     email: "", 
     password: ""
@@ -22,8 +22,14 @@ export default function Login() {
   }
 
   function handleSubmit(event) {
-    event.preventDefault()
+    // event.preventDefault()
     console.log(formData)
+    const form = event.currentTarget
+    if(form.checkValidity() === false){
+      event.preventDefault()
+    }
+    setValidated('was-validated')
+
     fetch("/login", {
       method: "POST",
       headers: {"Content-Type" : "application/json"},
@@ -47,15 +53,25 @@ export default function Login() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="email" name="email" value={formData.email} onChange={handleChange}/> 
+      <h1>Login</h1>
 
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" value={formData.password} onChange={handleChange}/>
-        <button type="submit">Login</button>
+      <div className="container mt-5" style={{maxWidth: '30rem'}}>
+        <form onSubmit={handleSubmit} className={validated} noValidate>
+          <div className="form-floating mb-3">
+            <input className="form-control" placeholder="email" id="email" type="email" name="email" value={formData.email} onChange={handleChange} required/> 
+            <label htmlFor="email">Email</label>
+            <div class="invalid-feedback">Invalid email</div>
+          </div>
+          
+          <div className="form-floating mb-3">
+            <input className="form-control" placeholder="password" id="password" type="password" name="password" value={formData.password} onChange={handleChange} required/>
+            <label htmlFor="password">Password</label>
+            <div class="invalid-feedback">Must include password</div>
+          </div>
+          
+          <button className="btn btn-primary" type="submit">Login</button>
       </form>
+      </div>
     </div>
   )
 }

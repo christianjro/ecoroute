@@ -25,16 +25,18 @@ export default function ViewFriends() {
 
   const friendItems = friends.map(item => {
     return (
-      <div key={item.id}>
-        <h2>{item.friend_name}</h2>
-        <button onClick={() => handleUnfriend(item.friend_id)}>Unfriend</button>
+      <div key={item.id} className="card mx-auto mb-3" style={{maxWidth: '40rem'}}>
+        <div className="card-body d-flex justify-content-between align-items-center">
+          <h5 className="card-title mb-0">{item.friend_name}</h5>
+          <button className="btn btn-danger" onClick={() => handleUnfriend(item.friend_id)}>Unfriend</button>
+        </div>
       </div>
     )
   })
   console.log(friends)
 
   return (
-    <div>
+    <div className="container">
         <h1>ViewFriends</h1>
         {friendItems}
     </div>

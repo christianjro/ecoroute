@@ -29,13 +29,15 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
 
     const usersTrips = trips.map((trip) => {
         return (
-          <div key={trip.id}> 
-            <h3>Trip Name: {trip.name} </h3>
-            <p>Mode: {trip.mode} </p>
-            <p>Origin: {trip.origin}</p>
-            <p>Destination: {trip.destination}</p>
-            <p>GHG Emissions: {trip.ghg_emissions}</p>
-            <button onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
+          <div key={trip.id} className="card mb-3 mx-auto" style={{maxWidth: '22rem'}}> 
+            <div className="card-body">
+              <h5 className="card-title">{trip.name} </h5>
+              <p>Mode: {trip.mode} </p>
+              <p>Origin: {trip.origin}</p>
+              <p>Destination: {trip.destination}</p>
+              <p>GHG Emissions: {trip.ghg_emissions}</p>
+              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
+            </div>
           </div>
         )
     })
@@ -91,28 +93,40 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
     }, [location])
 
     return (
-        <div>
+        <div className="container">
             <h1>Dashboard</h1>
-            <button onClick={() => navigate("/addTrip")}>Add Trip</button>
-
-            <div>
-              <h2>Current Air Quality</h2>
-              <AirQualityIndexChart airQualityIndex={airQualityIndex} />
+ 
+            <div className="row bg-danger justify-content-center mb-3">
+              <div className="bg-light" style={{maxWidth: '12rem'}}>
+                <AirQualityIndexChart airQualityIndex={airQualityIndex} />
+                <p>Current Air Quality</p>
+              </div>
             </div>
 
-            <div>
-                <h2>Your Trips</h2>
-                {usersTrips}
-            </div>
             
-            <div>
-                <h2>Week's Emissions</h2>
-                <TripHistoryChart trips={trips} />
-            </div>
+            <div className="row justify-content-center gap-3 bg-success">
+              <div className="col-lg-5">
+                <div className="row bg-warning p-4 mb-3">
+                  <button className="btn btn-outline-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
+                </div>
 
-            <div>
-                <h2>Leaderboard</h2>
-                <LeaderboardChart leaderboardData={leaderboardData} />
+                <div className="row overflow-auto bg-secondary p-3 mb-3">
+                  <h3>Your Trips</h3>
+                  {usersTrips}
+                </div>
+              </div>
+              
+              <div className="col-lg-6">
+                <div className="row bg-primary p-3 mb-3">
+                    <h3>Week's Emissions</h3>
+                    <TripHistoryChart trips={trips} />
+                </div>
+
+                <div className="row bg-warning p-3">
+                    <h3>Leaderboard</h3>
+                    <LeaderboardChart leaderboardData={leaderboardData} />
+                </div>
+              </div>
             </div>
         </div>
     )

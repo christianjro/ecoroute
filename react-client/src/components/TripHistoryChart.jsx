@@ -24,6 +24,7 @@ Tooltip,
 Legend
 );
 
+
 export default function TripHistoryChart({trips}) {
   const personalChart = {
     labels: trips.map((trip) => trip.date_created),
@@ -42,8 +43,8 @@ export default function TripHistoryChart({trips}) {
       responsive: true,
       plugins: {
         title: {
-          display: true,
-          // text: 'Chart.js Line Chart',
+          display: false,
+          text: 'Chart.js Line Chart',
         }
       }
   }

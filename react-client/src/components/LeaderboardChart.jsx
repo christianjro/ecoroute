@@ -50,7 +50,7 @@ export default function LeaderBoard({leaderboardData}) {
           // position: 'right' as const,
         },
         title: {
-          display: true,
+          display: false,
           text: 'Chart.js Horizontal Bar Chart',
         },
       }

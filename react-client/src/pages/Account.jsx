@@ -148,26 +148,50 @@ export default function Account(props) {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Account</h1>
-
-      <h2>Name: {props.userInfo.name}</h2> 
-      <h2>Email: {props.userInfo.email}</h2> 
-      <h2>Personal Vehicle: {props.userInfo.has_personal_vehicle ? "yes" : "no"}</h2> 
-      <h2>Password: {props.userInfo.password}</h2> 
+      <div className="card mx-auto" style={{maxWidth: '30rem'}}>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item d-flex justify-content-between">
+            <div className="fw-bold">Name</div>
+            <div>{props.userInfo.name}</div>
+          </li> 
+          <li className="list-group-item d-flex justify-content-between">
+            <div className="fw-bold">Email</div>
+            <div>{props.userInfo.email}</div>
+          </li> 
+          <li className="list-group-item d-flex justify-content-between">
+            <div className="fw-bold">Personal Vehicle</div>
+            <div>{props.userInfo.has_personal_vehicle ? "Yes" : "None"}</div>
+          </li> 
+          <li className="list-group-item d-flex justify-content-between">
+            <div className="fw-bold">Password</div>
+            <div>{props.userInfo.password}</div>
+          </li> 
+        </ul>
+      </div>
+  
       {
         props.userInfo.has_personal_vehicle &&
-        <div>
-          <h2>Vehicle Name: {props.userInfo.vehicle.name}</h2>
-          <h2>Vehicle Efficiency: {props.userInfo.vehicle.efficiency}</h2>
+        <div className="card my-3 mx-auto" style={{maxWidth: '30rem'}}>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item d-flex justify-content-between">
+              <div className="fw-bold">Vehicle Name</div>
+              <div>{props.userInfo.vehicle.name}</div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between">
+              <div className="fw-bold">Vehicle Efficiency</div>
+              <div>{props.userInfo.vehicle.efficiency}</div>
+            </li>
+          </ul>
         </div>
       }
 
       {
         props.userInfo.has_personal_vehicle ?
-        <button onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
+        <button className="btn btn-secondary" onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
         :
-        <button onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>
+        <button  className="btn btn-secondary" onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>
       }
 
       {vehicleModelItems}

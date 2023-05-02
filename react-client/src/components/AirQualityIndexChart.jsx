@@ -28,7 +28,7 @@ export default function AirQualityIndexChart({airQualityIndex}) {
               startAngle: -90,
               endAngle: 90,
               hollow: {
-                size: "75%",
+                size: "55%",
               },
               track: {
                 background: ["#e7e7e7", "#ffffff"],
@@ -47,7 +47,7 @@ export default function AirQualityIndexChart({airQualityIndex}) {
                   formatter: function(val) {
                     return parseInt(val)
                   },
-                  fontSize: '90px',
+                  fontSize: '45px',
                   show: true,
                 },
                 total: {
