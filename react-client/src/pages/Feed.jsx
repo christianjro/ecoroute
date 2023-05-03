@@ -25,14 +25,25 @@ export default function Feed() {
       })
   }, [])
 
-  
+  function formatDate(dateString) {
+      const date = new Date(dateString)
+      const options = {year: "numeric", month: "long", day: "numeric"}
+      return date.toLocaleDateString('en-US', options)
+  }
+
   const feedItems = feed.map((item) => {
     return (
-      <div key={item.tripData.id}>
-        <h2>{item.name}</h2>
-        <p>Date: {item.tripData.date_created}</p>
-        <p>Travel Mode: {item.tripData.mode}</p>
-        <p>GHG Emissions: {item.tripData.ghg_emissions}</p>
+      <div key={item.tripData.id} className="card mb-3" style={{maxWidth: '40rem'}}>
+        <div className="card-body">
+          <h5 className="card-title">{item.name}</h5>
+          <p className="card-text">
+            Date: {formatDate(item.tripData.date_created)} <br/>
+            Origin: {item.tripData.origin} <br/>
+            Destination: {item.tripData.destination} <br/>
+            Travel Mode: {item.tripData.mode}
+          </p>
+        </div>
+        <div className="card-footer bg-transparent text-end">GHG Emissions: {item.tripData.ghg_emissions > 0 ? item.tripData.ghg_emissions.toFixed(4) : item.tripData.ghg_emissions} MTCO2e</div>
       </div>
     )
   })

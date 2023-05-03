@@ -130,7 +130,8 @@ class Friendship(db.Model):
                 "can_view_data": self.can_view_data,
                 "user_id": self.user_id,
                 "friend_id": self.friend_id,
-                "friend_name": self.friend.name
+                "friend_name": self.friend.name,
+                "friend_email": self.friend.email
             }
         else: 
             return {
@@ -138,7 +139,8 @@ class Friendship(db.Model):
                 "can_view_data": self.can_view_data,
                 "user_id": self.friend_id,
                 "friend_id": self.user_id,
-                "friend_name": self.user.name
+                "friend_name": self.user.name,
+                "friend_email": self.user.email
             }
             
 
@@ -163,6 +165,8 @@ class FriendRequest(db.Model):
             "recipient_id": self.recipient_id,
             "sender": self.sender.name,
             "recipient": self.recipient.name,
+            "sender_email": self.sender.email,
+            "recipient_email": self.recipient.email
         }  
    
 

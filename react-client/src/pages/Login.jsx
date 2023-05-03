@@ -46,7 +46,7 @@ export default function Login() {
         Cookie.set('token', data.token)
         auth.setToken(data.token)
         auth.setIsLoggedIn(true)
-        navigate("/dashboard")
+        navigate("/")
       })
       .catch(error => console.log(error))
   }

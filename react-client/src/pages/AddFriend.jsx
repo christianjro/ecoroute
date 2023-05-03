@@ -29,20 +29,23 @@ export default function AddFriend() {
           throw new Error("Could not send friend request")
         }
       })
-    navigate("/dashboard")
+    navigate("/")
   }
 
   return (
-    <div>
-        <div>
-          <h1>AddFriend</h1>
-        </div>
-        
-        <div className="mt-5" style={{maxWidth: '30rem'}}>
-          <form onSubmit={handleSubmit}>
-            <label class="form-label" htmlFor="recipientEmail">Friend Email:</label>
-            <input className="form-control mb-3" id="recipientEmail" type="text" name="recipient_email" value={recipient.recipient_email} onChange={handleChange} />
-            <button className="btn btn-primary" type="submit">Send Friend Request</button>
+    <div className="row mb-5">
+        <div className="col">
+          <h4>Add Friend</h4>
+
+          <form className="card d-flex flex-row bg-body-secondary border-0 justify-content-center p-3" onSubmit={handleSubmit}>
+            <div className="w-100">
+                <label className="visually-hidden" htmlFor="recipientEmail">Friend Email:</label>
+                <input className="form-control" placeholder="Friend's email" id="recipientEmail" type="text" name="recipient_email" value={recipient.recipient_email} onChange={handleChange} />
+            </div>
+
+            <div>
+              <button className="btn btn-dark ms-2 text-nowrap" type="submit">Send Request</button>
+            </div>
           </form>
         </div>
     </div>

@@ -3,7 +3,8 @@ import { GoogleMap, useJsApiLoader, DirectionsService, DirectionsRenderer,} from
 
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '400px',
+  borderRadius: '10px',
 };
 
 const center = {
@@ -15,9 +16,10 @@ const center = {
 function Map(props) {
   const [map, setMap] = useState(null)
   const [response, setResponse] = useState(null)
-  const [travelMode, setTravelMode] = useState("DRIVING")
-  const [origin, setOrigin] = useState('')
-  const [destination, setDestination] = useState('')
+  const [travelMode, setTravelMode] = useState("")
+  const [origin, setOrigin] = useState("")
+  const [destination, setDestination] = useState("")
+  const [newTripName, setNewTripName] = useState("")
   const originRef = useRef(null)
   const destinationRef = useRef(null)
 
@@ -42,11 +44,13 @@ function Map(props) {
 
     setMap(mapInstance)
   }, [])
+
   console.log("This is the map Object:")
   console.log(map)
 
   const onUnmount = useCallback((mapInstance) => {
     setMap(null)
+    setResponse(null)
   }, [])
 
   
@@ -83,13 +87,19 @@ function Map(props) {
   }, [])
 
 
-  const onClick = useCallback(() => {
-    if (originRef.current && originRef.current.value !== '' && destinationRef.current && destinationRef.current.value !== '') {
-      setOrigin(originRef.current.value)
+  // const onClick = useCallback(() => {
+  //   if (originRef.current && originRef.current.value !== '' && destinationRef.current && destinationRef.current.value !== '') {
+  //     setOrigin(originRef.current.value)
+  //     setDestination(destinationRef.current.value)
+  //   }
+  // }, [])
+  // useEffect(() => {
+  //   if (originRef.current && originRef.current.value !== "" && destinationRef.current && destinationRef.current.value !== "") {
+  //     setOrigin(originRef.current.value)
+  //     setDestination(destinationRef.current.value)
+  //   }
+  // }, [originRef.current.value, destinationRef.current.value])
 
-      setDestination(destinationRef.current.value)
-    }
-  }, [])
   console.log("origin is:")
   console.log(origin)
   console.log("Destination is:")
@@ -98,20 +108,24 @@ function Map(props) {
   
   const directionsServiceOptions = useMemo(() => {
     return {
-      destination: destination,
       origin: origin,
+      destination: destination,
       travelMode: travelMode,
     }
-  }, [destination, origin, travelMode])
+  }, [origin, destination, travelMode])
 
   console.log("directions Service Options")
   console.log(directionsServiceOptions)
 
-  const directionsRendererOptions = useMemo(() => {
-    return {
-      directions: response,
-    }
-  }, [response])
+  // const directionsRendererOptions = useMemo(() => {
+  //   return {
+  //     directions: response,
+  //   }
+  // }, [response])
+
+  const directionsRendererOptions =  {
+    directions: response,
+  }
 
   console.log('travel Mode:')
   console.log(travelMode)
@@ -124,6 +138,7 @@ function Map(props) {
 
   const collectedData = useMemo(() => {
     return {
+      name: newTripName,
       mode: travelMode,
       origin: origin,
       destination: destination,
@@ -133,102 +148,125 @@ function Map(props) {
   }, [travelMode, origin, destination, distance, duration])
   console.log('Collected Data:')
   console.log(collectedData)
-  function handleNextQuestion() {
-    console.log("child trip data")
-    // console.log(response)
-    console.log(collectedData)
-    props.dataTransfer(collectedData)
-  }
 
-  function handleExitQuestion() {
-    props.cancelAddTrip()
-  }
+  useEffect(() => {
+    if (origin !== "" && destination !== "" && travelMode !== "" && distance !== "" && duration !== "") {
+      props.dataTransfer(collectedData)
+    }
+  }, [collectedData])
 
   return isLoaded ? (
       <div>
-        <div>
-          <label htmlFor='ORIGIN'>Origin</label>
-          <br />
-          <input
-            id='ORIGIN'
-            className='form-control'
-            type='text'
-            ref={originRef}
-          />
-          <br />
-          <label htmlFor='DESTINATION'>Destination</label>
-          <br />
-          <input
-            id='DESTINATION'
-            className='form-control'
-            type='text'
-            ref={destinationRef}
-          />
+        <div className="row gap-3 mb-4">
+          <div className="col-md d-flex flex-column justify-content-center">
+
+            <label htmlFor="tripName">Trip Name</label>
+            <div className="d-flex align-items-center mb-3">
+              <i class="bi bi-pen me-2"></i>
+              <input 
+                id="tripName"
+                className="form-control" 
+                style={{minWidth: "15rem"}}
+                name="name" 
+                type="text" 
+                value={newTripName} 
+                onChange={(e) => setNewTripName(e.target.value)}
+              />
+            </div>
+
+            <label htmlFor='ORIGIN'>Origin</label>
+            <div className="d-flex align-items-center mb-3">
+              <i className="bi bi-geo me-2"></i>
+              <input
+                id='ORIGIN'
+                className='form-control'
+                style={{minWidth: "15rem"}}
+                type='text'
+                // ref={originRef}
+                value={origin}
+                onChange={(e) => setOrigin(e.target.value)}
+              />
+            </div>
+            
+       
+            <label htmlFor='DESTINATION'>Destination</label>
+            <div className="d-flex align-items-center">
+              <i class="bi bi-geo-fill me-2"></i>
+              <input
+                id='DESTINATION'
+                className='form-control'
+                style={{minWidth: "15rem"}}
+                type='text'
+                // ref={destinationRef}
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-auto d-flex justify-content-center">
+            <div className="btn-group" role="group" aria-label="Travel mode">
+              <div className="btn-group-vertical btn-group-lg" role="group">
+                <input
+                  id='DRIVING'
+                  name='travelMode'
+                  type='radio'
+                  className="btn-check"
+                  checked={travelMode === 'DRIVING'}
+                  onChange={checkDriving}
+                  autocomplete="off"
+                />
+                <label className="btn btn-outline-primary rounded-top-left p-5 custom-hover" htmlFor='DRIVING'>Driving</label>
+
+                <input
+                  id='BICYCLING'
+                  name='travelMode'
+                  type='radio'
+                  className="btn-check"
+                  checked={travelMode === 'BICYCLING'}
+                  onChange={checkBicycling}
+                  autocomplete="off"
+                />
+                <label className="btn btn-outline-primary rounded-bottom-left p-5 custom-hover" htmlFor='BICYCLING'>Bicycling</label>
+              </div>
+
+
+              <div className="btn-group-vertical btn-group-lg" role="group">
+                <input
+                  id='TRANSIT'
+                  name='travelMode'
+                  type='radio'
+                  className="btn-check"
+                  checked={travelMode === 'TRANSIT'}
+                  onChange={checkTransit}
+                  autocomplete="off"
+                />
+                <label className="btn btn-outline-primary rounded-top-right p-5 custom-hover" htmlFor='TRANSIT'>Transit</label>
+
+                <input
+                  id='WALKING'
+                  name='travelMode'
+                  type='radio'
+                  className="btn-check"
+                  checked={travelMode === 'WALKING'}
+                  onChange={checkWalking}
+                  autocomplete="off"
+                />
+                <label className="btn btn-outline-primary rounded-bottom-right p-5 custom-hover" htmlFor='WALKING'>Walking</label>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <input
-            id='DRIVING'
-            className='custom-control-input'
-            name='travelMode'
-            type='radio'
-            checked={travelMode === 'DRIVING'}
-            onChange={checkDriving}
-          />
-          <label className='custom-control-label' htmlFor='DRIVING'>
-            Driving
-          </label>
-
-          <input
-            id='BICYCLING'
-            className='custom-control-input'
-            name='travelMode'
-            type='radio'
-            checked={travelMode === 'BICYCLING'}
-            onChange={checkBicycling}
-          />
-          <label className='custom-control-label' htmlFor='BICYCLING'>
-            Bicycling
-          </label>
-
-          <input
-            id='TRANSIT'
-            className='custom-control-input'
-            name='travelMode'
-            type='radio'
-            checked={travelMode === 'TRANSIT'}
-            onChange={checkTransit}
-          />
-          <label className='custom-control-label' htmlFor='TRANSIT'>
-            Transit
-          </label>
-
-          <input
-            id='WALKING'
-            className='custom-control-input'
-            name='travelMode'
-            type='radio'
-            checked={travelMode === 'WALKING'}
-            onChange={checkWalking}
-          />
-          <label className='custom-control-label' htmlFor='WALKING'>
-            Walking
-          </label>
-
-          <br />
-          <button className='btn btn-primary' type='button' onClick={onClick}>
-          Build Route
-          </button>
-        </div>
         <GoogleMap
           id="direction-example"
           mapContainerStyle={containerStyle}
           center={center}
           zoom={7}
           onLoad={onLoad}
-          // onUnmount={onUnmount}
+          onUnmount={onUnmount}
         >
-          {destination !== '' && origin !== '' && (
+          {destination !== "" && origin !== "" && travelMode !== "" && (
             <DirectionsService
               options={directionsServiceOptions}
               callback={directionsCallback}
@@ -239,11 +277,6 @@ function Map(props) {
             <DirectionsRenderer options={directionsRendererOptions} />
           )}
         </GoogleMap>
-        
-        <br/>
-        <button onClick={handleExitQuestion}>Back</button>
-        <br/>
-        {response !== null && <button onClick={handleNextQuestion}>Next</button>}
       </div>
   ) : <></>
 }

@@ -27,7 +27,11 @@ export default function ViewFriends() {
     return (
       <div key={item.id} className="card mx-auto mb-3" style={{maxWidth: '40rem'}}>
         <div className="card-body d-flex justify-content-between align-items-center">
-          <h5 className="card-title mb-0">{item.friend_name}</h5>
+          <div>
+            <h5 className="card-title mb-0">{item.friend_name}</h5>
+            <p className="text-secondary mb-0">{item.friend_email}</p>
+          </div>
+          
           <button className="btn btn-danger" onClick={() => handleUnfriend(item.friend_id)}>Unfriend</button>
         </div>
       </div>
@@ -36,8 +40,8 @@ export default function ViewFriends() {
   console.log(friends)
 
   return (
-    <div className="container">
-        <h1>ViewFriends</h1>
+    <div>
+        <h4 className="mb-3">My Friends</h4>
         {friendItems}
     </div>
   )

@@ -14,30 +14,30 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
 
     const airNowAPIKey = process.env.REACT_APP_AIRNOW_API_KEY
 
-    function handleDeleteTrip(trip_id) {
-      fetch("/delete_trip", {
-        method: "POST", 
-        headers: {"Content-Type": "application/json"}, 
-        body: JSON.stringify({trip_id})
-      })
-        .then(response => {
-          if (response.status === 200) {
-            handleTripsUpdate()
-          }
-        })
-    }
+    // function handleDeleteTrip(trip_id) {
+    //   fetch("/delete_trip", {
+    //     method: "POST", 
+    //     headers: {"Content-Type": "application/json"}, 
+    //     body: JSON.stringify({trip_id})
+    //   })
+    //     .then(response => {
+    //       if (response.status === 200) {
+    //         handleTripsUpdate()
+    //       }
+    //     })
+    // }
 
     const usersTrips = trips.map((trip) => {
         return (
-          <div key={trip.id} className="card mb-3 mx-auto" style={{maxWidth: '22rem'}}> 
+          <div key={trip.id} className="card mb-3 mx-auto border-0"> 
             <div className="card-body">
               <h5 className="card-title">{trip.name} </h5>
-              <p>Mode: {trip.mode} </p>
-              <p>Origin: {trip.origin}</p>
-              <p>Destination: {trip.destination}</p>
-              <p>GHG Emissions: {trip.ghg_emissions}</p>
-              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
-            </div>
+              <p className="card-text">
+                Origin: {trip.origin} <br/>
+                Destination: {trip.destination} <br/>
+                Travel Mode: {trip.mode} 
+              </p>
+              <div className="card-footer bg-transparent text-end">GHG Emissions: {trip.ghg_emissions > 0 ? trip.ghg_emissions.toFixed(4) : trip.ghg_emissions} MTCO2e</div>            </div>
           </div>
         )
     })
@@ -96,34 +96,38 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
         <div className="container">
             <h1>Dashboard</h1>
  
-            <div className="row bg-danger justify-content-center mb-3">
-              <div className="bg-light" style={{maxWidth: '12rem'}}>
+            <div className="row justify-content-center gap-4 mb-3">
+              <div className="col bg-body-secondary d-flex align-items-center justify-content-center p-1 rounded-4">
+                <button className="btn btn-outline-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
+              </div>
+
+              <div className="col bg-body-secondary p-1 rounded-4" style={{minWidth: '12rem'}}>
                 <AirQualityIndexChart airQualityIndex={airQualityIndex} />
-                <p>Current Air Quality</p>
+                <h6 className="text-center mt-3">Current Air Quality Index</h6>
+              </div>
+
+              <div className="col bg-body-secondary d-flex flex-column justify-content-center align-items-center p-1 rounded-4">
+                <h1 className="mt-2">{userTotalGHGEmissions > 0 ? userTotalGHGEmissions.toFixed(4) : userTotalGHGEmissions}</h1>
+                <h7>MTCO2e</h7>
+                <h6 className="text-center">Total GHG Emissions</h6>
               </div>
             </div>
 
             
-            <div className="row justify-content-center gap-3 bg-success">
-              <div className="col-lg-5">
-                <div className="row bg-warning p-4 mb-3">
-                  <button className="btn btn-outline-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
-                </div>
-
-                <div className="row overflow-scroll bg-secondary p-3 mb-3">
-                  <h3>Your Trips</h3>
-                  {usersTrips}
-                </div>
+            <div className="row justify-content-center gap-4">
+              <div className="col-lg overflow-scroll bg-body-secondary p-3 rounded-4">
+                <h5>Recent Trips</h5>
+                {usersTrips}
               </div>
               
-              <div className="col-lg-6">
-                <div className="row bg-primary p-3 mb-3">
-                    <h3>Week's Emissions</h3>
+              <div className="col-lg">
+                <div className="row bg-body-secondary p-3 mb-4 rounded-4">
+                    <h5>Emissions History</h5>
                     <TripHistoryChart trips={trips} />
                 </div>
 
-                <div className="row bg-warning p-3">
-                    <h3>Leaderboard</h3>
+                <div className="row bg-body-secondary p-3 rounded-4">
+                    <h5>Leaderboard</h5>
                     <LeaderboardChart leaderboardData={leaderboardData} />
                 </div>
               </div>

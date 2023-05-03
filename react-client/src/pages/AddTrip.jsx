@@ -16,7 +16,6 @@ export default function AddTrip(props) {
     ghg_emissions: ""
   }
   const [newTrip, setNewTrip] = useState({...newTripFormTemplate})
-  const [currentQuestion, setCurrentQuestion] = useState(1)
 
   function handleMapData(data) {
     console.log("this is the child's data")
@@ -27,21 +26,12 @@ export default function AddTrip(props) {
     setNewTrip(prev => {
       return {
         ...prev,
+        name: data.name,
         mode: data.mode,
         origin: data.origin,
         destination: data.destination,
         distance: cleanDistance,
         duration: data.duration
-      }
-    })
-    setCurrentQuestion(2)
-  }
-
-  function handleNameChange(event) {
-    setNewTrip(prev => {
-      return {
-        ...prev,
-        [event.target.name] : event.target.value
       }
     })
   }
@@ -83,11 +73,11 @@ export default function AddTrip(props) {
       })
       .then(data => props.handleTripsUpdate(data))
       .catch(error => console.log(error))
-    navigate("/dashboard")
+    navigate("/")
   }
 
   function cancelAddTrip() {
-    navigate("/dashboard")
+    navigate("/")
   }
 
   useEffect(() =>{
@@ -97,26 +87,18 @@ export default function AddTrip(props) {
 
   return (
     <div>
-        <h1>AddTrip</h1>
-        {
-          currentQuestion === 1 
-          &&
-          <MapSearch dataTransfer={handleMapData} cancelAddTrip={cancelAddTrip} />
-        }
-       
-        {
-          currentQuestion === 2
-          &&
-          <div>
-            <h2>Question 2:</h2>
-            <button onClick={() => setCurrentQuestion(1)}>Go Back</button>
-            <form onSubmit={handleTripSubmit}>
-              <label htmlFor="tripName">Trip Name:</label>
-              <input id="tripName" name="name" type="text" value={newTrip.name} onChange={handleNameChange}/>
-              <input type="submit" />
-            </form>
+        <h4>AddTrip</h4>
+        <MapSearch dataTransfer={handleMapData}/>
+        <div className="row my-4">
+          <div className="d-grid col-6">
+            <button className="btn btn-danger py-2" onClick={cancelAddTrip}>Cancel</button>
           </div>
-        }
+          <div className="d-grid col-6">
+          <button className="btn btn-dark py-2" onClick={handleTripSubmit}>Add Trip</button>
+          </div>
+        </div>
+        
+        
     </div>
   )
 }

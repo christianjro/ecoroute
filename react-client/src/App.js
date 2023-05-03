@@ -18,6 +18,8 @@ import AddFriend from './pages/AddFriend';
 import FriendRequests from './pages/FriendRequests';
 import ViewFriends from './pages/ViewFriends';
 import Feed from './pages/Feed';
+import Friends from './pages/Friends';
+import Trips from './pages/Trips';
 
 
 function App() {
@@ -122,55 +124,67 @@ function App() {
           {
             isLoggedIn 
             &&
-            <nav id="largeSidebar" className="navbar bg-warning align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
+            <nav id="largeSidebar" className="navbar bg-body-secondary align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
               <div className="container-fluid d-flex flex-column p-0">
                 <div className="d-flex flex-column align-items-center my-5">
                   <i class="bi bi-geo-alt-fill" style={{fontSize: "2.5rem"}}></i>
                   <h3 className="large-screen-enabled mt-1">Capstone</h3>
                 </div>
+
                 <ul className="navbar-nav">
-                  <li className="nav-item">
-                      <Link to="/" className="nav-link">
-                        <i class="bi bi-grid-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Dashboard</span>
+                  <div className="">
+                    <li className="nav-item">
+                        <Link to="/" className="nav-link">
+                          <i class="bi bi-grid-fill" style={{fontSize: "1.3rem"}}></i>
+                          <span className="large-screen-enabled ms-3">Dashboard</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/trips" className="nav-link">
+                        <i class="bi bi-map" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Trips</span>
                       </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/addFriend" className="nav-link">
-                      <i class="bi bi-person-fill-add" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">Add Friend</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/friendRequests" className="nav-link">
-                      <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">Friend Request</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/viewFriends" className="nav-link">
-                      <i class="bi bi-people-fill" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">View Friends</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/feed" className="nav-link">
-                      <i class="bi bi-share-fill" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">Feed</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="account" className="nav-link">
-                      <i class="bi bi-gear-fill" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">Account</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <button onClick={handleLogout} className="nav-link">
-                      <i class="bi bi-box-arrow-left" style={{fontSize: "1.3rem"}}></i>
-                      <span className="large-screen-enabled ms-3">Log out</span>
-                    </button>
-                  </li>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/feed" className="nav-link">
+                        <i class="bi bi-share-fill" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Feed</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/addFriend" className="nav-link">
+                        <i class="bi bi-person-fill-add" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Add Friend</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/friendRequests" className="nav-link">
+                        <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Friend Request</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/viewFriends" className="nav-link">
+                        <i class="bi bi-people-fill" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">View Friends</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/account" className="nav-link">
+                        <i class="bi bi-gear-fill" style={{fontSize: "1.3rem"}}></i>
+                        <span className="large-screen-enabled ms-3">Account</span>
+                      </Link>
+                    </li>
+                  </div>
+
+                  <div className="">
+                    <li className="nav-item">
+                      <button onClick={handleLogout} className="nav-link">
+                        <i className="bi bi-box-arrow-left" style={{fontSize: "1.3rem", fontWeight: "bold"}}></i>
+                        <span className="large-screen-enabled ms-3">Log out</span>
+                      </button>
+                    </li>
+                    </div>
                 </ul>
               </div>
             </nav>
@@ -222,6 +236,8 @@ function App() {
               <Route path="/friendRequests" element={<FriendRequests />} />
               <Route path="/viewFriends" element={<ViewFriends />} />
               <Route path="/feed" element={<Feed />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/trips" element={<Trips trips={trips} handleTripsUpdate={handleTripsUpdate}/>} />
             </Routes>
           </div>
 

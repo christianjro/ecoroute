@@ -12,7 +12,8 @@ export default function AirQualityIndexChart({airQualityIndex}) {
         series: [100, (airQualityIndex.AQI/500 * 100)],
             chart: {
             type: 'radialBar',
-            offsetY: -20,
+            // offsetY: -20,
+            height: 160,
             sparkline: {
               enabled: true
             }
@@ -39,15 +40,15 @@ export default function AirQualityIndexChart({airQualityIndex}) {
                 name: {
                   offsetY: -30,
                   show: false,
-                  fontSize: '30px',
+                  fontSize: '20rem',
                 },
                 value: {
-                  // offsetY: -2,
+                  offsetY: -2,
                   text: "AQI",
                   formatter: function(val) {
                     return parseInt(val)
                   },
-                  fontSize: '45px',
+                  fontSize: '2.3rem',
                   show: true,
                 },
                 total: {
@@ -62,7 +63,7 @@ export default function AirQualityIndexChart({airQualityIndex}) {
           },
           grid: {
             padding: {
-              top: -10
+              top: 0
             }
           },
           fill: {
