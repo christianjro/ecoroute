@@ -63,7 +63,8 @@ export default function Account(props) {
   })
 
   // Get vehicle spec and id (from year, make, and model)
-  function handleModelClick(option) {
+  function handleModelChange(event) {
+    const option = event.target.value
     setNewVehicle(prev => ({...prev, model: option}))
     const year = newVehicle.year
     const make = newVehicle.make
@@ -78,14 +79,16 @@ export default function Account(props) {
 
   const vehicleSpecItems = searchVehicleSpecOptions.map((item) => {
     return (
-      <div key={item.value} onClick={() => handleSpecClick(item.value)}>
-        <h3>Spec: {item.text}</h3>
-      </div>
+      // <div key={item.value} onClick={() => handleSpecClick(item.value)}>
+      //   <h3>Spec: {item.text}</h3>
+      // </div>
+      <option value={item.value}>{item.text}</option>
     )
   })
 
   // Get vehicle mpg (from vehicle id)
-  function handleSpecClick(option) {
+  function handleSpecChange(event) {
+    const option = event.target.value
     fetch(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${option.toString()}`)
       .then(response => response.text())
       .then(data => {
@@ -183,8 +186,16 @@ export default function Account(props) {
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Vehicle Name</div>
-              <div>{props.userInfo.vehicle.name}</div>
+              <div className="fw-bold">Vehicle Make</div>
+              <div>{props.userInfo.vehicle.make}</div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between">
+              <div className="fw-bold">Vehicle Model</div>
+              <div>{props.userInfo.vehicle.model}</div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between">
+              <div className="fw-bold">Vehicle Year</div>
+              <div>{props.userInfo.vehicle.year}</div>
             </li>
             <li className="list-group-item d-flex justify-content-between">
               <div className="fw-bold">Vehicle Efficiency</div>
@@ -226,13 +237,16 @@ export default function Account(props) {
               </form>
             }
 
-            <select class="form-select">
+            <select class="form-select" onChange={handleModelChange}>
               <option selected>Select a make from menu</option>
               {vehicleModelItems}
             </select>
             
-            {vehicleSpecItems}
-            
+            <select class="form-select" onChange={handleSpecChange}>
+              <option selected>Select spec from menu</option>
+              {vehicleSpecItems}
+            </select>
+
             {
               finishButton 
               &&
