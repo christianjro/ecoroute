@@ -55,9 +55,10 @@ export default function Account(props) {
 
   const vehicleModelItems = searchVehicleModelOptions.map((item) => {
     return (
-      <div key={item.value} onClick={() => handleModelClick(item.text)}>
-        <h3>Model: {item.text}</h3>
-      </div>
+      // <div key={item.value} onClick={() => handleModelClick(item.text)}>
+      //   <h3>Model: {item.text}</h3>
+      // </div>
+      <option value={item.text}>{item.text}</option>
     )
   })
 
@@ -151,6 +152,9 @@ export default function Account(props) {
     <div className="container">
       <h1>Account</h1>
       <div className="card mx-auto" style={{maxWidth: '30rem'}}>
+        <div className="card-header">
+          Account Info
+        </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item d-flex justify-content-between">
             <div className="fw-bold">Name</div>
@@ -174,6 +178,9 @@ export default function Account(props) {
       {
         props.userInfo.has_personal_vehicle &&
         <div className="card my-3 mx-auto" style={{maxWidth: '30rem'}}>
+          <div className="card-header">
+            Vehicle Info
+          </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item d-flex justify-content-between">
               <div className="fw-bold">Vehicle Name</div>
@@ -187,34 +194,56 @@ export default function Account(props) {
         </div>
       }
 
-      {
-        props.userInfo.has_personal_vehicle ?
-        <button className="btn btn-secondary" onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
-        :
-        <button  className="btn btn-secondary" onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>
-      }
+      <div className="text-center">
+        {
+          props.userInfo.has_personal_vehicle ?
+          <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#vehicleForm" data-bs-whatever="@update" onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
+          :
+          <button  className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#vehicleForm" data-bs-whatever="@add" onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>
+        }
+      </div>
+      
+      
+      <div className="modal fade" id="vehicleForm" tabindex="-1"> 
+        <div className="modal-dialog modal-dialog-scrollable">
+          <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">New Vehicle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
 
-      {vehicleModelItems}
-      {vehicleSpecItems}
+          <div className="modal-body">
+            {
+              (isAddVehicleForm || isUpdateVehicleForm)
+              &&
+              <form onSubmit={handleSearchSubmit}>
+                <label htmlFor="make">Make:</label>
+                <input className="form-control" id="make" name="make" type="text" value={newVehicle.make} onChange={handleChangeSearch}/>
+                <label htmlFor="year">Year:</label>
+                
+                <input className="form-control" id="year" name="year" type="text" value={newVehicle.year} onChange={handleChangeSearch}/>
+                <button className="btn btn-dark" type="submit">Next</button>
+              </form>
+            }
+
+            <select class="form-select">
+              <option selected>Select a make from menu</option>
+              {vehicleModelItems}
+            </select>
+            
+            {vehicleSpecItems}
+            
+            {
+              finishButton 
+              &&
+              <button onClick={submitVehicleToDB}>Finish</button>
+            }
+          </div>
+            
+          </div>
+        </div>
+      </div>
       
-      
-      {
-        (isAddVehicleForm || isUpdateVehicleForm)
-        &&
-        <form onSubmit={handleSearchSubmit}>
-          <label htmlFor="make">Make:</label>
-          <input id="make" name="make" type="text" value={newVehicle.make} onChange={handleChangeSearch}/>
-          <label htmlFor="year">Year:</label>
-          <input id="year" name="year" type="text" value={newVehicle.year} onChange={handleChangeSearch}/>
-          <button type="submit">Search Car</button>
-        </form>
-      }
-      
-      {
-        finishButton 
-        &&
-        <button onClick={submitVehicleToDB}>Finish</button>
-      }
     </div>
   )
 }
