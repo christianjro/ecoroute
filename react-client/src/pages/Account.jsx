@@ -15,6 +15,8 @@ export default function Account(props) {
   }
   const [isAddVehicleForm, setIsAddVehicleForm] = useState(false)
   const [isUpdateVehicleForm, setIsUpdateVehicleForm] = useState(false)
+  const [isMakeReceived, setIsMakeReceived] = useState(false)
+  const [isSpecReceived, setIsSpecReceived] = useState(false)
 
   // const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
 
@@ -50,6 +52,7 @@ export default function Account(props) {
         const parser = new XMLParser()
         let result = parser.parse(data)
         setSearchVehicleModelOptions(result.menuItems.menuItem)
+        setIsMakeReceived(true)
       })
   }
 
@@ -74,6 +77,7 @@ export default function Account(props) {
         const parser = new XMLParser()
         let result = parser.parse(data)
         setSearchVehicleSpecOptions(result.menuItems.menuItem)
+        setIsSpecReceived(true)
       })
   }
 
@@ -151,6 +155,15 @@ export default function Account(props) {
       })
   }
 
+  function handleClose() {
+    setNewVehicle({...newVehicleFormTemplate})
+    setIsAddVehicleForm(prev => !prev)
+    setIsUpdateVehicleForm(prev => !prev)
+    setIsMakeReceived(false)
+    setIsSpecReceived(false)
+    setFinishButton(false)
+  }
+
   return (
     <div className="container">
       <h1>Account</h1>
@@ -205,7 +218,7 @@ export default function Account(props) {
         </div>
       }
 
-      <div className="text-center">
+      <div className="text-center mt-3">
         {
           props.userInfo.has_personal_vehicle ?
           <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#vehicleForm" data-bs-whatever="@update" onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
@@ -220,7 +233,7 @@ export default function Account(props) {
           <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">New Vehicle</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
           </div>
 
           <div className="modal-body">
@@ -230,27 +243,46 @@ export default function Account(props) {
               <form onSubmit={handleSearchSubmit}>
                 <label htmlFor="make">Make:</label>
                 <input className="form-control" id="make" name="make" type="text" value={newVehicle.make} onChange={handleChangeSearch}/>
-                <label htmlFor="year">Year:</label>
                 
+                <label htmlFor="year">Year:</label>
                 <input className="form-control" id="year" name="year" type="text" value={newVehicle.year} onChange={handleChangeSearch}/>
-                <button className="btn btn-dark" type="submit">Next</button>
+                
+                <div className="text-center">
+                  {!isMakeReceived && <button className="btn btn-dark mt-3" type="submit">Next</button>}
+                </div>
               </form>
             }
-
-            <select class="form-select" onChange={handleModelChange}>
-              <option selected>Select a make from menu</option>
-              {vehicleModelItems}
-            </select>
             
-            <select class="form-select" onChange={handleSpecChange}>
-              <option selected>Select spec from menu</option>
-              {vehicleSpecItems}
-            </select>
-
+            {
+              isMakeReceived
+              &&
+              <div className="">
+                <label>Make:</label>
+                <select class="form-select" onChange={handleModelChange}>
+                  <option selected>Select a make from menu</option>
+                  {vehicleModelItems}
+                </select>
+              </div>
+            }
+            
+            {
+              isSpecReceived
+              &&
+              <div className="">
+                <label>Spec:</label>
+                <select class="form-select" onChange={handleSpecChange}>
+                  <option selected>Select spec from menu</option>
+                  {vehicleSpecItems}
+                </select>
+              </div>
+            }
+            
             {
               finishButton 
               &&
-              <button onClick={submitVehicleToDB}>Finish</button>
+              <div className="text-center mt-3">
+                <button className="btn btn-dark" onClick={submitVehicleToDB} data-bs-dismiss="modal">Finish</button>
+              </div>
             }
           </div>
             
