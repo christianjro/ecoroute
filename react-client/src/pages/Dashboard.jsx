@@ -86,16 +86,16 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
             <h1>Dashboard</h1>
  
             <div className="row justify-content-center gap-4 mb-3">
-              <div className="col bg-body-secondary d-flex align-items-center justify-content-center p-1 rounded-4">
-                <button className="btn btn-outline-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
+              <div className="col bg-secondary d-flex align-items-center justify-content-center p-1 rounded-4">
+                <button className="btn btn-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
               </div>
 
-              <div className="col bg-body-secondary p-1 rounded-4" style={{minWidth: '12rem'}}>
+              <div className="col bg-secondary p-1 rounded-4" style={{minWidth: '12rem'}}>
                 <AirQualityIndexChart airQualityIndex={airQualityIndex} />
                 <h6 className="text-center mt-3">Current Air Quality Index</h6>
               </div>
 
-              <div className="col bg-body-secondary d-flex flex-column justify-content-center align-items-center p-1 rounded-4">
+              <div className="col bg-secondary d-flex flex-column justify-content-center align-items-center p-1 rounded-4">
                 <h1 className="mt-2">{userTotalGHGEmissions > 0 ? userTotalGHGEmissions.toFixed(4) : userTotalGHGEmissions}</h1>
                 <h7>MTCO2e</h7>
                 <h6 className="text-center">Total GHG Emissions</h6>
@@ -104,18 +104,18 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
 
             
             <div className="row justify-content-center gap-4">
-              <div className="col-lg overflow-y-auto bg-body-secondary p-3 rounded-4">
+              <div className="col-lg overflow-y-auto bg-secondary p-3 rounded-4">
                 <h5>Recent Trips</h5>
                 {usersTrips}
               </div>
               
               <div className="col-lg">
-                <div className="row bg-body-secondary p-3 mb-4 rounded-4">
+                <div className="row bg-secondary p-3 mb-4 rounded-4">
                     <h5>Emissions History</h5>
                     <TripHistoryChart trips={trips} />
                 </div>
 
-                <div className="row bg-body-secondary p-3 rounded-4">
+                <div className="row bg-secondary p-3 rounded-4">
                     <h5>Leaderboard</h5>
                     <LeaderboardChart leaderboardData={leaderboardData} />
                 </div>

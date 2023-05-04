@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
-import { Collapse } from 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.min.js';
+import './custom.scss';
 import './App.css';
 import Cookie from 'js-cookie';
 
@@ -127,7 +127,7 @@ function App() {
           {
             isLoggedIn 
             &&
-            <nav id="largeSidebar" className="navbar bg-body-secondary align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
+            <nav id="largeSidebar" className="navbar bg-secondary align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
               <div className="container-fluid d-flex flex-column p-0">
                 <div className="d-flex flex-column align-items-center my-5">
                   <i class="bi bi-geo-alt-fill" style={{fontSize: "2.5rem"}}></i>
@@ -196,7 +196,7 @@ function App() {
           {
             !isLoggedIn
             &&
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className="navbar sticky-top navbar-expand-lg bg-body-secondary">
               <div className="container-fluid">
                 <Link to="/" className="navbar-brand">Capstone</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -232,7 +232,7 @@ function App() {
           {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
           {isLoggedIn && <Link to="/feed">Feed</Link>} */}
 
-          <div class="container vh-100 overflow-y-auto">
+          <div class="container bg-dark vh-100 overflow-y-auto">
             <Routes>
               <Route path="/" element={isLoggedIn? <Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/> : <Home />} />
               <Route path="/login" element={<Login />} />
