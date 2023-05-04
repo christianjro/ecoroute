@@ -22,7 +22,7 @@ export default function Trips({trips, handleTripsUpdate}) {
           <td>{trip.destination}</td>
           <td>{trip.mode} </td>
           <td>{trip.date_created} </td>
-          <td>{trip.ghg_emissions}</td>
+          <td>{trip.ghg_emissions > 0 ? trip.ghg_emissions.toFixed(4) : trip.ghg_emissions}</td>
           <td><button className="btn btn-danger btn-sm" onClick={() => handleDeleteTrip(trip.id)}>Delete</button></td>
       </tr>
     )

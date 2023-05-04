@@ -14,20 +14,9 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
 
     const airNowAPIKey = process.env.REACT_APP_AIRNOW_API_KEY
 
-    // function handleDeleteTrip(trip_id) {
-    //   fetch("/delete_trip", {
-    //     method: "POST", 
-    //     headers: {"Content-Type": "application/json"}, 
-    //     body: JSON.stringify({trip_id})
-    //   })
-    //     .then(response => {
-    //       if (response.status === 200) {
-    //         handleTripsUpdate()
-    //       }
-    //     })
-    // }
+    const recentTrips = trips.slice(0, 3)
 
-    const usersTrips = trips.map((trip) => {
+    const usersTrips = recentTrips.map((trip) => {
         return (
           <div key={trip.id} className="card mb-3 mx-auto border-0"> 
             <div className="card-body">
@@ -70,7 +59,7 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
                 }
                 console.log("*****")
                 console.log(friendGHGEmissions)
-                friendGHGEmissions.push({"user": "yourself", "totalGHGEmissions": userTotalGHGEmissions})
+                friendGHGEmissions.push({"user": "Yourself", "totalGHGEmissions": userTotalGHGEmissions})
 
                 const sortedData = [...friendGHGEmissions].sort((a,b) => a.totalGHGEmissions - b.totalGHGEmissions)
                 setLeaderboardData(sortedData) 
@@ -115,7 +104,7 @@ export default function Dashboard({trips, handleTripsUpdate, location}) {
 
             
             <div className="row justify-content-center gap-4">
-              <div className="col-lg overflow-scroll bg-body-secondary p-3 rounded-4">
+              <div className="col-lg overflow-y-auto bg-body-secondary p-3 rounded-4">
                 <h5>Recent Trips</h5>
                 {usersTrips}
               </div>

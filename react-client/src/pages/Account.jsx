@@ -199,19 +199,19 @@ export default function Account(props) {
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Vehicle Make</div>
+              <div className="fw-bold">Make</div>
               <div>{props.userInfo.vehicle.make}</div>
             </li>
             <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Vehicle Model</div>
+              <div className="fw-bold">Model</div>
               <div>{props.userInfo.vehicle.model}</div>
             </li>
             <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Vehicle Year</div>
+              <div className="fw-bold">Year</div>
               <div>{props.userInfo.vehicle.year}</div>
             </li>
             <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Vehicle Efficiency</div>
+              <div className="fw-bold">Efficiency Factor</div>
               <div>{props.userInfo.vehicle.efficiency}</div>
             </li>
           </ul>

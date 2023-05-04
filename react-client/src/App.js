@@ -55,7 +55,10 @@ function App() {
       fetch("/trips")
           .then(res => res.json())
           .then(data => {
-            setTrips(data.trips)
+            const sortedTrips = data.trips.sort((a, b) => {
+              return new Date(b.date_created) - new Date(a.date_created)
+            })
+            setTrips(sortedTrips)
             console.log(trips)
         })
     }
@@ -69,7 +72,7 @@ function App() {
     // update trips if adding a newTrip or deleting a new trip
 
     if (newTrip) {
-      setTrips(prev => [...prev, newTrip])
+      setTrips(prev => [newTrip, ...prev])
     } else {
       setShouldRefetchTrips(prev => !prev)
     }
@@ -195,18 +198,23 @@ function App() {
             &&
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
               <div className="container-fluid">
-                <h3 className="navbar-brand">Capstone Project</h3>
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link to="/" class="nav-link active" aria-current="page">Home</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/login" class="nav-link">Login</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/signup" class="nav-link">Signup</Link>
-                  </li>
-                </ul>
+                <Link to="/" className="navbar-brand">Capstone</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link to="/" class="nav-link active" aria-current="page">Home</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/login" class="nav-link">Login</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/signup" class="nav-link">Signup</Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
               
             </nav>
