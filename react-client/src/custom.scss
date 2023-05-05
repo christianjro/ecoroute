@@ -1,7 +1,18 @@
 $primary:#7f5af0;
-$secondary: #242629;
+$secondary: #94a1b2;
 $success:#2cb67d;
 $light: #fffffe;
-$dark: grey;
+$black: #010101;
+$dark: #16161a;
+$info:  #242629;
+$dark-bg-subtle: #242629;
+
+$body-bg: #16161a;
+$input-border-color: #010101;
+$input-color: #94a1b2;
+$input-placeholder-color: #94a1b2;
+$btn-black-bg: #010101;
+
+$modal-backdrop-opacity: 0.95;
 
 @import "~bootstrap/scss/bootstrap.scss";

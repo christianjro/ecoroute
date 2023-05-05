@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Routes, Route, Link, useNavigate} from 'react-router-dom';
+import {Routes, Route, NavLink, useNavigate} from 'react-router-dom';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import './custom.scss';
 import './App.css';
 import Cookie from 'js-cookie';
@@ -121,62 +121,68 @@ function App() {
 
   return (
     <AuthContext.Provider value={authContextValue}> 
-      <div className="App">
+      <div className="App bg-dark">
         <div className={`d-flex ${isLoggedIn ? 'flex-row' : 'flex-column'}`}>
 
           {
             isLoggedIn 
             &&
-            <nav id="largeSidebar" className="navbar bg-secondary align-items-start p-0" style={{width: "20rem", height:"100vh"}}>
+            <nav id="largeSidebar" className="navbar bg-dark-subtle align-items-start p-0" style={{width: "20rem", height:"100vh"}} data-bs-theme="dark">
               <div className="container-fluid d-flex flex-column p-0">
                 <div className="d-flex flex-column align-items-center my-5">
-                  <i class="bi bi-geo-alt-fill" style={{fontSize: "2.5rem"}}></i>
-                  <h3 className="large-screen-enabled mt-1">Capstone</h3>
+                  <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "2.5rem"}}></i>
+                  <h3 className="large-screen-enabled mt-1 text-primary">EcoRoute</h3>
                 </div>
 
                 <ul className="navbar-nav">
                   <div className="">
+                  <li className="nav-item">
+                        <NavLink to="/addTrip" className="nav-link" activeClassName="active">
+                          <i class="bi bi-plus-square-fill" style={{fontSize: "1.3rem"}}></i>
+                          <span className="large-screen-enabled ms-3">Add Trip</span>
+                        </NavLink>
+                    </li>
                     <li className="nav-item">
-                        <Link to="/" className="nav-link">
+                        <NavLink to="/" className="nav-link" activeClassName="active">
                           <i class="bi bi-grid-fill" style={{fontSize: "1.3rem"}}></i>
                           <span className="large-screen-enabled ms-3">Dashboard</span>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/trips" className="nav-link">
+                      <NavLink to="/trips" className="nav-link" activeClassName="active">
                         <i class="bi bi-map" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">Trips</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/feed" className="nav-link">
+                      <NavLink to="/feed" className="nav-link" activeClassName="active">
                         <i class="bi bi-share-fill" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">Feed</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/addFriend" className="nav-link">
+                      <NavLink to="/addFriend" className="nav-link" activeClassName="active">
                         <i class="bi bi-person-fill-add" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">Add Friend</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/friendRequests" className="nav-link">
+                      <NavLink to="/friendRequests" className="nav-link" activeClassName="active">
                         <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">Friend Request</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/viewFriends" className="nav-link">
+                      <NavLink to="/viewFriends" className="nav-link" activeClassName="active">
                         <i class="bi bi-people-fill" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">View Friends</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/account" className="nav-link">
+                      <NavLink to="/account" className="nav-link" activeClassName="active">
                         <i class="bi bi-gear-fill" style={{fontSize: "1.3rem"}}></i>
                         <span className="large-screen-enabled ms-3">Account</span>
-                      </Link>
+                      </NavLink>
                     </li>
                   </div>
 
@@ -196,22 +202,25 @@ function App() {
           {
             !isLoggedIn
             &&
-            <nav className="navbar sticky-top navbar-expand-lg bg-body-secondary">
+            <nav className="navbar sticky-top navbar-expand-lg bg-black navbar-dark">
               <div className="container-fluid">
-                <Link to="/" className="navbar-brand">Capstone</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <div className="d-flex flex-row align-items-center">
+                  <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "1.5rem"}}></i>
+                  <NavLink to="/" className="navbar-brand ms-1 fw-semibold mb-2 mt-1 text-primary">EcoRoute</NavLink>
+                </div>
+                <button className="navbar-toggler body-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                  <ul className="navbar-nav">
-                    <li className="nav-item">
-                      <Link to="/" class="nav-link active" aria-current="page">Home</Link>
+                <div className="navbar-nav collapse navbar-collapse" id="navbarNav">
+                  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li className="nav-item ">
+                      <NavLink to="/" className="nav-link" activeClassName="active" aria-current="page">Home</NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/login" class="nav-link">Login</Link>
+                      <NavLink to="/login" className="nav-link" activeClassName="active">Login</NavLink>
                     </li>
                     <li className="nav-item">
-                      <Link to="/signup" class="nav-link">Signup</Link>
+                      <NavLink to="/signup" className="nav-link" activeClassName="active">Signup</NavLink>
                     </li>
                   </ul>
                 </div>
@@ -220,25 +229,12 @@ function App() {
             </nav>
           }
 
-
-          {/* {!isLoggedIn && <Link to="/">Home</Link>}
-          {!isLoggedIn ? <Link to="/login">Login</Link> : null}
-          {!isLoggedIn && <Link to="/signup">Signup</Link>}
-          {isLoggedIn && <Link to="/account">Account</Link>}
-          {isLoggedIn && <button onClick={handleLogout}>Log out</button>}
-          {isLoggedIn && <Link to="/dashboard">Dashboard</Link>}
-          {isLoggedIn && <Link to="/addFriend">Add Friend</Link>}
-          {isLoggedIn && <Link to="/friendRequests">Friend Requests</Link>}
-          {isLoggedIn && <Link to="/viewFriends">View Friends</Link>}
-          {isLoggedIn && <Link to="/feed">Feed</Link>} */}
-
-          <div class="container bg-dark vh-100 overflow-y-auto">
+          <div class="container bg-dark vh-100 overflow-y-auto p-4">
             <Routes>
-              <Route path="/" element={isLoggedIn? <Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/> : <Home />} />
+              <Route path="/" element={isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/> : <Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup /> } />
               <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-              {/* <Route path="/dashboard" element={<Dashboard trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/>} /> */}
               <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
               <Route path="/addFriend" element={<AddFriend />} />
               <Route path="/friendRequests" element={<FriendRequests />} />

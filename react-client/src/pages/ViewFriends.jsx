@@ -25,10 +25,10 @@ export default function ViewFriends() {
 
   const friendItems = friends.map(item => {
     return (
-      <div key={item.id} className="card mx-auto mb-3" style={{maxWidth: '40rem'}}>
+      <div key={item.id} className="card mx-auto my-3" style={{maxWidth: '40rem'}}>
         <div className="card-body d-flex justify-content-between align-items-center">
           <div>
-            <h5 className="card-title mb-0">{item.friend_name}</h5>
+            <h5 className="card-title text-light mb-0">{item.friend_name}</h5>
             <p className="text-secondary mb-0">{item.friend_email}</p>
           </div>
           
@@ -40,9 +40,13 @@ export default function ViewFriends() {
   console.log(friends)
 
   return (
-    <div>
-        <h4 className="mb-3">My Friends</h4>
-        {friendItems}
+    <div className="row justify-content-center p-sm-4">
+        <div className="col-md-8">
+          <h4 className="mt-5 mb-4 text-primary">My Friends</h4>
+          <div className="bg-dark-subtle p-4 rounded-3">
+            {friendItems}
+          </div>
+        </div>
     </div>
   )
 }

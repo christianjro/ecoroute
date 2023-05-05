@@ -32,8 +32,8 @@ export default function AirQualityIndexChart({airQualityIndex}) {
                 size: "55%",
               },
               track: {
-                background: ["#e7e7e7", "#ffffff"],
-                strokeWidth: ['100%', '75%'],
+                background: ["#e7e7e7", "#94a1b2"],
+                strokeWidth: ['95%', '75%'],
                 margin: 3, 
               },
               dataLabels: {
@@ -43,6 +43,7 @@ export default function AirQualityIndexChart({airQualityIndex}) {
                   fontSize: '20rem',
                 },
                 value: {
+                  color: "#94a1b2",
                   offsetY: -2,
                   text: "AQI",
                   formatter: function(val) {

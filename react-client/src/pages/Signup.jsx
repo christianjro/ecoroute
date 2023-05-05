@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const navigate = useNavigate()
+  const [validated, setValidated] = useState("")
   const [formData, setFormData] = useState({
     name : "",
     email : "", 
@@ -19,6 +20,10 @@ export default function Signup() {
   }
 
   function handleSubmit(event) {
+    const form = event.currentTarget
+    if(form.checkValidity() !== true){
+      setValidated('was-validated')
+    }
     event.preventDefault()
     console.log(formData)
     fetch("/signup", {
@@ -31,35 +36,58 @@ export default function Signup() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
-        <label htmlFor="name">Name</label>
-        <input 
-          id="name" 
-          type="text" 
-          name="name" 
-          value={ formData.name } 
-          onChange={handleChange}
-        /> 
-        <label htmlFor="email">Email</label>
-        <input 
-          id="email" 
-          type="email" 
-          name="email" 
-          value={ formData.email } 
-          onChange={handleChange}
-          />
-        <label htmlFor="password">Password</label>
-        <input 
-          id="password" 
-          type="password" 
-          name="password" 
-          value={ formData.password } 
-          onChange={handleChange}
-          />
-        <button type="submit">Sign Up</button>
-      </form>
+    <div className="text-center mt-5 pt-5">
+      <h4 className="text-light">Sign Up</h4>
+      <div className="mt-3 mx-auto" style={{maxWidth: '30rem'}}>
+        <form onSubmit={handleSubmit} className={validated} noValidate>
+          <div className="form-floating mb-3">
+            <input 
+              id="name" 
+              className="form-control border-3"
+              placeholder="name"
+              type="text" 
+              name="name" 
+              value={ formData.name } 
+              onChange={handleChange}
+              required
+            /> 
+            <label className="text-secondary" htmlFor="name">Name</label>
+          </div>
+          
+          <div className="form-floating mb-3">
+            <input 
+            id="email" 
+            className="form-control border-3"
+            placeholder="email"
+            type="email" 
+            name="email" 
+            value={ formData.email } 
+            onChange={handleChange}
+            required
+            />
+            <label className="text-secondary" htmlFor="email">Email</label>
+            <div className="invalid-feedback">Invalid email</div>
+          </div>
+          
+          <div className="form-floating mb-3">
+            <input 
+            id="password" 
+            className="form-control border-3"
+            placeholder="password"
+            type="password" 
+            name="password" 
+            value={ formData.password } 
+            onChange={handleChange}
+            required
+            />
+            <label className="text-secondary" htmlFor="password">Password</label>
+            <div className="invalid-feedback">Must include password</div>
+          </div>
+          
+          <button className="btn btn-primary" type="submit">Sign Up</button>
+        </form>
+      </div>
+      
     </div>
   )
 }

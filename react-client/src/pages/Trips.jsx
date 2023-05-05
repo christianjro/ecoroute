@@ -16,7 +16,7 @@ export default function Trips({trips, handleTripsUpdate}) {
 
   const usersTrips = trips.map((trip) => {
     return (
-      <tr key={trip.id}> 
+      <tr key={trip.id} className="text-secondary"> 
           <td>{trip.name}</td>
           <td>{trip.origin}</td>
           <td>{trip.destination}</td>
@@ -29,11 +29,11 @@ export default function Trips({trips, handleTripsUpdate}) {
   })
 
   return (
-    <div className="p-4">
-      <h4 className="my-4">All Trip Records</h4>
-      <table className="table">
+    <div className="p-lg-4">
+      <h4 className="my-4 text-primary">All Trip Records</h4>
+      <table className="table border-dark-subtle">
         <thead>
-          <tr>
+          <tr className="text-light">
             <th scope="col">Trip Name</th>
             <th scope="col">Origin</th>
             <th scope="col">Destination</th>

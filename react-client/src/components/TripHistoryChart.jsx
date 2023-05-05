@@ -26,15 +26,23 @@ Legend
 
 
 export default function TripHistoryChart({trips}) {
+
+  function formatDate(dateString) {
+    const date = new Date(dateString)
+    const options = {year: "numeric", month: "long", day: "numeric"}
+    return date.toLocaleDateString('en-US', options)
+  }
+
+
   const personalChart = {
-    labels: trips.map((trip) => trip.date_created),
+    labels: trips.map((trip) => formatDate(trip.date_created)),
     datasets: [
         {
             label: "GHG Emissions",
             data: trips.map((trip) => trip.ghg_emissions),
             fill: false,
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            borderColor: "rgb(44, 182, 125)",
+            backgroundColor: 'rgb(44, 182, 125)',
         }
     ]
   }
@@ -45,7 +53,10 @@ export default function TripHistoryChart({trips}) {
         title: {
           display: false,
           text: 'Chart.js Line Chart',
-        }
+        },
+        legend: {
+          display: false,
+        },
       }
   }
   return (

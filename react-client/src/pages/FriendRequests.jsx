@@ -58,11 +58,11 @@ export default function FriendRequests() {
         <div key={item.id} className="card mx-auto mb-3 border-0">
           <div className="card-body d-flex justify-content-between align-items-center">
             <div>
-              <h5 className="card-title mb-0">{item.sender}</h5>
+              <h5 className="card-title text-light mb-0">{item.sender}</h5>
               <p className="text-secondary mb-0">{item.sender_email}</p>
             </div>
-            <div>
-              <button className="btn btn-success mx-2" onClick={() => respondToFriendRequest("accept", item.id, item.sender_id)}>Accept</button>
+            <div className="d-flex flex-column flex-sm-row">
+              <button className="btn btn-success mb-2 mx-sm-2 mb-sm-0" onClick={() => respondToFriendRequest("accept", item.id, item.sender_id)}>Accept</button>
               <button className="btn btn-danger" onClick={() => respondToFriendRequest("decline", item.id, item.sender_id)}>Decline</button>
             </div>
           </div>
@@ -75,29 +75,29 @@ export default function FriendRequests() {
       <div key={item.id} className="card mx-auto mb-3 border-0">
         <div className="card-body d-flex justify-content-between align-items-center">
           <div>
-            <h5 className="card-title mb-0">{item.recipient}</h5>
+            <h5 className="card-title text-light mb-0">{item.recipient}</h5>
             <p className="text-secondary mb-0">{item.recipient_email}</p>
           </div>
-          <p className="mb-0">Status: pending</p>
+          <p className="mb-0 text-secondary">Status: pending</p>
         </div>
       </div>
     )
   })
 
   return (
-    <div className="mb-5">
-        <h4>Friend Requests</h4>
+    <div>
+        <h4 className="mt-5 mb-4 text-primary">Friend Requests</h4>
         <div className="row">
           <div className="col">
-            <h5>Sent</h5>
-            <div className="overflow-y-scroll p-4 bg-body-secondary rounded-3" style={{height: "20rem"}}>
+            <h5 className="my-2 text-light">Sent</h5>
+            <div className="overflow-y-scroll p-4 bg-dark-subtle rounded-3" style={{height: "20rem"}}>
               {friendRequests.sent.length > 0 ? sentFriendRequestItems : <p>No requests</p>}
             </div>
           
           </div>
           <div className="col">
-            <h5>Received</h5>
-            <div className="overflow-y-scroll p-4 bg-body-secondary rounded-3" style={{height: "20rem"}}>
+            <h5 className="my-2 text-light">Received</h5>
+            <div className="overflow-y-scroll p-4 bg-dark-subtle rounded-3" style={{height: "20rem"}}>
               {friendRequests.received.length > 0 ? receivedFriendRequestItems : <p>No requests</p>}
             </div>
           </div>

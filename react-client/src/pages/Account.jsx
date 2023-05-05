@@ -165,58 +165,62 @@ export default function Account(props) {
   }
 
   return (
-    <div className="container">
-      <h1>Account</h1>
-      <div className="card mx-auto" style={{maxWidth: '30rem'}}>
-        <div className="card-header">
-          Account Info
-        </div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item d-flex justify-content-between">
-            <div className="fw-bold">Name</div>
-            <div>{props.userInfo.name}</div>
-          </li> 
-          <li className="list-group-item d-flex justify-content-between">
-            <div className="fw-bold">Email</div>
-            <div>{props.userInfo.email}</div>
-          </li> 
-          <li className="list-group-item d-flex justify-content-between">
-            <div className="fw-bold">Personal Vehicle</div>
-            <div>{props.userInfo.has_personal_vehicle ? "Yes" : "None"}</div>
-          </li> 
-          <li className="list-group-item d-flex justify-content-between">
-            <div className="fw-bold">Password</div>
-            <div>{props.userInfo.password}</div>
-          </li> 
-        </ul>
-      </div>
-  
-      {
-        props.userInfo.has_personal_vehicle &&
-        <div className="card my-3 mx-auto" style={{maxWidth: '30rem'}}>
-          <div className="card-header">
-            Vehicle Info
+    <div>
+      <div className="row justify-content-center p-sm-4">
+        <div className="col-md-8">
+          <h4 className="mt-5 mb-4 text-primary">Account</h4>
+          <div className="card mx-auto border-black border-3">
+            <div className="card-header text-light border-black">
+              Account Info
+            </div>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item d-flex justify-content-between border-info">
+                <div className="text-light">Name</div>
+                <div className="text-secondary">{props.userInfo.name}</div>
+              </li> 
+              <li className="list-group-item d-flex justify-content-between border-info">
+                <div className="text-light">Email</div>
+                <div className="text-secondary">{props.userInfo.email}</div>
+              </li> 
+              <li className="list-group-item d-flex justify-content-between border-info">
+                <div className="text-light">Personal Vehicle</div>
+                <div className="text-secondary">{props.userInfo.has_personal_vehicle ? "Yes" : "None"}</div>
+              </li> 
+              <li className="list-group-item d-flex justify-content-between border-info">
+                <div className="text-light">Password</div>
+                <div className="text-secondary">{props.userInfo.password}</div>
+              </li> 
+            </ul>
           </div>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Make</div>
-              <div>{props.userInfo.vehicle.make}</div>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Model</div>
-              <div>{props.userInfo.vehicle.model}</div>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Year</div>
-              <div>{props.userInfo.vehicle.year}</div>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-              <div className="fw-bold">Efficiency Factor</div>
-              <div>{props.userInfo.vehicle.efficiency}</div>
-            </li>
-          </ul>
+  
+          {
+            props.userInfo.has_personal_vehicle &&
+            <div className="card my-3 mx-auto border-black border-3">
+              <div className="card-header text-light border-black">
+                Vehicle Info
+              </div>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item d-flex justify-content-between border-info">
+                  <div className="text-light">Make</div>
+                  <div className="text-secondary">{props.userInfo.vehicle.make}</div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between border-info">
+                  <div className="text-light">Model</div>
+                  <div className="text-secondary">{props.userInfo.vehicle.model}</div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between border-info">
+                  <div className="text-light">Year</div>
+                  <div className="text-secondary">{props.userInfo.vehicle.year}</div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between border-info">
+                  <div className="text-light">Efficiency Factor</div>
+                  <div className="text-secondary">{props.userInfo.vehicle.efficiency}</div>
+                </li>
+              </ul>
+            </div>
+          }
         </div>
-      }
+      </div>
 
       <div className="text-center mt-3">
         {
@@ -228,27 +232,27 @@ export default function Account(props) {
       </div>
       
       
-      <div className="modal fade" id="vehicleForm" tabindex="-1"> 
-        <div className="modal-dialog modal-dialog-scrollable">
+      <div className="modal fade" id="vehicleForm" tabIndex="-1"> 
+        <div className="modal-dialog modal-dialog-scrollable modal-lg">
           <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">New Vehicle</h5>
+          <div className="modal-header border-info" data-bs-theme="dark">
+            <h5 className="modal-title text-primary ms-lg-4">New Vehicle</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
           </div>
 
-          <div className="modal-body">
+          <div className="modal-body mx-lg-4">
             {
               (isAddVehicleForm || isUpdateVehicleForm)
               &&
               <form onSubmit={handleSearchSubmit}>
-                <label htmlFor="make">Make:</label>
-                <input className="form-control" id="make" name="make" type="text" value={newVehicle.make} onChange={handleChangeSearch}/>
+                <label className="text-light" htmlFor="make">Make:</label>
+                <input className="form-control border-3 mt-2 mb-3" id="make" name="make" type="text" value={newVehicle.make} onChange={handleChangeSearch}/>
                 
-                <label htmlFor="year">Year:</label>
-                <input className="form-control" id="year" name="year" type="text" value={newVehicle.year} onChange={handleChangeSearch}/>
+                <label className="text-light" htmlFor="year">Year:</label>
+                <input className="form-control border-3 mt-2 mb-3" id="year" name="year" type="text" value={newVehicle.year} onChange={handleChangeSearch}/>
                 
                 <div className="text-center">
-                  {!isMakeReceived && <button className="btn btn-dark mt-3" type="submit">Next</button>}
+                  {!isMakeReceived && <button className="btn btn-secondary mb-1" type="submit">Next</button>}
                 </div>
               </form>
             }
@@ -257,8 +261,8 @@ export default function Account(props) {
               isMakeReceived
               &&
               <div className="">
-                <label>Make:</label>
-                <select class="form-select" onChange={handleModelChange}>
+                <label className="text-light">Make:</label>
+                <select class="form-select border-3 mt-2 mb-3" onChange={handleModelChange}>
                   <option selected>Select a make from menu</option>
                   {vehicleModelItems}
                 </select>
@@ -269,8 +273,8 @@ export default function Account(props) {
               isSpecReceived
               &&
               <div className="">
-                <label>Spec:</label>
-                <select class="form-select" onChange={handleSpecChange}>
+                <label className="text-light">Spec:</label>
+                <select class="form-select border-3 mt-2 mb-3" onChange={handleSpecChange}>
                   <option selected>Select spec from menu</option>
                   {vehicleSpecItems}
                 </select>
@@ -281,7 +285,7 @@ export default function Account(props) {
               finishButton 
               &&
               <div className="text-center mt-3">
-                <button className="btn btn-dark" onClick={submitVehicleToDB} data-bs-dismiss="modal">Finish</button>
+                <button className="btn btn-secondary mb-1" onClick={submitVehicleToDB} data-bs-dismiss="modal">Finish</button>
               </div>
             }
           </div>

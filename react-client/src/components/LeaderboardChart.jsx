@@ -31,8 +31,8 @@ export default function LeaderBoard({leaderboardData}) {
         {
             label: "Leaderboard",
             data: leaderboardData.map((item) => item.totalGHGEmissions),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgb(127, 90, 240)',
+            backgroundColor: 'rgb(127, 90, 240, 0.5)',
         }
     ]
   }
@@ -48,6 +48,7 @@ export default function LeaderBoard({leaderboardData}) {
       plugins: {
         legend: {
           // position: 'right' as const,
+          display: false,
         },
         title: {
           display: false,

@@ -160,12 +160,12 @@ function Map(props) {
         <div className="row gap-3 mb-4">
           <div className="col-md d-flex flex-column justify-content-center">
 
-            <label htmlFor="tripName">Trip Name</label>
-            <div className="d-flex align-items-center mb-3">
-              <i class="bi bi-pen me-2"></i>
+            <label className="text-light" htmlFor="tripName">Trip Name</label>
+            <div className="d-flex align-items-center mt-2 mb-3">
+              <i class="bi bi-pen text-primary me-2"></i>
               <input 
                 id="tripName"
-                className="form-control" 
+                className="form-control border-3" 
                 style={{minWidth: "15rem"}}
                 name="name" 
                 type="text" 
@@ -174,12 +174,12 @@ function Map(props) {
               />
             </div>
 
-            <label htmlFor='ORIGIN'>Origin</label>
-            <div className="d-flex align-items-center mb-3">
-              <i className="bi bi-geo me-2"></i>
+            <label className="text-light" htmlFor='ORIGIN'>Origin</label>
+            <div className="d-flex align-items-center mt-2 mb-3">
+              <i className="bi bi-geo text-primary me-2"></i>
               <input
                 id='ORIGIN'
-                className='form-control'
+                className='form-control border-3'
                 style={{minWidth: "15rem"}}
                 type='text'
                 // ref={originRef}
@@ -189,12 +189,12 @@ function Map(props) {
             </div>
             
        
-            <label htmlFor='DESTINATION'>Destination</label>
-            <div className="d-flex align-items-center">
-              <i class="bi bi-geo-fill me-2"></i>
+            <label className="text-light" htmlFor='DESTINATION'>Destination</label>
+            <div className="d-flex align-items-center mt-2 mb-3">
+              <i class="bi bi-geo-fill text-primary me-2"></i>
               <input
                 id='DESTINATION'
-                className='form-control'
+                className='form-control border-3'
                 style={{minWidth: "15rem"}}
                 type='text'
                 // ref={destinationRef}

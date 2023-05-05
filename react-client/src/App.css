@@ -66,8 +66,12 @@
 }
 
 .custom-hover:hover {
-  background-color: blue !important;
+  background-color: #7f5af0 !important;
   color: white !important;
+}
+
+.custom-modal-close {
+  color: #242629 !important;
 }
 
 @media screen and (max-width: 900px) {

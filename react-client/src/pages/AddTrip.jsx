@@ -87,18 +87,15 @@ export default function AddTrip(props) {
 
   return (
     <div>
-        <h4>AddTrip</h4>
         <MapSearch dataTransfer={handleMapData}/>
         <div className="row my-4">
           <div className="d-grid col-6">
             <button className="btn btn-danger py-2" onClick={cancelAddTrip}>Cancel</button>
           </div>
           <div className="d-grid col-6">
-          <button className="btn btn-dark py-2" onClick={handleTripSubmit}>Add Trip</button>
+          <button className="btn btn-secondary text-light py-2" onClick={handleTripSubmit}>Add Trip</button>
           </div>
         </div>
-        
-        
     </div>
   )
 }

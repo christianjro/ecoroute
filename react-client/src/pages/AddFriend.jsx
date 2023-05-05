@@ -33,18 +33,18 @@ export default function AddFriend() {
   }
 
   return (
-    <div className="row mb-5">
+    <div className="row">
         <div className="col">
-          <h4>Add Friend</h4>
+          <h4 className="text-primary mt-5 mb-4">Add Friend</h4>
 
-          <form className="card d-flex flex-row bg-body-secondary border-0 justify-content-center p-3" onSubmit={handleSubmit}>
+          <form className="card d-flex flex-row border-0 justify-content-center" onSubmit={handleSubmit}>
             <div className="w-100">
-                <label className="visually-hidden" htmlFor="recipientEmail">Friend Email:</label>
-                <input className="form-control" placeholder="Friend's email" id="recipientEmail" type="text" name="recipient_email" value={recipient.recipient_email} onChange={handleChange} />
+                <label className="visually-hidden text-secondary" htmlFor="recipientEmail">Friend Email:</label>
+                <input className="form-control border-3 text-secondary" placeholder="Friend's email" id="recipientEmail" type="text" name="recipient_email" value={recipient.recipient_email} onChange={handleChange} />
             </div>
 
             <div>
-              <button className="btn btn-dark ms-2 text-nowrap" type="submit">Send Request</button>
+              <button className="btn btn-secondary ms-2 text-nowrap" type="submit">Send Request</button>
             </div>
           </form>
         </div>
