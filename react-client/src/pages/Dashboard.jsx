@@ -9,6 +9,7 @@ import AirQualityIndexChart from '../components/AirQualityIndexChart';
 export default function Dashboard({trips, userInfo, handleTripsUpdate, location}) {
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)
+    const [userTotalMilesTraveled, setUserTotalMilesTraveled] = useState(0)
     const [airQualityIndex, setAirQualityIndex] = useState(null)
     const navigate = useNavigate()
 
@@ -34,11 +35,14 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
 
     useEffect(() => {
         let totalGHGEmissions = 0
+        let totalMilesTraveled = 0
         for (const i in trips) {
             const trip = trips[i]
             totalGHGEmissions += trip.ghg_emissions
+            totalMilesTraveled += trip.distance
         }
         setUserTotalGHGEmissions(totalGHGEmissions)
+        setUserTotalMilesTraveled(totalMilesTraveled)
     }, [trips]) 
 
 
@@ -85,12 +89,14 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
     return (
         <div className="container">
             <h4 className="mb-3 text-primary">Welcome, {userInfo.name}</h4>
- 
-            <div className="row justify-content-center gap-4 mb-3">
-              <div className="col bg-dark-subtle d-flex align-items-center justify-content-center p-1 rounded-4">
-                <button className="btn btn-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
-              </div>
 
+            <div className="row justify-content-center gap-4 mb-3">
+              <div className="col bg-dark-subtle d-flex flex-column justify-content-between align-items-center py-3 rounded-4">
+                <h1 className="text-secondary m-0">{userTotalMilesTraveled}</h1>
+                <h7 className="text-secondary m-0">Miles</h7>
+                <h6 className="text-center m-0 text-light">Total Miles Traveled</h6>
+              </div>
+              {/* <button className="btn btn-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button> */}
               <div className="col bg-dark-subtle p-2 rounded-4" style={{minWidth: '12rem'}}>
                 <AirQualityIndexChart airQualityIndex={airQualityIndex} />
                 <h6 className="text-center mt-3 text-light">Current Air Quality Index</h6>
@@ -103,6 +109,11 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
               </div>
             </div>
 
+            <div className="row gap-4 mb-3">
+              <div className="col p-0">
+              <button className="btn btn-primary w-100" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button>
+              </div>
+            </div>
             
             <div className="row justify-content-center gap-4">
               <div className="col-lg overflow-y-auto bg-dark-subtle p-3 rounded-4">
