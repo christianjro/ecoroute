@@ -127,7 +127,7 @@ function App() {
           {
             isLoggedIn 
             &&
-            <nav id="largeSidebar" className="navbar bg-dark-subtle align-items-start p-0" style={{width: "20rem", height:"100vh"}} data-bs-theme="dark">
+            <nav id="largeSidebar" className="navbar bg-info align-items-start p-0" style={{width: "20rem", height:"100vh"}} data-bs-theme="dark">
               <div className="container-fluid d-flex flex-column p-0">
                 <div className="d-flex flex-column align-items-center my-5">
                   <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "2.5rem"}}></i>
@@ -136,7 +136,7 @@ function App() {
 
                 <ul className="navbar-nav">
                   <div className="">
-                  <li className="nav-item">
+                    <li className="nav-item border-bottom border-dark mb-2 pb-2">
                         <NavLink to="/addTrip" className="nav-link" activeClassName="active">
                           <i class="bi bi-plus-square-fill" style={{fontSize: "1.3rem"}}></i>
                           <span className="large-screen-enabled ms-3">Add Trip</span>
@@ -187,7 +187,7 @@ function App() {
                   </div>
 
                   <div className="">
-                    <li className="nav-item">
+                    <li className="nav-item border-top border-dark mt-2 pt-2">
                       <button onClick={handleLogout} className="nav-link">
                         <i className="bi bi-box-arrow-left" style={{fontSize: "1.3rem", fontWeight: "bold"}}></i>
                         <span className="large-screen-enabled ms-3">Log out</span>
