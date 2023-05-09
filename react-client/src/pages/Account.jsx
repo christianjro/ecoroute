@@ -91,9 +91,32 @@ export default function Account(props) {
   })
 
   // Get vehicle mpg (from vehicle id)
+  // function handleSpecChange(event) {
+  //   const option = event.target.value
+  //   fetch(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${option.toString()}`)
+  //     .then(response => response.text())
+  //     .then(data => {
+  //       const parser = new XMLParser()
+  //       let result = parser.parse(data)
+  //       console.log(result)
+  //       setNewVehicle(prev => {
+  //         return {
+  //           ...prev, 
+  //           id: option,
+  //           avg_mpg: result.yourMpgVehicle.avgMpg,
+  //           max_mpg: result.yourMpgVehicle.maxMpg,
+  //           min_mpg: result.yourMpgVehicle.minMpg,
+  //           efficiency : (0.00889 * 1/result.yourMpgVehicle.avgMpg * 1/0.993)
+  //           // to do: separate this logic to a function
+  //         }
+  //       })
+  //       setFinishButton(true)
+  //     })
+  // }
+
   function handleSpecChange(event) {
     const option = event.target.value
-    fetch(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${option.toString()}`)
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${option.toString()}`)
       .then(response => response.text())
       .then(data => {
         const parser = new XMLParser()
@@ -103,10 +126,10 @@ export default function Account(props) {
           return {
             ...prev, 
             id: option,
-            avg_mpg: result.yourMpgVehicle.avgMpg,
-            max_mpg: result.yourMpgVehicle.maxMpg,
-            min_mpg: result.yourMpgVehicle.minMpg,
-            efficiency : (0.00889 * 1/result.yourMpgVehicle.avgMpg * 1/0.993)
+            avg_mpg: result.vehicle.comb08U,
+            max_mpg: result.vehicle.comb08,
+            min_mpg: result.vehicle.comb08,
+            efficiency : (0.00889 * 1/result.vehicle.comb08U * 1/0.993)
             // to do: separate this logic to a function
           }
         })
