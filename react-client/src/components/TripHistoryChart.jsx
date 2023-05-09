@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,6 +26,16 @@ Legend
 
 
 export default function TripHistoryChart({trips}) {
+  const [formattedTrips, setFormattedTrips] = useState([])
+
+  useEffect(() => { 
+    const tripsCopy = [...trips]
+    console.log(tripsCopy)
+    const sortedTrips = tripsCopy.sort((a, b) => {
+      return new Date(a.date_created) - new Date(b.date_created)
+    })
+    setFormattedTrips(sortedTrips)
+  }, [trips])
 
   function formatDate(dateString) {
     const date = new Date(dateString)
@@ -35,11 +45,11 @@ export default function TripHistoryChart({trips}) {
 
 
   const personalChart = {
-    labels: trips.map((trip) => formatDate(trip.date_created)),
+    labels: formattedTrips.map((trip) => formatDate(trip.date_created)),
     datasets: [
         {
             label: "GHG Emissions",
-            data: trips.map((trip) => trip.ghg_emissions),
+            data: formattedTrips.map((trip) => trip.ghg_emissions),
             fill: false,
             borderColor: "rgb(44, 182, 125)",
             backgroundColor: 'rgb(44, 182, 125)',
