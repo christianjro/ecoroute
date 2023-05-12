@@ -169,7 +169,7 @@ function App() {
                     <li className="nav-item">
                       <NavLink to="/friendRequests" className="nav-link" activeClassName="active">
                         <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Friend Request</span>
+                        <span className="large-screen-enabled ms-3">Friend Requests</span>
                       </NavLink>
                     </li>
                     <li className="nav-item">

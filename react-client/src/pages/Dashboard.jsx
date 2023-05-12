@@ -92,7 +92,7 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
 
             <div className="row justify-content-center gap-4 mb-3">
               <div className="col bg-dark-subtle d-flex flex-column justify-content-between align-items-center py-3 rounded-4">
-                <h1 className="text-secondary m-0">{userTotalMilesTraveled}</h1>
+                <h1 className="text-secondary m-0">{userTotalMilesTraveled > 0 ? userTotalMilesTraveled.toFixed(2) : userTotalMilesTraveled}</h1>
                 <h7 className="text-secondary m-0">Miles</h7>
                 <h6 className="text-center m-0 text-light">Total Miles Traveled</h6>
               </div>
