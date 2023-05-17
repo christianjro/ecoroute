@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Routes, Route, NavLink, useNavigate} from 'react-router-dom';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './custom.scss';
@@ -20,6 +20,8 @@ import ViewFriends from './pages/ViewFriends';
 import Feed from './pages/Feed';
 import Friends from './pages/Friends';
 import Trips from './pages/Trips';
+import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 
 
 function App() {
@@ -46,7 +48,6 @@ function App() {
       fetch("/user_info")
         .then(res => res.json())
         .then(data => setUserInfo(data))
-        // .then(data => console.log(data))
     }
   },[isLoggedIn, shouldRefetchUser])
 
@@ -70,7 +71,6 @@ function App() {
 
   function handleTripsUpdate(newTrip=null) {
     // update trips if adding a newTrip or deleting a new trip
-
     if (newTrip) {
       setTrips(prev => [newTrip, ...prev])
     } else {
@@ -124,110 +124,7 @@ function App() {
       <div className="App bg-dark">
         <div className={`d-flex ${isLoggedIn ? 'flex-row' : 'flex-column'}`}>
 
-          {
-            isLoggedIn 
-            &&
-            <nav id="largeSidebar" className="navbar bg-info align-items-start p-0" style={{width: "20rem", height:"100vh"}} data-bs-theme="dark">
-              <div className="container-fluid d-flex flex-column p-0">
-                <div className="d-flex flex-column align-items-center my-5">
-                  <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "2.5rem"}}></i>
-                  <h3 className="large-screen-enabled mt-1 text-primary">EcoRoute</h3>
-                </div>
-
-                <ul className="navbar-nav">
-                  <div className="">
-                    <li className="nav-item border-bottom border-dark mb-2 pb-2">
-                        <NavLink to="/addTrip" className="nav-link" activeClassName="active">
-                          <i class="bi bi-plus-square-fill" style={{fontSize: "1.3rem"}}></i>
-                          <span className="large-screen-enabled ms-3">Add Trip</span>
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/" className="nav-link" activeClassName="active">
-                          <i class="bi bi-grid-fill" style={{fontSize: "1.3rem"}}></i>
-                          <span className="large-screen-enabled ms-3">Dashboard</span>
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/trips" className="nav-link" activeClassName="active">
-                        <i class="bi bi-map" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Trips</span>
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/feed" className="nav-link" activeClassName="active">
-                        <i class="bi bi-share-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Feed</span>
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/addFriend" className="nav-link" activeClassName="active">
-                        <i class="bi bi-person-fill-add" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Add Friend</span>
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/friendRequests" className="nav-link" activeClassName="active">
-                        <i class="bi bi-person-lines-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Friend Requests</span>
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/viewFriends" className="nav-link" activeClassName="active">
-                        <i class="bi bi-people-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">View Friends</span>
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/account" className="nav-link" activeClassName="active">
-                        <i class="bi bi-gear-fill" style={{fontSize: "1.3rem"}}></i>
-                        <span className="large-screen-enabled ms-3">Account</span>
-                      </NavLink>
-                    </li>
-                  </div>
-
-                  <div className="">
-                    <li className="nav-item border-top border-dark mt-2 pt-2">
-                      <button onClick={handleLogout} className="nav-link">
-                        <i className="bi bi-box-arrow-left" style={{fontSize: "1.3rem", fontWeight: "bold"}}></i>
-                        <span className="large-screen-enabled ms-3">Log out</span>
-                      </button>
-                    </li>
-                    </div>
-                </ul>
-              </div>
-            </nav>
-          }
-
-          {
-            !isLoggedIn
-            &&
-            <nav className="navbar sticky-top navbar-expand-lg bg-black navbar-dark">
-              <div className="container-fluid">
-                <div className="d-flex flex-row align-items-center">
-                  <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "1.5rem"}}></i>
-                  <NavLink to="/" className="navbar-brand ms-1 fw-semibold mb-2 mt-1 text-primary">EcoRoute</NavLink>
-                </div>
-                <button className="navbar-toggler body-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div className="navbar-nav collapse navbar-collapse" id="navbarNav">
-                  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="nav-item ">
-                      <NavLink to="/" className="nav-link" activeClassName="active" aria-current="page">Home</NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/login" className="nav-link" activeClassName="active">Login</NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/signup" className="nav-link" activeClassName="active">Signup</NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              
-            </nav>
-          }
+          {isLoggedIn ? <Sidebar handleLogout={handleLogout} /> : <Navbar />}
 
           <div class="container bg-dark vh-100 overflow-y-auto p-4">
             <Routes>
