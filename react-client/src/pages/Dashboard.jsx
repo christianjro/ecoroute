@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import LeaderboardChart from '../components/LeaderboardChart';
@@ -6,7 +6,7 @@ import TripHistoryChart from '../components/TripHistoryChart';
 import AirQualityIndexChart from '../components/AirQualityIndexChart';
 
 
-export default function Dashboard({trips, userInfo, handleTripsUpdate, location}) {
+export default function Dashboard({trips, userInfo, location}) {
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)
     const [userTotalMilesTraveled, setUserTotalMilesTraveled] = useState(0)
@@ -33,14 +33,14 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
         )
     })
 
+
     useEffect(() => {
         let totalGHGEmissions = 0
         let totalMilesTraveled = 0
-        for (const i in trips) {
-            const trip = trips[i]
-            totalGHGEmissions += trip.ghg_emissions
-            totalMilesTraveled += trip.distance
-        }
+        trips.forEach((trip) => {
+          totalGHGEmissions += trip.ghg_emissions
+          totalMilesTraveled += trip.distance
+        })
         setUserTotalGHGEmissions(totalGHGEmissions)
         setUserTotalMilesTraveled(totalMilesTraveled)
     }, [trips]) 
@@ -51,19 +51,16 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
             .then(response => response.json())
             .then(data => {
                 let friendGHGEmissions = []
-                for (let friend in data) {
-                    let totalGHGEmissions = 0
-                    console.log(friend)
-                    for (const j in data[friend]) {
-                        const trip = data[friend][j]
-                        totalGHGEmissions += trip.ghg_emissions
-                        console.log(trip)
-                    }
-                    friendGHGEmissions.push({"user": friend, "totalGHGEmissions": totalGHGEmissions})
-                    totalGHGEmissions = 0
-                }
-                console.log("*****")
-                console.log(friendGHGEmissions)
+
+                Object.entries(data).forEach(([friend, trips]) => {
+                  let totalGHGEmissions = 0
+                  trips.forEach((trip) => {
+                    totalGHGEmissions += trip.ghg_emissions
+                  })
+                  friendGHGEmissions.push({"user": friend, "totalGHGEmissions": totalGHGEmissions})
+                  totalGHGEmissions = 0
+                })
+
                 friendGHGEmissions.push({"user": "Yourself", "totalGHGEmissions": userTotalGHGEmissions})
 
                 const sortedData = [...friendGHGEmissions].sort((a,b) => a.totalGHGEmissions - b.totalGHGEmissions)
@@ -71,13 +68,8 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
             })
     }, [trips, userTotalGHGEmissions])
     
-    console.log(userTotalGHGEmissions)
-    console.log(trips)
-    console.log(leaderboardData)
 
     useEffect(() => {
-      console.log("this is location")
-      console.log(location)
       if (location) {
         const url = `https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=${location.latitude}&longitude=${location.longitude}&distance=30&API_KEY=${airNowAPIKey}`
         fetch(url)
@@ -96,7 +88,7 @@ export default function Dashboard({trips, userInfo, handleTripsUpdate, location}
                 <h7 className="text-secondary m-0">Miles</h7>
                 <h6 className="text-center m-0 text-light">Total Miles Traveled</h6>
               </div>
-              {/* <button className="btn btn-success btn-lg" onClick={() => navigate("/addTrip")}>+ <br/> Add Trip</button> */}
+
               <div className="col bg-dark-subtle p-2 rounded-4" style={{minWidth: '12rem'}}>
                 <AirQualityIndexChart airQualityIndex={airQualityIndex} />
                 <h6 className="text-center mt-3 text-light">Current Air Quality Index</h6>

@@ -128,7 +128,7 @@ function App() {
 
           <div class="container bg-dark vh-100 overflow-y-auto p-4">
             <Routes>
-              <Route path="/" element={isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} handleTripsUpdate={handleTripsUpdate} location={location}/> : <Home />} />
+              <Route path="/" element={isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} location={location}/> : <Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup /> } />
               <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
