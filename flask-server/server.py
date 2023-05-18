@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, jsonify, make_response
+from flask import Flask, request, session, jsonify, make_response
 from flask_cors import CORS
 from model import connect_to_db, db
 import crud
@@ -9,12 +9,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app, supports_credentials=True)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
-
-@app.route("/message")
-def homepage():
-    """View homepage."""
-    data = {"message": "Hello"}
-    return jsonify(data)
 
 
 @app.route("/users")
@@ -47,6 +41,7 @@ def signup():
 @app.route("/login", methods=["POST"])
 def login():
     """Log in a user."""
+
     data = request.get_json()
     email = data["email"]
     password = data["password"]
@@ -64,6 +59,7 @@ def login():
 @app.route("/logout", methods=["POST"])
 def logout():
     """Log out a user."""
+
     del session["user_id"]
 
     response = make_response(jsonify({"message": "User logged out successfully."}), 200)
@@ -71,18 +67,22 @@ def logout():
 
     return response
 
+
 @app.route("/trips")
 def list_trips():
     """Return a list of trips."""
+
     trips = crud.get_trips_by_user_id(session["user_id"])
 
     data = {"trips": [d.to_dict() for d in trips]}
 
     return data
 
+
 @app.route("/new_trip", methods=["POST"])
 def create_trip():
     """Create a new trip."""
+
     data = request.get_json()
     name = data["name"]
     mode = data["mode"]
@@ -100,8 +100,8 @@ def create_trip():
     db.session.add(new_trip)
     db.session.commit()
 
-    # return {"message": "Trip created successfully"}
     return jsonify(new_trip.to_dict())
+
 
 @app.route("/delete_trip", methods=["POST"])
 def delete_trip():
@@ -109,6 +109,7 @@ def delete_trip():
     
     trip_id = request.get_json()["trip_id"]
     trip = crud.delete_trip_by_trip_id(trip_id)
+
     if trip:
         db.session.delete(trip)
         db.session.commit()
@@ -116,14 +117,15 @@ def delete_trip():
     else: 
         return {"message": "Trip does not exist."}
 
+
 @app.route("/user_info")
 def get_user_info():
     """Return user's info."""
 
     user = crud.get_user_by_id(session["user_id"])
 
-    # return user.to_dict()
     return user.to_dict(user.has_personal_vehicle)
+
 
 @app.route("/new_vehicle", methods=["POST"])
 def create_new_vehicle():
@@ -140,12 +142,14 @@ def create_new_vehicle():
     efficiency = data["efficiency"]
 
     user_id = session["user_id"]
+
     new_vehicle = crud.create_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id)
 
     db.session.add(new_vehicle)
     db.session.commit()
 
     return {"message": "vehicle added"}
+
 
 @app.route("/update_vehicle", methods=["POST"])
 def update_vehicle():
@@ -164,10 +168,10 @@ def update_vehicle():
     user_id = session["user_id"]
 
     crud.update_vehicle(name, make, model, year, avg_mpg, max_mpg, min_mpg, efficiency, user_id)
+    
     db.session.commit()
 
     return {"message": "vehicle updated"}
-
 
 
 @app.route("/friend_requests")
@@ -191,14 +195,8 @@ def list_friend_requests():
 def send_friend_request():
     """Send a friend request."""
 
-    # user = crud.get_user_by_id(session["user_id"])
-
-    # the user needs to give us their email for the friend they want to add
-
     data = request.get_json()
     recipient_email = data["recipient_email"]
-    print("*************************************************************************************************************")
-    print(recipient_email)
     recipient = crud.get_user_by_email(recipient_email)
     recipient_id = recipient.user_id
 
@@ -231,18 +229,22 @@ def respond_to_friend_request():
 
     return {"message": "friend request handled."}
 
+
 @app.route("/friends")
 def list_friends():
     """Return a list of user's friends."""
+
     user_id = session["user_id"]
 
     friends = crud.get_user_friendships_by_user_id(user_id)
 
     return friends
 
+
 @app.route("/delete_friendship", methods=["POST"])
 def delete_friend(): 
     """Delete a user's friendship."""
+
     user_id = session["user_id"]
     friend_id = request.get_json()["friend_id"]
 
