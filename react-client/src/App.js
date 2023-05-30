@@ -5,7 +5,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import './custom.scss';
 import './App.css';
 
-import { AuthContext } from './AuthContext'
+import { AuthContext } from './store/context/AuthContext'
 
 import Home from './pages/Home';
 import Login from './pages/Login';
