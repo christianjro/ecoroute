@@ -90,6 +90,17 @@ export default function AddTrip(props) {
         <MapSearch dataTransfer={handleMapData}/>
         <div className="row my-4">
           <div className="d-grid col-6">
+            <h4 className="text-light">Anticipated GHG Emissions</h4>
+            <h7>{}</h7>
+          </div>
+          <div className="d-grid col-6">
+            <h4 className="text-light">Expected Arrival Time</h4>
+            <h7>{}</h7>
+          </div>
+        </div>
+
+        <div className="row my-4">
+          <div className="d-grid col-6">
             <button className="btn btn-danger py-2" onClick={cancelAddTrip}>Cancel</button>
           </div>
           <div className="d-grid col-6">

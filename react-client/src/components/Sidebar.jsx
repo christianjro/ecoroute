@@ -1,9 +1,25 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
+import React, { useContext } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext';
 
-export default function Sidebar(props) {
+export default function Sidebar() {
+  const navigate = useNavigate();
+  const userAuthContext = useContext(AuthContext)
 
-
+  // Logout User
+  function handleLogout() {
+    fetch("/logout", {
+      method: "POST", 
+      credentials: "include"
+    })
+      .then(response => {
+        if (response.status === 200) {
+          userAuthContext.logoutUser()
+          navigate("/")
+        }
+      })
+  }
+  
   return (
     <nav id="largeSidebar" className="navbar bg-info align-items-start p-0" style={{width: "20rem", height:"100vh"}} data-bs-theme="dark">
       <div className="container-fluid d-flex flex-column p-0">
@@ -66,7 +82,7 @@ export default function Sidebar(props) {
 
           <div className="">
             <li className="nav-item border-top border-dark mt-2 pt-2">
-              <button onClick={props.handleLogout} className="nav-link">
+              <button onClick={handleLogout} className="nav-link">
                 <i className="bi bi-box-arrow-left" style={{fontSize: "1.3rem", fontWeight: "bold"}}></i>
                 <span className="large-screen-enabled ms-3">Log out</span>
               </button>

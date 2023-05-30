@@ -4,9 +4,8 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './custom.scss';
 import './App.css';
-import Cookie from 'js-cookie';
 
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext'
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -25,34 +24,26 @@ import Navbar from './components/Navbar';
 
 
 function App() {
-  // these are the values that manage the user's authentication state
-  const [token, setToken] = useState(Cookie.get("token") || null)
-  const [isLoggedIn, setIsLoggedIn] = useState(token !== null)
+  const userAuthContext = useContext(AuthContext)
+  
   const [userInfo, setUserInfo] = useState({})
   const [trips, setTrips] = useState([])
   const [location, setLocation] = useState(null)
   const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
   const [shouldRefetchTrips, setShouldRefetchTrips] = useState(false)
 
-  const navigate = useNavigate();
-
-  const authContextValue = {
-    token,
-    isLoggedIn, 
-    setToken,
-    setIsLoggedIn
-  }
-
+  // Get User Info
   useEffect(() => {
-    if (isLoggedIn) {
+    if (userAuthContext.isLoggedIn) {
       fetch("/user_info")
         .then(res => res.json())
         .then(data => setUserInfo(data))
     }
-  },[isLoggedIn, shouldRefetchUser])
+  },[userAuthContext.isLoggedIn, shouldRefetchUser])
 
+  // Get User Trips
   useEffect(() => {
-    if (isLoggedIn) {
+    if (userAuthContext.isLoggedIn) {
       fetch("/trips")
           .then(res => res.json())
           .then(data => {
@@ -63,14 +54,14 @@ function App() {
             console.log(trips)
         })
     }
-  }, [isLoggedIn, shouldRefetchTrips])
+  }, [userAuthContext.isLoggedIn, shouldRefetchTrips])
 
   function handleUserInfoUpdate() {
     setShouldRefetchUser(prev => !prev)
   }
 
+  // Re-render trips (if adding a newTrip or deleting a new trip)
   function handleTripsUpdate(newTrip=null) {
-    // update trips if adding a newTrip or deleting a new trip
     if (newTrip) {
       setTrips(prev => [newTrip, ...prev])
     } else {
@@ -78,22 +69,8 @@ function App() {
     }
   }
 
-  function handleLogout() {
-    fetch("/logout", {
-      method: "POST", 
-      credentials: "include"
-    })
-      .then(response => {
-        if (response.status === 200) {
-          console.log(response)
-          setToken(null)
-          setIsLoggedIn(false)
-          Cookie.remove('token')
-          navigate("/")
-        }
-      })
-  }
 
+  // Get User's Current Location
   function getLocation() {
     const positionPromise = new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -120,31 +97,29 @@ function App() {
   
 
   return (
-    <AuthContext.Provider value={authContextValue}> 
-      <div className="App bg-dark">
-        <div className={`d-flex ${isLoggedIn ? 'flex-row' : 'flex-column'}`}>
+    <div className="App bg-dark">
+      <div className={`d-flex ${userAuthContext.isLoggedIn ? 'flex-row' : 'flex-column'}`}>
 
-          {isLoggedIn ? <Sidebar handleLogout={handleLogout} /> : <Navbar />}
+        {userAuthContext.isLoggedIn ? <Sidebar /> : <Navbar />}
 
-          <div class="container bg-dark vh-100 overflow-y-auto p-4">
-            <Routes>
-              <Route path="/" element={isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} location={location}/> : <Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup /> } />
-              <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-              <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
-              <Route path="/addFriend" element={<AddFriend />} />
-              <Route path="/friendRequests" element={<FriendRequests />} />
-              <Route path="/viewFriends" element={<ViewFriends />} />
-              <Route path="/feed" element={<Feed />} />
-              <Route path="/friends" element={<Friends />} />
-              <Route path="/trips" element={<Trips trips={trips} handleTripsUpdate={handleTripsUpdate}/>} />
-            </Routes>
-          </div>
-
+        <div class="container bg-dark vh-100 overflow-y-auto p-4">
+          <Routes>
+            <Route path="/" element={userAuthContext.isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} location={location}/> : <Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup /> } />
+            <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
+            <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
+            <Route path="/addFriend" element={<AddFriend />} />
+            <Route path="/friendRequests" element={<FriendRequests />} />
+            <Route path="/viewFriends" element={<ViewFriends />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/trips" element={<Trips trips={trips} handleTripsUpdate={handleTripsUpdate}/>} />
+          </Routes>
         </div>
+
       </div>
-    </AuthContext.Provider>
+    </div>
   );
 }
 
