@@ -18,18 +18,10 @@ export default function Account(props) {
   const [isMakeReceived, setIsMakeReceived] = useState(false)
   const [isSpecReceived, setIsSpecReceived] = useState(false)
 
-  // const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
-
   const [newVehicle, setNewVehicle] = useState({...newVehicleFormTemplate})
   const [searchVehicleModelOptions, setSearchVehicleModelOptions] = useState([])
   const [searchVehicleSpecOptions, setSearchVehicleSpecOptions] = useState([])
   const [finishButton, setFinishButton] = useState(false)
-
-  // useEffect(() => {
-  //   fetch("/user_info")
-  //     .then(res => res.json())
-  //     .then(data => setUserInfo(data))
-  // }, [shouldRefetchUser])
 
 
   function handleChangeSearch(event) {
@@ -58,9 +50,6 @@ export default function Account(props) {
 
   const vehicleModelItems = searchVehicleModelOptions.map((item) => {
     return (
-      // <div key={item.value} onClick={() => handleModelClick(item.text)}>
-      //   <h3>Model: {item.text}</h3>
-      // </div>
       <option value={item.text}>{item.text}</option>
     )
   })
@@ -83,37 +72,11 @@ export default function Account(props) {
 
   const vehicleSpecItems = searchVehicleSpecOptions.map((item) => {
     return (
-      // <div key={item.value} onClick={() => handleSpecClick(item.value)}>
-      //   <h3>Spec: {item.text}</h3>
-      // </div>
       <option value={item.value}>{item.text}</option>
     )
   })
 
   // Get vehicle mpg (from vehicle id)
-  // function handleSpecChange(event) {
-  //   const option = event.target.value
-  //   fetch(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${option.toString()}`)
-  //     .then(response => response.text())
-  //     .then(data => {
-  //       const parser = new XMLParser()
-  //       let result = parser.parse(data)
-  //       console.log(result)
-  //       setNewVehicle(prev => {
-  //         return {
-  //           ...prev, 
-  //           id: option,
-  //           avg_mpg: result.yourMpgVehicle.avgMpg,
-  //           max_mpg: result.yourMpgVehicle.maxMpg,
-  //           min_mpg: result.yourMpgVehicle.minMpg,
-  //           efficiency : (0.00889 * 1/result.yourMpgVehicle.avgMpg * 1/0.993)
-  //           // to do: separate this logic to a function
-  //         }
-  //       })
-  //       setFinishButton(true)
-  //     })
-  // }
-
   function handleSpecChange(event) {
     const option = event.target.value
     fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${option.toString()}`)
@@ -136,7 +99,6 @@ export default function Account(props) {
         setFinishButton(true)
       })
   }
-
 
   function submitVehicleToDB() {
     if (props.userInfo.has_personal_vehicle) {
@@ -162,6 +124,7 @@ export default function Account(props) {
         }
       })
   }
+  
   // (2/2) Final call to Flask Server (Update Vehicle)
   function updateVehicle() {
     fetch("/update_vehicle", {
