@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 export default function Navbar() {
   return (
     <nav className="navbar sticky-top navbar-expand-lg bg-black navbar-dark">
-      <div className="container-fluid">
+      <div className="container">
         <div className="d-flex flex-row align-items-center">
           <i class="bi bi-geo-alt-fill text-primary" style={{fontSize: "1.5rem"}}></i>
           <NavLink to="/" className="navbar-brand ms-1 fw-semibold mb-2 mt-1 text-primary">EcoRoute</NavLink>
