@@ -87,18 +87,28 @@ export default function AddTrip(props) {
 
   return (
     <div>
-        <MapSearch dataTransfer={handleMapData}/>
-        <div className="row my-4">
-          <div className="d-grid col-6">
-            <h4 className="text-light">Anticipated GHG Emissions</h4>
-            <h7>{}</h7>
+        <MapSearch dataTransfer={handleMapData} />
+        
+        {
+          newTrip.duration
+          && 
+          <div className="row bg-tertiary my-4">
+            <div className="d-grid col-6">
+              <h5 className="text-light">Anticipated GHG Emissions</h5>
+              {newTrip.ghg_emissions ? 
+                <h7 className="text-secondary m-0">{newTrip.ghg_emissions.toFixed(4)}</h7> 
+                : 
+                <h7 className="text-secondary m-0">0</h7>
+              }
+              <h7 className="text-secondary m-0">MTCO2e</h7>
+            </div>
+            <div className="d-grid col-6">
+              <h5 className="text-light">Expected Travel Time</h5>
+              <h7 className="text-secondary m-0">{newTrip.duration}</h7>
+            </div>
           </div>
-          <div className="d-grid col-6">
-            <h4 className="text-light">Expected Arrival Time</h4>
-            <h7>{}</h7>
-          </div>
-        </div>
-
+        }
+        
         <div className="row my-4">
           <div className="d-grid col-6">
             <button className="btn btn-danger py-2" onClick={cancelAddTrip}>Cancel</button>
