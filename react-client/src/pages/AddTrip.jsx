@@ -1,9 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
+import { getUserData, postNewTrip } from '../lib/api';
 import MapSearch from '../components/MapSearch';
 
 
-export default function AddTrip(props) {
+export default function AddTrip() {
+  const queryClient = useQueryClient()
+  const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
+  const { mutate: addNewTripMutation } = useMutation({ mutationFn: postNewTrip, onSuccess: () => {
+    queryClient.invalidateQueries({queryKey: ["trips"]})
+  }})
   const navigate = useNavigate()
   const newTripFormTemplate = {
     name: "", 
@@ -18,9 +25,6 @@ export default function AddTrip(props) {
   const [newTrip, setNewTrip] = useState({...newTripFormTemplate})
 
   function handleMapData(data) {
-    console.log("this is the child's data")
-    console.log(data)
-
     const cleanDistance = parseFloat(data.distance.match(/[0-9.]+/)[0])
 
     setNewTrip(prev => {
@@ -39,13 +43,13 @@ export default function AddTrip(props) {
   useEffect(() => {
     function calculateGhgEmissions() {
       if (newTrip.mode === "DRIVING"){
-        return props.userInfo.vehicle.efficiency * newTrip.distance
+        return userInfo.vehicle.efficiency * newTrip.distance
       } 
       else if (newTrip.mode === "WALKING" || newTrip.mode === "BICYCLING") {
         return 0
       } 
       else if (newTrip.mode === "TRANSIT") {
-        return props.userInfo.vehicle.efficiency * 0.5 * newTrip.distance
+        return userInfo.vehicle.efficiency * 0.5 * newTrip.distance
       }
     }
     const ghg_emissions = calculateGhgEmissions()
@@ -58,32 +62,14 @@ export default function AddTrip(props) {
   
   function handleTripSubmit(event) {
     event.preventDefault()
-    // make fetch call to the api using newTrip state
-    fetch("/new_trip", {
-      method: "POST",
-      headers: {"Content-Type" : "application/json"},
-      body: JSON.stringify(newTrip)
-    })
-      .then(response => {
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          throw new Error("Could not add trip.")
-        }
-      })
-      .then(data => props.handleTripsUpdate(data))
-      .catch(error => console.log(error))
+    // add new trip to the server/database through query mutation
+    addNewTripMutation(newTrip)
     navigate("/")
   }
 
   function cancelAddTrip() {
     navigate("/")
   }
-
-  useEffect(() =>{
-    console.log("this is my new Trip")
-    console.log(newTrip)
-  }, [newTrip])
 
   return (
     <div>
@@ -96,15 +82,15 @@ export default function AddTrip(props) {
             <div className="d-grid col-6">
               <h5 className="text-light">Anticipated GHG Emissions</h5>
               {newTrip.ghg_emissions ? 
-                <h7 className="text-secondary m-0">{newTrip.ghg_emissions.toFixed(4)}</h7> 
+                <h6 className="text-secondary m-0">{newTrip.ghg_emissions.toFixed(4)}</h6> 
                 : 
-                <h7 className="text-secondary m-0">0</h7>
+                <h6 className="text-secondary m-0">0</h6>
               }
-              <h7 className="text-secondary m-0">MTCO2e</h7>
+              <h6 className="text-secondary m-0">MTCO2e</h6>
             </div>
             <div className="d-grid col-6">
               <h5 className="text-light">Expected Travel Time</h5>
-              <h7 className="text-secondary m-0">{newTrip.duration}</h7>
+              <h6 className="text-secondary m-0">{newTrip.duration}</h6>
             </div>
           </div>
         }

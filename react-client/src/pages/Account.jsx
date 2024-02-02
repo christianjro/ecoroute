@@ -1,7 +1,11 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {XMLParser} from 'fast-xml-parser';
+import { useQuery } from '@tanstack/react-query';
+import { getUserData } from '../lib/api';
+
 
 export default function Account(props) {
+  const { data: userInfo } = useQuery({queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""}})
   const newVehicleFormTemplate = {
     api_id: "",
     name: "Car",
@@ -22,7 +26,6 @@ export default function Account(props) {
   const [searchVehicleModelOptions, setSearchVehicleModelOptions] = useState([])
   const [searchVehicleSpecOptions, setSearchVehicleSpecOptions] = useState([])
   const [finishButton, setFinishButton] = useState(false)
-
 
   function handleChangeSearch(event) {
     setNewVehicle(prev => {
@@ -101,9 +104,8 @@ export default function Account(props) {
   }
 
   function submitVehicleToDB() {
-    if (props.userInfo.has_personal_vehicle) {
+    if (userInfo.has_personal_vehicle) {
       updateVehicle()
-      console.log("hi")
     } else {
       addVehicle()
     }
@@ -118,7 +120,6 @@ export default function Account(props) {
     })
       .then(response => {
         if (response.status === 200) {
-          // setShouldRefetchUser(prev => !prev)
           props.handleUserInfoUpdate()
           setIsAddVehicleForm(prev => !prev)
         }
@@ -162,25 +163,25 @@ export default function Account(props) {
             <ul className="list-group list-group-flush">
               <li className="list-group-item d-flex justify-content-between border-info">
                 <div className="text-light">Name</div>
-                <div className="text-secondary">{props.userInfo.name}</div>
+                <div className="text-secondary">{userInfo.name}</div>
               </li> 
               <li className="list-group-item d-flex justify-content-between border-info">
                 <div className="text-light">Email</div>
-                <div className="text-secondary">{props.userInfo.email}</div>
+                <div className="text-secondary">{userInfo.email}</div>
               </li> 
               <li className="list-group-item d-flex justify-content-between border-info">
                 <div className="text-light">Personal Vehicle</div>
-                <div className="text-secondary">{props.userInfo.has_personal_vehicle ? "Yes" : "None"}</div>
+                <div className="text-secondary">{userInfo.has_personal_vehicle ? "Yes" : "None"}</div>
               </li> 
               <li className="list-group-item d-flex justify-content-between border-info">
                 <div className="text-light">Password</div>
-                <div className="text-secondary">{props.userInfo.password}</div>
+                <div className="text-secondary">{userInfo.password}</div>
               </li> 
             </ul>
           </div>
   
           {
-            props.userInfo.has_personal_vehicle &&
+            userInfo.has_personal_vehicle &&
             <div className="card my-3 mx-auto border-black border-3">
               <div className="card-header text-light border-black">
                 Vehicle Info
@@ -188,19 +189,19 @@ export default function Account(props) {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between border-info">
                   <div className="text-light">Make</div>
-                  <div className="text-secondary">{props.userInfo.vehicle.make}</div>
+                  <div className="text-secondary">{userInfo.vehicle.make}</div>
                 </li>
                 <li className="list-group-item d-flex justify-content-between border-info">
                   <div className="text-light">Model</div>
-                  <div className="text-secondary">{props.userInfo.vehicle.model}</div>
+                  <div className="text-secondary">{userInfo.vehicle.model}</div>
                 </li>
                 <li className="list-group-item d-flex justify-content-between border-info">
                   <div className="text-light">Year</div>
-                  <div className="text-secondary">{props.userInfo.vehicle.year}</div>
+                  <div className="text-secondary">{userInfo.vehicle.year}</div>
                 </li>
                 <li className="list-group-item d-flex justify-content-between border-info">
                   <div className="text-light">Efficiency Factor</div>
-                  <div className="text-secondary">{props.userInfo.vehicle.efficiency}</div>
+                  <div className="text-secondary">{userInfo.vehicle.efficiency}</div>
                 </li>
               </ul>
             </div>
@@ -210,7 +211,7 @@ export default function Account(props) {
 
       <div className="text-center mt-3">
         {
-          props.userInfo.has_personal_vehicle ?
+          userInfo.has_personal_vehicle ?
           <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#vehicleForm" data-bs-whatever="@update" onClick={() => setIsUpdateVehicleForm(prev => !prev)}>Update Vehicle</button>
           :
           <button  className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#vehicleForm" data-bs-whatever="@add" onClick={() => setIsAddVehicleForm(prev => !prev)}>Add New Vehicle</button>

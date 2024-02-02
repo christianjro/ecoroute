@@ -1,20 +1,20 @@
 import React from 'react';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
+import { getTrips, deleteTrip } from '../lib/api';
 
-export default function Trips({trips, handleTripsUpdate}) {
-  function handleDeleteTrip(trip_id) {
-    fetch("/delete_trip", {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"}, 
-      body: JSON.stringify({trip_id})
-    })
-      .then(response => {
-        if (response.status === 200) {
-          handleTripsUpdate()
-        }
-      })
+
+export default function Trips() {
+  const queryClient = useQueryClient()
+  const { data: trips } = useQuery({ queryKey: ["trips"], queryFn: getTrips, initialData: [] })
+  const { mutate: deleteTripMutation } = useMutation({ mutationFn: deleteTrip, onSuccess: () => {
+    queryClient.invalidateQueries({queryKey: ["trips"]})
+  }})
+
+  function handleDeleteTrip(tripId) {
+    deleteTripMutation(tripId)
   }
 
-  const usersTrips = trips.map((trip) => {
+  const userTrips = trips.map((trip) => {
     return (
       <tr key={trip.id} className="text-secondary"> 
           <td>{trip.name}</td>
@@ -44,7 +44,7 @@ export default function Trips({trips, handleTripsUpdate}) {
           </tr>
         </thead>
         <tbody>
-          {usersTrips}
+          {userTrips}
         </tbody>
       </table>
     </div>

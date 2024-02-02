@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Routes, Route, useNavigate} from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './custom.scss';
 import './App.css';
 
-import { AuthContext } from './AuthContext'
+import { AuthContext } from './AuthContext';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -25,50 +24,7 @@ import Navbar from './components/Navbar';
 
 function App() {
   const userAuthContext = useContext(AuthContext)
-  
-  const [userInfo, setUserInfo] = useState({})
-  const [trips, setTrips] = useState([])
   const [location, setLocation] = useState(null)
-  const [shouldRefetchUser, setShouldRefetchUser] = useState(false)
-  const [shouldRefetchTrips, setShouldRefetchTrips] = useState(false)
-
-  // Get User Info
-  useEffect(() => {
-    if (userAuthContext.isLoggedIn) {
-      fetch("/user_info")
-        .then(res => res.json())
-        .then(data => setUserInfo(data))
-    }
-  },[userAuthContext.isLoggedIn, shouldRefetchUser])
-
-  // Get User Trips
-  useEffect(() => {
-    if (userAuthContext.isLoggedIn) {
-      fetch("/trips")
-          .then(res => res.json())
-          .then(data => {
-            const sortedTrips = data.trips.sort((a, b) => {
-              return new Date(b.date_created) - new Date(a.date_created)
-            })
-            setTrips(sortedTrips)
-            console.log(trips)
-        })
-    }
-  }, [userAuthContext.isLoggedIn, shouldRefetchTrips])
-
-  function handleUserInfoUpdate() {
-    setShouldRefetchUser(prev => !prev)
-  }
-
-  // Re-render trips (if adding a newTrip or deleting a new trip)
-  function handleTripsUpdate(newTrip=null) {
-    if (newTrip) {
-      setTrips(prev => [newTrip, ...prev])
-    } else {
-      setShouldRefetchTrips(prev => !prev)
-    }
-  }
-
 
   // Get User's Current Location
   function getLocation() {
@@ -79,7 +35,6 @@ function App() {
         reject(new Error("Geolocation is not supported by this browser."))
       }
     })
-
     return positionPromise
   }
 
@@ -94,7 +49,6 @@ function App() {
     }
     fetchLocation()
   }, [])
-  
 
   return (
     <div className="App bg-dark">
@@ -104,23 +58,23 @@ function App() {
 
         <div class="container bg-dark vh-100 overflow-y-auto p-4">
           <Routes>
-            <Route path="/" element={userAuthContext.isLoggedIn? <Dashboard userInfo={userInfo} trips={trips} location={location}/> : <Home />} />
+            <Route path="/" element={userAuthContext.isLoggedIn? <Dashboard location={location} /> : <Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup /> } />
-            <Route path="/account" element={<Account userInfo={userInfo} handleUserInfoUpdate={handleUserInfoUpdate}/>} />
-            <Route path="/addTrip" element={<AddTrip userInfo={userInfo} handleTripsUpdate={handleTripsUpdate}/>} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/addTrip" element={<AddTrip />} />
             <Route path="/addFriend" element={<AddFriend />} />
             <Route path="/friendRequests" element={<FriendRequests />} />
             <Route path="/viewFriends" element={<ViewFriends />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/friends" element={<Friends />} />
-            <Route path="/trips" element={<Trips trips={trips} handleTripsUpdate={handleTripsUpdate}/>} />
+            <Route path="/trips" element={<Trips />} />
           </Routes>
         </div>
 
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

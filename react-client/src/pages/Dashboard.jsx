@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getUserData, getTrips, getAirQualityIndex, getFeed } from '../lib/api';
 
 import LeaderboardChart from '../components/LeaderboardChart';
 import TripHistoryChart from '../components/TripHistoryChart';
 import AirQualityIndexChart from '../components/AirQualityIndexChart';
 
 
-export default function Dashboard({trips, userInfo, location}) {
+export default function Dashboard({location}) {
+    const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
+    const { data: trips } = useQuery({ queryKey: ["trips"], queryFn: getTrips, initialData: [] })
+    const { data: airQualityIndex } = useQuery({ queryKey: ["airQualityIndex", location], queryFn: () => getAirQualityIndex(location), enabled: !!location })
+    const { data: feed } = useQuery({ queryKey: ["feed"], queryFn: getFeed, initialData: {} })
+
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)
     const [userTotalMilesTraveled, setUserTotalMilesTraveled] = useState(0)
-    const [airQualityIndex, setAirQualityIndex] = useState(null)
     const navigate = useNavigate()
-
-    const airNowAPIKey = process.env.REACT_APP_AIRNOW_API_KEY
 
     const recentTrips = trips.slice(0, 3)
 
@@ -33,7 +37,6 @@ export default function Dashboard({trips, userInfo, location}) {
         )
     })
 
-
     useEffect(() => {
         let totalGHGEmissions = 0
         let totalMilesTraveled = 0
@@ -45,38 +48,22 @@ export default function Dashboard({trips, userInfo, location}) {
         setUserTotalMilesTraveled(totalMilesTraveled)
     }, [trips]) 
 
-
     useEffect(() => {
-        fetch("/feed")
-            .then(response => response.json())
-            .then(data => {
-                let friendGHGEmissions = []
+        let friendGHGEmissions = []
 
-                Object.entries(data).forEach(([friend, trips]) => {
-                  let totalGHGEmissions = 0
-                  trips.forEach((trip) => {
-                    totalGHGEmissions += trip.ghg_emissions
-                  })
-                  friendGHGEmissions.push({"user": friend, "totalGHGEmissions": totalGHGEmissions})
-                  totalGHGEmissions = 0
-                })
+        Object.entries(feed).forEach(([friend, trips]) => {
+          let totalGHGEmissions = 0
+          trips.forEach((trip) => {
+            totalGHGEmissions += trip.ghg_emissions
+          })
+          friendGHGEmissions.push({"user": friend, "totalGHGEmissions": totalGHGEmissions})
+          totalGHGEmissions = 0
+        })
 
-                friendGHGEmissions.push({"user": "Yourself", "totalGHGEmissions": userTotalGHGEmissions})
-
-                const sortedData = [...friendGHGEmissions].sort((a,b) => a.totalGHGEmissions - b.totalGHGEmissions)
-                setLeaderboardData(sortedData) 
-            })
+        friendGHGEmissions.push({"user": "Yourself", "totalGHGEmissions": userTotalGHGEmissions})
+        const sortedData = [...friendGHGEmissions].sort((a,b) => a.totalGHGEmissions - b.totalGHGEmissions)
+        setLeaderboardData(sortedData)
     }, [trips, userTotalGHGEmissions])
-    
-
-    useEffect(() => {
-      if (location) {
-        const url = `https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=${location.latitude}&longitude=${location.longitude}&distance=30&API_KEY=${airNowAPIKey}`
-        fetch(url)
-          .then(response => response.json())
-          .then(data => setAirQualityIndex(data[0]))
-      }
-    }, [location])
 
     return (
         <div className="container">
