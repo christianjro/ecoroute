@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import {XMLParser} from 'fast-xml-parser';
-import { useQuery } from '@tanstack/react-query';
-import { getUserData } from '../lib/api';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
+import { getUserData, addVehicle, updateVehicle } from '../lib/api';
 
 
-export default function Account(props) {
-  const { data: userInfo } = useQuery({queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""}})
+export default function Account() {
+  const queryClient = useQueryClient()
+  const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
+  const { mutate: addVehicleMutation } = useMutation({ mutationFn: addVehicle, onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["userInfo"] })
+    setIsAddVehicleForm(prev => !prev)
+  }})
+  const { mutate: updateVehicleMutation } = useMutation({ mutationFn: updateVehicle, onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["userInfo"] })
+    setNewVehicle({...newVehicleFormTemplate})
+    setIsUpdateVehicleForm(prev => !prev)
+  }})
+
   const newVehicleFormTemplate = {
     api_id: "",
     name: "Car",
@@ -105,41 +116,10 @@ export default function Account(props) {
 
   function submitVehicleToDB() {
     if (userInfo.has_personal_vehicle) {
-      updateVehicle()
+      updateVehicleMutation(newVehicle)
     } else {
-      addVehicle()
+      addVehicleMutation(newVehicle)
     }
-  }
-
-  // (1/2) Final call to Flask Server (Add Vehicle)
-  function addVehicle() {
-    fetch("/new_vehicle", {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(newVehicle)
-    })
-      .then(response => {
-        if (response.status === 200) {
-          props.handleUserInfoUpdate()
-          setIsAddVehicleForm(prev => !prev)
-        }
-      })
-  }
-  
-  // (2/2) Final call to Flask Server (Update Vehicle)
-  function updateVehicle() {
-    fetch("/update_vehicle", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(newVehicle)
-    })
-      .then(response => {
-        if (response.status === 200) {
-          setNewVehicle({...newVehicleFormTemplate})
-          props.handleUserInfoUpdate()
-          setIsUpdateVehicleForm(prev => !prev)
-        }
-      })
   }
 
   function handleClose() {
