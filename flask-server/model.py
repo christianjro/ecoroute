@@ -170,7 +170,7 @@ class FriendRequest(db.Model):
         }  
    
 
-def connect_to_db(app, db_name="final_project"):
+def connect_to_db(app, db_name="ecoroute_db"):
     """Connect the database to our Flask app."""
     app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql:///{db_name}"
     app.config["SQLALCHEMY_ECHO"] = True
