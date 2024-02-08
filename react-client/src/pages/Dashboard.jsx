@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getUserData, getTrips, getAirQualityIndex, getFeed } from '../lib/api';
+import { useAirQualityIndexQuery, useFeedQuery, useTripQuery, useUserQuery } from '../store';
 
 import LeaderboardChart from '../components/LeaderboardChart';
 import TripHistoryChart from '../components/TripHistoryChart';
@@ -9,10 +8,10 @@ import AirQualityIndexChart from '../components/AirQualityIndexChart';
 
 
 export default function Dashboard({location}) {
-    const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
-    const { data: trips } = useQuery({ queryKey: ["trips"], queryFn: getTrips, initialData: [] })
-    const { data: airQualityIndex } = useQuery({ queryKey: ["airQualityIndex", location], queryFn: () => getAirQualityIndex(location), enabled: !!location })
-    const { data: feed } = useQuery({ queryKey: ["feed"], queryFn: getFeed, initialData: {} })
+    const { data: userInfo } = useUserQuery()
+    const { data: trips } = useTripQuery()
+    const { data: airQualityIndex } = useAirQualityIndexQuery(location)
+    const { data: feed } = useFeedQuery()
 
     const [leaderboardData, setLeaderboardData] = useState([])
     const [userTotalGHGEmissions, setUserTotalGHGEmissions] = useState(0)

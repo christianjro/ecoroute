@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import {XMLParser} from 'fast-xml-parser';
-import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
-import { getUserData, addVehicle, updateVehicle } from '../lib/api';
+import { XMLParser } from 'fast-xml-parser';
+import { useUserQuery, useCreateVehicle, useUpdateVehicle } from '../store';
 
 
 export default function Account() {
-  const queryClient = useQueryClient()
-  const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
-  const { mutate: addVehicleMutation } = useMutation({ mutationFn: addVehicle, onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["userInfo"] })
-    setIsAddVehicleForm(prev => !prev)
-  }})
-  const { mutate: updateVehicleMutation } = useMutation({ mutationFn: updateVehicle, onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["userInfo"] })
-    setNewVehicle({...newVehicleFormTemplate})
-    setIsUpdateVehicleForm(prev => !prev)
-  }})
+  const { data: userInfo } = useUserQuery()
+  const createVehicle = useCreateVehicle()
+  const updateVehicle = useUpdateVehicle()
 
   const newVehicleFormTemplate = {
     api_id: "",
@@ -116,9 +107,16 @@ export default function Account() {
 
   function submitVehicleToDB() {
     if (userInfo.has_personal_vehicle) {
-      updateVehicleMutation(newVehicle)
+      updateVehicle.mutate(newVehicle, { 
+        onSuccess: () => {
+          setNewVehicle({...newVehicleFormTemplate})
+          setIsUpdateVehicleForm(prev => !prev)
+      }})
     } else {
-      addVehicleMutation(newVehicle)
+      createVehicle.mutate(newVehicle, { 
+        onSuccess: () => {
+          setIsAddVehicleForm(prev => !prev)} 
+        })
     }
   }
 
