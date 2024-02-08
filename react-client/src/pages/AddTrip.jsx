@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
-import { getUserData, postNewTrip } from '../lib/api';
+import { useUserQuery, useCreateTrip } from '../store';
 import MapSearch from '../components/MapSearch';
 
 
 export default function AddTrip() {
-  const queryClient = useQueryClient()
-  const { data: userInfo } = useQuery({ queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""} })
-  const { mutate: addNewTripMutation } = useMutation({ mutationFn: postNewTrip, onSuccess: () => {
-    queryClient.invalidateQueries({queryKey: ["trips"]})
-  }})
+  const { data: userInfo } = useUserQuery()
+  const createTrip = useCreateTrip()
   const navigate = useNavigate()
   const newTripFormTemplate = {
     name: "", 
@@ -63,7 +59,7 @@ export default function AddTrip() {
   function handleTripSubmit(event) {
     event.preventDefault()
     // add new trip to the server/database through query mutation
-    addNewTripMutation(newTrip)
+    createTrip.mutate(newTrip)
     navigate("/")
   }
 
