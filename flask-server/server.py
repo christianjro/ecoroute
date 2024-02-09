@@ -268,6 +268,6 @@ def list_feed():
 
 
 if __name__ == "__main__":
-    connect_to_db(app, "final_project") 
+    connect_to_db(app, "ecoroute_db") 
 
     app.run(host="0.0.0.0", debug=True)

@@ -156,4 +156,4 @@ def delete_user_friendship(user_id, friend_id):
 
 if __name__ == "__main__":
     from server import app
-    connect_to_db(app, "final-project")
+    connect_to_db(app, "ecoroute_db")

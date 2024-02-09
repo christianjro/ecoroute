@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import {XMLParser} from 'fast-xml-parser';
-import { useQuery } from '@tanstack/react-query';
-import { getUserData } from '../lib/api';
+import { XMLParser } from 'fast-xml-parser';
+import { useUserQuery, useCreateVehicle, useUpdateVehicle } from '../store';
 
 
-export default function Account(props) {
-  const { data: userInfo } = useQuery({queryKey: ["userInfo"], queryFn: getUserData, initialData: {name: ""}})
+export default function Account() {
+  const { data: userInfo } = useUserQuery()
+  const createVehicle = useCreateVehicle()
+  const updateVehicle = useUpdateVehicle()
+
   const newVehicleFormTemplate = {
     api_id: "",
     name: "Car",
@@ -105,41 +107,17 @@ export default function Account(props) {
 
   function submitVehicleToDB() {
     if (userInfo.has_personal_vehicle) {
-      updateVehicle()
-    } else {
-      addVehicle()
-    }
-  }
-
-  // (1/2) Final call to Flask Server (Add Vehicle)
-  function addVehicle() {
-    fetch("/new_vehicle", {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(newVehicle)
-    })
-      .then(response => {
-        if (response.status === 200) {
-          props.handleUserInfoUpdate()
-          setIsAddVehicleForm(prev => !prev)
-        }
-      })
-  }
-  
-  // (2/2) Final call to Flask Server (Update Vehicle)
-  function updateVehicle() {
-    fetch("/update_vehicle", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(newVehicle)
-    })
-      .then(response => {
-        if (response.status === 200) {
+      updateVehicle.mutate(newVehicle, { 
+        onSuccess: () => {
           setNewVehicle({...newVehicleFormTemplate})
-          props.handleUserInfoUpdate()
           setIsUpdateVehicleForm(prev => !prev)
-        }
-      })
+      }})
+    } else {
+      createVehicle.mutate(newVehicle, { 
+        onSuccess: () => {
+          setIsAddVehicleForm(prev => !prev)} 
+        })
+    }
   }
 
   function handleClose() {

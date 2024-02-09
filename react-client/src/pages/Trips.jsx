@@ -1,17 +1,13 @@
 import React from 'react';
-import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
-import { getTrips, deleteTrip } from '../lib/api';
+import { useTripQuery, useDeleteTrip } from '../store';
 
 
 export default function Trips() {
-  const queryClient = useQueryClient()
-  const { data: trips } = useQuery({ queryKey: ["trips"], queryFn: getTrips, initialData: [] })
-  const { mutate: deleteTripMutation } = useMutation({ mutationFn: deleteTrip, onSuccess: () => {
-    queryClient.invalidateQueries({queryKey: ["trips"]})
-  }})
+  const { data: trips } = useTripQuery()
+  const deleteTrip = useDeleteTrip()
 
   function handleDeleteTrip(tripId) {
-    deleteTripMutation(tripId)
+    deleteTrip.mutate(tripId)
   }
 
   const userTrips = trips.map((trip) => {
