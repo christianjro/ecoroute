@@ -1,29 +1,24 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import { useFeedQuery } from '../store';
 
 export default function Feed() {
-  const [feed, setFeed] = useState([])
+  const { data: feedData } = useFeedQuery()
 
-  useEffect(() => {
-    fetch("/feed")
-      .then(response => response.json())
-      .then(data => {
-        const tripsArray = Object.entries(data).flatMap(([name, trips]) => (
-            trips.map(trip => ({name:name, tripData:trip}))
-          )
-        )
+  function formatfeed(feed) {
+    const tripsArray = Object.entries(feed).flatMap(([name, trips]) => (
+      trips.map(trip => ({name:name, tripData:trip}))
+    ))
 
-        const sortedTrips = tripsArray.sort((a,b) => {
-          const aDate = new Date(a.tripData.date_created)
-          const bDate = new Date(b.tripData.date_created)
-          return bDate - aDate
-        })
+    const sortedTrips = tripsArray.sort((a, b) => {
+      const aDate = new Date(a.tripData.date_created)
+      const bDate = new Date(b.tripData.date_created)
+      return bDate - aDate
+    })
 
-        console.log(tripsArray)
-        console.log(sortedTrips)
+    return sortedTrips
+  }
 
-        setFeed(sortedTrips)
-      })
-  }, [])
+  const feed = formatfeed(feedData)
 
   function formatDate(dateString) {
       const date = new Date(dateString)
