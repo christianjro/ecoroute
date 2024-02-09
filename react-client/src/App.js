@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import './custom.scss';
-import './App.css';
+import './styles/custom.scss';
+import './styles/App.css';
 
 import { AuthContext } from './AuthContext';
 
