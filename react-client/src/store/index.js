@@ -7,5 +7,6 @@ import { useCreateVehicle } from "./mutations/useCreateVehicle";
 import { useUpdateVehicle } from "./mutations/useUpdateVehicle";
 import { useCreateTrip } from "./mutations/useCreateTrip";
 import { useDeleteTrip } from "./mutations/useDeleteTrip";
+import { useCreateUser } from "./mutations/useCreateUser";
 
-export { useAirQualityIndexQuery, useFeedQuery, useTripQuery, useUserQuery, useCreateVehicle, useUpdateVehicle, useCreateTrip, useDeleteTrip }
+export { useAirQualityIndexQuery, useFeedQuery, useTripQuery, useUserQuery, useCreateVehicle, useUpdateVehicle, useCreateTrip, useDeleteTrip, useCreateUser }

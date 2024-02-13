@@ -5,7 +5,8 @@ import { AuthContext } from '../AuthContext';
 export default function Login() {
   const navigate = useNavigate();
   const userAuthContext = useContext(AuthContext)
-
+  
+  const [renderErrorMessage, setRenderErrorMessage] = useState(false)
   const [validated, setValidated] = useState("")
   const [formData, setFormData] = useState({
     email: "", 
@@ -46,7 +47,10 @@ export default function Login() {
         userAuthContext.loginUser(data.token)
         navigate("/")
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.error(error)
+        setRenderErrorMessage(true)
+      })
   }
 
   return (
@@ -66,7 +70,14 @@ export default function Login() {
             <label className="text-secondary" htmlFor="password">Password</label>
             <div className="invalid-feedback">Must include password</div>
           </div>
-          
+          {
+            renderErrorMessage &&
+            <div className="alert alert-danger d-flex align-items-center" role="alert">
+              <div>
+                Wrong email or password.
+              </div>
+            </div>
+          }
           <button className="btn btn-primary" type="submit">Login</button>
         </form>
       </div>
