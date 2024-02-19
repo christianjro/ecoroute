@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCreateUser } from '../store';
 
 export default function Signup() {
   const navigate = useNavigate()
+  const createUser = useCreateUser()
   const [validated, setValidated] = useState("")
   const [formData, setFormData] = useState({
     name : "",
@@ -26,12 +28,7 @@ export default function Signup() {
     }
     event.preventDefault()
     console.log(formData)
-    fetch("/signup", {
-      method: "POST", 
-      headers: {"Content-Type" : "application/json"},
-      body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
+    createUser.mutate(formData)
     navigate("/login")
   }
 
