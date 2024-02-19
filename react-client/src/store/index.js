@@ -9,6 +9,7 @@ import { useUpdateVehicle } from "./mutations/useUpdateVehicle";
 import { useCreateTrip } from "./mutations/useCreateTrip";
 import { useDeleteTrip } from "./mutations/useDeleteTrip";
 import { useCreateUser } from "./mutations/useCreateUser";
+import { useUpdateFriendRequest } from "./mutations/useUpdateFriendRequest";
 
 export { 
     useAirQualityIndexQuery, 
@@ -20,4 +21,6 @@ export {
     useUpdateVehicle, 
     useCreateTrip, 
     useDeleteTrip, 
-    useCreateUser }
+    useCreateUser,
+    useUpdateFriendRequest
+}

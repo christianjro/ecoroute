@@ -32,11 +32,11 @@ export const friendRequestService = {
             throw new Error("HTTP error " + res.status)
         }
     }, 
-    respondToFriendRequest: async (decision, request_id, sender_id) => {
+    respondToFriendRequest: async (friendshipDecision) => {
         const res = await fetch ("/respond_to_friend_request", {
             method: "POST", 
             headers: {"Content-Type" :  "application/json"}, 
-            body: JSON.stringify({"decision": decision, "request_id": request_id, "sender_id": sender_id})
+            body: JSON.stringify(friendshipDecision)
         })
         if (!res.ok) {
             throw new Error("HTTP error " + res.status)

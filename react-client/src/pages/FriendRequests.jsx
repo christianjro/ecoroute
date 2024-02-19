@@ -1,26 +1,13 @@
-import React, { useState } from 'react';
-import { useFriendRequestQuery } from '../store';
+import React from 'react';
+import { useFriendRequestQuery, useUpdateFriendRequest } from '../store';
 
 export default function FriendRequests() {
   const {data: friendRequests} = useFriendRequestQuery()
-  const [shouldRefetchFriendRequests, setShouldRefetchFriendRequests] = useState(false)
+  const updateFriendRequest = useUpdateFriendRequest()
 
 
   function respondToFriendRequest(decision, request_id, sender_id) {
-    fetch("/respond_to_friend_request", {
-      method: "POST",
-      headers: {"Content-Type" : "application/json"},
-      body: JSON.stringify({"decision": decision, "request_id": request_id, "sender_id": sender_id})
-    })
-      .then(response => {
-        if (response.status === 200) {
-          setShouldRefetchFriendRequests(prev => !prev)
-          // return response.json()
-        } else {
-          throw new Error("Could not respond to friend request.")
-        }
-      })
-      
+    updateFriendRequest.mutate({"decision": decision, "request_id": request_id, "sender_id": sender_id})
   }
     
 
