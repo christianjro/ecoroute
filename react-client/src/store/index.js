@@ -9,6 +9,7 @@ import { useUpdateVehicle } from "./mutations/useUpdateVehicle";
 import { useCreateTrip } from "./mutations/useCreateTrip";
 import { useDeleteTrip } from "./mutations/useDeleteTrip";
 import { useCreateUser } from "./mutations/useCreateUser";
+import { useCreateFriendRequest } from "./mutations/useCreateFriendRequest";
 import { useUpdateFriendRequest } from "./mutations/useUpdateFriendRequest";
 
 export { 
@@ -22,5 +23,6 @@ export {
     useCreateTrip, 
     useDeleteTrip, 
     useCreateUser,
+    useCreateFriendRequest,
     useUpdateFriendRequest
 }

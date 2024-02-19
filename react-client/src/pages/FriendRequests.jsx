@@ -5,12 +5,10 @@ export default function FriendRequests() {
   const {data: friendRequests} = useFriendRequestQuery()
   const updateFriendRequest = useUpdateFriendRequest()
 
-
   function respondToFriendRequest(decision, request_id, sender_id) {
     updateFriendRequest.mutate({"decision": decision, "request_id": request_id, "sender_id": sender_id})
   }
     
-
   const receivedFriendRequestItems = friendRequests.received.map((item) => {
       return (
         <div key={item.id} className="card mx-auto mb-3 border-0">

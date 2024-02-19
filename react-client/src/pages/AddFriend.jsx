@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCreateFriendRequest } from '../store';
 
 export default function AddFriend() {
   const navigate = useNavigate()
+  const createFriendRequest = useCreateFriendRequest()
   const [ recipient, setRecipient ] = useState({recipient_email: ""})
 
   function handleChange(event) {
@@ -16,19 +18,7 @@ export default function AddFriend() {
 
   function handleSubmit(event) {
     event.preventDefault()
-
-    fetch("/new_friend_request", {
-      method: "POST", 
-      headers: {"Content-Type" : "application/json"},
-      body: JSON.stringify(recipient)
-    })
-      .then(response => {
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          throw new Error("Could not send friend request")
-        }
-      })
+    createFriendRequest.mutate(recipient)
     navigate("/")
   }
 
